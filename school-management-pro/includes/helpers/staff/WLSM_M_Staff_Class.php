@@ -827,7 +827,7 @@ class WLSM_M_Staff_Class
 	public static function fetch_homework($school_id, $session_id, $id)
 	{
 		global $wpdb;
-		$homework = $wpdb->get_row($wpdb->prepare('SELECT hw.ID, hw.title, hw.description, hw.attachments, hw.homework_date, c.ID as class_id, cs.ID as class_school_id FROM ' . WLSM_HOMEWORK . ' as hw
+		$homework = $wpdb->get_row($wpdb->prepare('SELECT hw.ID, hw.title, hw.subject, hw.description, hw.attachments, hw.homework_date, c.ID as class_id, cs.ID as class_school_id FROM ' . WLSM_HOMEWORK . ' as hw
 			JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = hw.school_id
 			JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = hw.session_id
 			LEFT OUTER JOIN ' . WLSM_HOMEWORK_SECTION . ' as hwse ON hwse.homework_id = hw.ID

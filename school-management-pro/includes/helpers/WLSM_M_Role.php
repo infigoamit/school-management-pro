@@ -154,6 +154,7 @@ class WLSM_M_Role {
 			'delete_sections'             => esc_html__( 'Delete Class Sections', 'school-management' ),
 			'manage_subjects'             => esc_html__( 'Manage Subjects', 'school-management' ),
 			'manage_timetable'            => esc_html__( 'Manage Timetable', 'school-management' ),
+			'view_timetable'              => esc_html__( 'View Timetable', 'school-management' ),
 			'manage_attendance'           => esc_html__( 'Manage Student Attendance', 'school-management' ),
 			'manage_staff_attendance'     => esc_html__( 'Manage Staff Attendance', 'school-management' ),
 			'manage_student_leaves'       => esc_html__( 'Manage Student Leaves', 'school-management' ),

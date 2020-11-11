@@ -130,7 +130,7 @@ class WLSM_Staff_General
 
 	public static function get_class_subjects()
 	{
-		$current_user = WLSM_M_Role::can(array('manage_timetable', 'manage_live_classes'));
+		$current_user = WLSM_M_Role::can(array('manage_timetable', 'view_timetable', 'manage_live_classes'));
 
 		if (!$current_user) {
 			die();
@@ -178,7 +178,7 @@ class WLSM_Staff_General
 
 	public static function get_subject_teachers()
 	{
-		$current_user = WLSM_M_Role::can(array('manage_timetable', 'manage_live_classes'));
+		$current_user = WLSM_M_Role::can(array('manage_timetable', 'view_timetable', 'manage_live_classes'));
 
 		if (!$current_user) {
 			die();
@@ -477,7 +477,7 @@ class WLSM_Staff_General
 			if (!empty($phone) && strlen($phone) > 40) {
 				$errors['phone'] = esc_html__('Maximum length cannot exceed 40 characters.', 'school-management');
 			}
-			if (!empty($email)) {
+			if (empty($email)) {
 				if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 					$errors['email'] = esc_html__('Please provide a valid email.', 'school-management');
 				} elseif (strlen($email) > 60) {

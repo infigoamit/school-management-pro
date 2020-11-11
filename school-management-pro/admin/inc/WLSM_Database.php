@@ -812,6 +812,11 @@ class WLSM_Database
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_HOMEWORK . "ADD attachments text DEFAULT NULL");
 		}
+		/* Add subject column if not exists to fees table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_HOMEWORK . "' AND COLUMN_NAME = 'subject'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_HOMEWORK . " ADD subject varchar(255) DEFAULT NULL");
+		}
 
 		/* Create homework_section table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_HOMEWORK_SECTION . " (

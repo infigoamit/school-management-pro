@@ -2688,7 +2688,8 @@ class WLSM_Staff_Class
 
 	public static function fetch_timetable()
 	{
-		$current_user = WLSM_M_Role::can('manage_timetable');
+		$current_user = WLSM_M_Role::can( array('view_timetable', 'manage_timetable') );
+		// var_dump($current_user);
 
 		if (!$current_user) {
 			die();
@@ -2760,15 +2761,44 @@ class WLSM_Staff_Class
 		$filter_rows_limit = $wpdb->get_results($query_filter . $limit);
 
 		$data = array();
+		$only_view = $current_user['school']['permissions'];
+		$view_timetable = in_array('view_timetable', $only_view);
+		$manage_timetable = in_array('view_timetable', $only_view);
 
+		
 		if (count($filter_rows_limit)) {
 			foreach ($filter_rows_limit as $row) {
+				$html =
+					'<a class="text-primary" href="' . esc_url($page_url . "&action=timetable&id=" . $row->ID) . '">
+						<span class="dashicons dashicons-search"></span>
+					</a>
+					
+					&nbsp;&nbsp;';
+
+				if ($view_timetable && $manage_timetable) {
+
+					$html .='
+					<a class="text-danger wlsm-delete-timetable"
+						 data-nonce="' . esc_attr(wp_create_nonce("delete-timetable-" . $row->ID)) . '" 
+						 data-timetable="' . esc_attr($row->ID) . '" 
+						 href="#" 
+						 data-message-title="' . esc_attr__('Please Confirm!', 'school-management') . '" 
+						 data-message-content="' . esc_attr__('This will delete the timetable.', 'school-management') . '" 
+						 data-cancel="' . esc_attr__('Cancel', 'school-management') . '" 
+						 data-submit="' . esc_attr__('Confirm', 'school-management') . '">
+					
+						<span class="dashicons dashicons-trash"></span>
+					</a>';
+
+				}
+			
 				// Table columns.
 				$data[] = array(
 					esc_html(WLSM_M_Class::get_label_text($row->class_label)),
+					
 					esc_html(WLSM_M_Staff_Class::get_section_label_text($row->section_label)),
-					'<a class="text-primary" href="' . esc_url($page_url . "&action=timetable&id=" . $row->ID) . '"><span class="dashicons dashicons-search"></span></a>&nbsp;&nbsp;
-					<a class="text-danger wlsm-delete-timetable" data-nonce="' . esc_attr(wp_create_nonce('delete-timetable-' . $row->ID)) . '" data-timetable="' . esc_attr($row->ID) . '" href="#" data-message-title="' . esc_attr__('Please Confirm!', 'school-management') . '" data-message-content="' . esc_attr__('This will delete the timetable.', 'school-management') . '" data-cancel="' . esc_attr__('Cancel', 'school-management') . '" data-submit="' . esc_attr__('Confirm', 'school-management') . '"><span class="dashicons dashicons-trash"></span></a>'
+
+					$html
 				);
 			}
 		}
@@ -2786,7 +2816,7 @@ class WLSM_Staff_Class
 
 	public static function delete_timetable()
 	{
-		$current_user = WLSM_M_Role::can('manage_timetable');
+		$current_user = WLSM_M_Role::can('manage_timetable', 'view_timetable');
 
 		if (!$current_user) {
 			die();
@@ -2854,7 +2884,7 @@ class WLSM_Staff_Class
 
 	public static function save_routine()
 	{
-		$current_user = WLSM_M_Role::can('manage_timetable');
+		$current_user = WLSM_M_Role::can('manage_timetable', 'view_timetable');
 
 		if (!$current_user) {
 			die();
@@ -3034,7 +3064,7 @@ class WLSM_Staff_Class
 
 	public static function delete_routine()
 	{
-		$current_user = WLSM_M_Role::can('manage_timetable');
+		$current_user = WLSM_M_Role::can('manage_timetable', 'view_timetable');
 
 		if (!$current_user) {
 			die();
@@ -4485,11 +4515,13 @@ class WLSM_Staff_Class
 				}
 			}
 
-			$title         = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
-			$description   = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
+			$title       = isset($_POST['title']) ? sanitize_text_field($_POST['title']) : '';
+			$description = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
+			$subject     = isset($_POST['subjects']) ? sanitize_text_field($_POST['subjects']) : '';
 
 			$homework_date = isset($_POST['homework_date']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['homework_date'])) : NULL;
 			$class_id      = isset($_POST['class_id']) ? absint($_POST['class_id']) : 0;
+			$subject_id      = isset($_POST['subjects']) ? absint($_POST['subjects']) : 0;
 			$sections      = (isset($_POST['sections']) && is_array($_POST['sections'])) ? $_POST['sections'] : array();
 
 			$attachments = (isset($_FILES['attachment']) && is_array($_FILES['attachment'])) ? $_FILES['attachment'] : array();
@@ -4595,6 +4627,7 @@ class WLSM_Staff_Class
 				$data = array(
 					'title'         => $title,
 					'description'   => $description,
+					'subject'   => $subject,
 					'homework_date' => $homework_date,
 					'session_id'    => $session_id,
 					'school_id'     => $school_id,

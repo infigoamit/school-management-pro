@@ -84,7 +84,7 @@ class WLSM_Menu {
 					}
 
 					// Academic - Group.
-					if ( WLSM_M_Role::check_permission( array( 'manage_classes', 'manage_subjects', 'manage_timetable', 'manage_attendance', 'manage_study_materials', 'manage_homework', 'manage_notices', 'manage_student_leaves', 'manage_events', 'manage_live_classes' ), $permissions ) ) {
+					if ( WLSM_M_Role::check_permission( array( 'manage_classes', 'manage_subjects', 'manage_timetable', 'view_timetable',  'manage_attendance', 'manage_study_materials', 'manage_homework', 'manage_notices', 'manage_student_leaves', 'manage_events', 'manage_live_classes' ), $permissions ) ) {
 
 						$school_staff_group_academic_menu = add_menu_page( esc_html__( 'Academic', 'school-management' ), esc_html__( 'SM Academic', 'school-management' ), 'read', WLSM_MENU_STAFF_ACADEMIC, array( 'WLSM_Menu', 'school_staff_group_academic' ), 'dashicons-welcome-learn-more', 31 );
 						add_action( 'admin_print_styles-' . $school_staff_group_academic_menu, array( 'WLSM_Menu', 'menu_page_assets' ) );
@@ -104,7 +104,7 @@ class WLSM_Menu {
 							add_action( 'admin_print_styles-' . $school_staff_subjects_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
 						}
 
-						if ( WLSM_M_Role::check_permission( array( 'manage_timetable' ), $permissions ) ) {
+						if ( WLSM_M_Role::check_permission( array( 'manage_timetable','view_timetable'), $permissions ) ) {
 							// Class - Timetable.
 							$school_staff_timetable_submenu = add_submenu_page( WLSM_MENU_STAFF_ACADEMIC, esc_html__( 'Timetable', 'school-management' ), esc_html__( 'Timetable', 'school-management' ), 'read', WLSM_MENU_STAFF_TIMETABLE, array( 'WLSM_Menu', 'school_staff_timetable' ) );
 							add_action( 'admin_print_styles-' . $school_staff_timetable_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );

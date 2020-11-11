@@ -131,7 +131,7 @@ class WLSM_M {
 
 
 	public static function homework_query() {
-		return 'SELECT hw.ID, hw.title, hw.description, hw.attachments, hw.homework_date, c.ID as class_id, cs.ID as class_school_id FROM ' . WLSM_HOMEWORK . ' as hw
+		return 'SELECT hw.ID, hw.title, hw.subject, hw.description, hw.attachments, hw.homework_date, c.ID as class_id, cs.ID as class_school_id FROM ' . WLSM_HOMEWORK . ' as hw
 				JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = hw.school_id
 				JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = hw.session_id
 				LEFT OUTER JOIN ' . WLSM_HOMEWORK_SECTION . ' as hwse ON hwse.homework_id = hw.ID
@@ -144,6 +144,10 @@ class WLSM_M {
 	public static function meetings_per_page() {
 		return 15;
 	}
+	public static function get_subject($id) {
+		return 'SELECT sj.ID, sj.label FROM ' . WLSM_SUBJECTS . ' as sj 
+		WHERE sj.ID = '. $id.'';
+	}
 
 	public static function meetings_query() {
 		return 'SELECT mt.ID, mt.host_id, mt.meeting_id, mt.topic, mt.duration, mt.start_at, mt.type, mt.password, mt.join_url, sj.label as subject_name, sj.code as subject_code, a.name as name FROM ' . WLSM_MEETINGS . ' as mt
@@ -154,4 +158,6 @@ class WLSM_M {
 		LEFT OUTER JOIN ' . WLSM_ADMINS . ' as a ON a.ID = mt.admin_id
 		WHERE mt.school_id = %d AND mt.class_school_id = %d GROUP BY mt.ID';
 	}
+
+	
 }

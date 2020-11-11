@@ -149,6 +149,7 @@ class WLSM_P_Student {
 			}
 
 			$homework = $wpdb->get_row( $wpdb->prepare( WLSM_M::homework_query(), $school_id, $session_id, $section_id, $homework_id ) );
+			$subject = $wpdb->get_row( $wpdb->prepare( WLSM_M::get_subject($homework->subject)  ) );
 
 			if ( ! $homework ) {
 				throw new Exception( esc_html__( 'Home work not found.', 'school-management' ) );
@@ -179,6 +180,12 @@ class WLSM_P_Student {
 			<li>
 				<span class="wlsm-font-bold"><?php esc_html_e( 'Title', 'school-management' ); ?>:</span>
 				<span><?php echo esc_html( stripslashes( $homework->title ) ); ?></span>
+			</li>
+			<li>
+				<span class="wlsm-font-bold"><?php esc_html_e( 'Subject', 'school-management' ); ?>:</span>
+				<span><?php
+					esc_html_e($subject->label);
+				?></span>
 			</li>
 			<li>
 				<span class="wlsm-font-bold"><?php esc_html_e( 'Description', 'school-management' ); ?>:</span>
