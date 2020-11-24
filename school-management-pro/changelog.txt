@@ -1,4 +1,8 @@
-Version 6.6 [10-11-2020]
+Version 6.7 [24-11-2020]
+========
+* Updated : SMS Settings Infigo point & MsgClub.
+
+Version 6.6 [18-11-2020]
 ========
 * Added : New Role permission.
 * Added : You can select subject in homework.
