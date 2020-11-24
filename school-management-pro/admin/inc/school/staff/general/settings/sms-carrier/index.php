@@ -27,6 +27,7 @@ $school_pointsms_username  = $settings_pointsms['username'];
 $school_pointsms_sender_id = $settings_pointsms['sender_id'];
 $school_pointsms_channel   = $settings_pointsms['channel'];
 $school_pointsms_route     = $settings_pointsms['route'];
+$school_pointsms_peid      = $settings_pointsms['peid'];
 
 // vinuthan SMS settings.
 $settings_vinuthansms = WLSM_M_Setting::get_settings_vinuthan($school_id);
@@ -283,6 +284,18 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						<div class="col-md-9">
 							<div class="form-group">
 								<input name="pointsms_route" type="text" id="wlsm_pointsms_route" value="<?php echo esc_attr($school_pointsms_route); ?>" class="form-control" placeholder="<?php esc_attr_e('Infigo Point Route', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="wlsm_sms_carrier wlsm_pointsms">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_pointsms_peid" class="wlsm-font-bold"><?php esc_html_e('Peid', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="pointsms_peid" type="text" id="wlsm_pointsms_peid" value="<?php echo esc_attr($school_pointsms_peid); ?>" class="form-control" placeholder="<?php esc_attr_e('Infigo Point peid', 'school-management'); ?>">
 							</div>
 						</div>
 					</div>

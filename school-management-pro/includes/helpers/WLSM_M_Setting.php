@@ -367,6 +367,7 @@ class WLSM_M_Setting {
 		$sender_id = NULL;
 		$channel   = NULL;
 		$route     = NULL;
+		$peid      = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "pointsms"', $school_id ) );
 		if ( $settings ) {
@@ -376,6 +377,7 @@ class WLSM_M_Setting {
 			$sender_id = isset( $settings['sender_id'] ) ? $settings['sender_id'] : '';
 			$channel   = isset( $settings['channel'] ) ? $settings['channel'] : '';
 			$route     = isset( $settings['route'] ) ? $settings['route'] : '';
+			$peid      = isset( $settings['peid'] ) ? $settings['peid'] : '';
 		}
 
 		return array(
@@ -384,6 +386,7 @@ class WLSM_M_Setting {
 			'sender_id' => $sender_id,
 			'channel'   => $channel,
 			'route'     => $route,
+			'peid'      => $peid,
 		);
 	}
 

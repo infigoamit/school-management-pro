@@ -7869,6 +7869,7 @@ class WLSM_Staff_General
 			$pointsms_password  = isset($_POST['pointsms_password']) ? $_POST['pointsms_password'] : '';
 			$pointsms_channel   = isset($_POST['pointsms_channel']) ? sanitize_text_field($_POST['pointsms_channel']) : '';
 			$pointsms_route     = isset($_POST['pointsms_route']) ? sanitize_text_field($_POST['pointsms_route']) : '';
+			$pointsms_peid      = isset($_POST['pointsms_peid']) ? sanitize_text_field($_POST['pointsms_peid']) : '';
 
 			$vinuthan_sender_id = isset($_POST['vinuthansms_sender_id']) ? sanitize_text_field($_POST['vinuthansms_sender_id']) : '';
 			$vinuthan_username = isset($_POST['vinuthansms_username']) ? sanitize_text_field($_POST['vinuthansms_username']) : '';
@@ -8007,6 +8008,7 @@ class WLSM_Staff_General
 					'password'  => $pointsms_password,
 					'channel'   => $pointsms_channel,
 					'route'     => $pointsms_route,
+					'peid'       => $pointsms_peid,
 				);
 
 				if (!$pointsms) {

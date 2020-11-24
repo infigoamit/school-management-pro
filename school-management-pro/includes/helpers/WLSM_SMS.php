@@ -170,7 +170,7 @@ class WLSM_SMS {
 					'mobileNos'      => $number,
 					'smsContentType' => $sms_content_type,
 				),
-				'http://msg.msgclub.net/rest/services/sendSMS/sendGroupSms'
+				'http://167.114.117.218/rest/services/sendSMS/sendGroupSms'
 			);
 
 			$response = wp_remote_get( $url );
@@ -193,6 +193,7 @@ class WLSM_SMS {
 			$sender_id = $pointsms['sender_id'];
 			$channel   = $pointsms['channel'];
 			$route     = $pointsms['route'];
+			$peid      = $pointsms['peid'];
 
 			if ( is_array( $numbers ) ) {
 				foreach ( $numbers as $key => $number ) {
@@ -232,8 +233,9 @@ class WLSM_SMS {
 					"flashsms" => 0,
 					"text"     => $message,
 					"route"    => $route,
+					"peid"     => $peid,
 				),
-				'http://sms.infigosoftware.in/api/mt/SendSMS'
+				'http://45.113.189.74/api/mt/SendSMS'
 			);
 
 			$response = wp_remote_get( $url );
