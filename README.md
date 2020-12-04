@@ -1,6 +1,6 @@
 # School Management pro
 
--School ManagementImprovement list-
+- School ManagementImprovement list-
 
 1. Add third option for gender in admission form
 2. Add show and hide option for gender and remaining fields to registration form.
