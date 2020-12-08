@@ -46,16 +46,19 @@ class WLSM_Staff_General
 			$class_school_id = $class_school->ID;
 
 			$sections = WLSM_M_Staff_General::fetch_class_sections($class_school_id);
-
+			$subject = WLSM_M_Staff_Class::fetch_subject_query_by_class_id($school_id, $class_id);
+			// var_dump($subject); die;
+			
+			
 			if ($all_sections) {
 				$all_sections = (object) array('ID' => '', 'label' => esc_html__('All Sections', 'school-management'));
 				array_unshift($sections, $all_sections);
 			}
-
-			$sections = array_map(function ($section) {
+			$sections = array_map(function ($section, $subject) {
 				$section->label = WLSM_M_Staff_Class::get_section_label_text($section->label);
-				return $section;
-			}, $sections);
+				return ['section'=> $section, 'subject'=> $subject];
+			}, $sections, $subject);
+
 
 			wp_send_json($sections);
 		} catch (Exception $exception) {

@@ -656,6 +656,7 @@ class WLSM_M_Setting {
 		$success_message       = '';
 
 			$dob           = 1;
+			$gender        = 1;
 			$religion      = 1;
 			$caste         = 1;
 			$blood_group   = 1;
@@ -683,6 +684,7 @@ class WLSM_M_Setting {
 			$success_message       = isset( $settings['success_message'] ) ? $settings['success_message'] : '';
 
 			$dob           = isset( $settings['dob'] ) ? $settings['dob'] : '';
+			$gender        = isset( $settings['gender'] ) ? $settings['gender'] : '';
 			$religion      = isset( $settings['religion'] ) ? $settings['religion'] : '';
 			$caste         = isset( $settings['caste'] ) ? $settings['caste'] : '';
 			$blood_group   = isset( $settings['blood_group'] ) ? $settings['blood_group'] : '';
@@ -711,6 +713,7 @@ class WLSM_M_Setting {
 			'admin_phone'           => $admin_phone,
 			'success_message'       => $success_message,
 			'dob'           => (bool)$dob,
+			'gender'        => (bool)$gender,
 			'religion'      => (bool)$religion,
 			'caste'         => (bool)$caste,
 			'blood_group'   => (bool)$blood_group,

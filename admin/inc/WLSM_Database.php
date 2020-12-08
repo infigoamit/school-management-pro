@@ -913,6 +913,12 @@ class WLSM_Database
 				) ENGINE=InnoDB " . $charset_collate;
 		dbDelta($sql);
 
+		/* Add class_id column if not exists to fees table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_FEES . "' AND COLUMN_NAME = 'class_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_FEES . " ADD class_id varchar(60) NULL DEFAULT NULL");
+		}
+
 		/* Create routines table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_ROUTINES . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -955,7 +955,7 @@
 			direction: false
 		});
 
-		// Admission date.
+		// Enrollment date.
 		$('#wlsm_admission_date').Zebra_DatePicker({
 			format: wlsmdateformat,
 			readonly_element: false,
@@ -5535,7 +5535,7 @@
 		// Staff: School Dashboard - Active Inquiries table.
 		wlsmInitializeDataTable($('.wlsm-stats-active-inquiries-table'), [5, 10]);
 
-		// Staff: School Dashboard - Admission table.
+		// Staff: School Dashboard - Enrollment table.
 		wlsmInitializeDataTable($('.wlsm-stats-admission-table'), [5, 10, 15]);
 
 		// Staff: School Dashboard - Payment table.
@@ -5628,8 +5628,56 @@
 		// Staff: General Actions.
 		$(document).on('change', '#wlsm_class', function() {
 			var classId = this.value;
+			var feesBox = $('#fees-box')
+			// Removed all Fee types
+			$('.wlsm-fee-box').remove();
+			var fees_list = $('#fees-box').data('fees-type-list');
+		if(feesBox.length ){
+			var ftFeePeriods = feesBox.data('fee-periods');
+			var ftFeePeriod = feesBox.data('fee-period');
+			var ftFeeAmount = feesBox.data('fee-amount');
+			
+			var ftFeeType = feesBox.data('fee-type');
+			var ftFeeTypePlaceholder = feesBox.data('fee-type-placeholder');
+			var ftAmountPlaceholder = feesBox.data('fee-amount-placeholder');
+			
+			
+			fees_list.forEach(function (item , index ) {
+				let class_name 				= 'class-id-'+item.class_id;
+				var feePeriods = '<select name="fee_period[]" class="form-control selectpicker wlsm_fee_period_selectpicker" id="wlsm_fee_period_' + item.ID + '">';
+				$.each(ftFeePeriods, function(key, value) {
+					var selected = (key == item.period ) ? 'selected':'';
+					feePeriods += '<option value="' + key + '" '+  selected +'>' + value;
+					feePeriods += '</option>';
+				});
+				feePeriods += '</select>';
+				feesBox.append('' +
+					'<div class="wlsm-fee-box card col '+class_name +'" data-fee="' + item.ID + '">' +
+						'<button type="button" class="btn btn-sm btn-danger wlsm-remove-fee-btn"><i class="fas fa-times"></i></button>' +
+						'<input type="hidden" name="fee_id[]" value="'+ item.ID+'">' +
+						'<div class="form-row">' +
+							'<div class="form-group col-md-4">' +
+								'<label for="wlsm_fee_label_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeeType + ':' + '</label>' +
+								'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.ID + '" placeholder="' + ftFeeTypePlaceholder + '" value="'+ item.label +'">' +
+							'</div>' +
+							'<div class="form-group col-md-4">' +
+								'<label for="wlsm_fee_period_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeePeriod + ':' + '</label>' + feePeriods +
+							'</div>' +
+							'<div class="form-group col-md-4">' +
+								'<label for="wlsm_fee_amount_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeeAmount + ':' + '</label>' +
+								'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.ID + '" placeholder="' + ftAmountPlaceholder + '" value="'+ item.amount+'">' +
+							'</div>' +
+						'</div>' +
+					'</div>'
+				);
+			});
+			$('.wlsm_fee_period_selectpicker').selectpicker();
+			$('.wlsm-fee-box').not('.class-id-'+classId).remove();
+		}
+
 			var nonce = $(this).data('nonce');
 			var sections = $('#wlsm_section');
+			var subjects = $('#wlsm_subject_table');
 			var fetchStudents = sections.data('fetch-students');
 			$('div.text-danger').remove();
 			if(classId && nonce) {
@@ -5643,11 +5691,28 @@
 					type: 'POST',
 					success: function(res) {
 						var options = [];
+						var subjts    = [];
+						// console.log(res);
 						res.forEach(function(item) {
-							var option = '<option value="' + item.ID + '">' + item.label + '</option>';
-							options.push(option);
+							if (typeof item.section.ID !== 'undefined') {
+						var option = '<option value="' + item.section.ID + '">' + item.section.label + '</option>';
+								options.push(option);
+								// color is undefined
+							}
+							// console.log( item.section.ID );
 						});
+
+						res.forEach(function(item) {
+							if (item.subject) {
+								// console.log(item.subject);
+								var subj = '<tr><td>'+'<input type="checkbox" name="subjects_list[]" value="'+ item.subject.ID +'"> &nbsp;'+ item.subject.subject_name +'</td></tr>';
+								subjts.push(subj);
+							}
+						});
+						
 						sections.html(options);
+						subjects.html(subjts);
+						$('#wlsm_subject_table').selectpicker();
 						sections.selectpicker('refresh');
 						if(fetchStudents) {
 							sections.trigger('change');

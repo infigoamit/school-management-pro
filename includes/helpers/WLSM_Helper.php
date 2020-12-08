@@ -181,6 +181,7 @@ class WLSM_Helper {
 		return array(
 			'male'   => esc_html__( 'Male', 'school-management' ),
 			'female' => esc_html__( 'Female', 'school-management' ),
+			'other'  => esc_html__( 'Other', 'school-management' ),
 		);
 	}
 

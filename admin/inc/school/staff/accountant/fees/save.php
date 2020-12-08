@@ -2,7 +2,7 @@
 defined('ABSPATH') || die();
 
 global $wpdb;
-
+require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_Class.php';
 $page_url = WLSM_M_Staff_Accountant::get_fees_page_url();
 
 $school_id = $current_school['id'];
@@ -10,7 +10,7 @@ $school_id = $current_school['id'];
 $fee = NULL;
 
 $nonce_action = 'add-fee';
-
+$class_id            = '';
 $label               = '';
 $amount              = '';
 $period              = '';
@@ -27,6 +27,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 		$label               = $fee->label;
 		$amount              = $fee->amount;
 		$period              = $fee->period;
+		$class_id 			 = $fee->class_id;
 		$active_on_admission = $fee->active_on_admission;
 		$active_on_dashboard = $fee->active_on_dashboard;
 	}
@@ -77,13 +78,27 @@ $fee_periods = WLSM_Helper::fee_period_list();
 
 			<div class="wlsm-form-section">
 				<div class="form-row">
-					<div class="form-group col-md-12">
+					<div class="form-group col-md-6">
 						<label for="wlsm_label" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e('Fee Type', 'school-management'); ?>:
 						</label>
 						<input type="text" name="label" class="form-control" id="wlsm_label" placeholder="<?php esc_attr_e('Enter fee type', 'school-management'); ?>" value="<?php echo esc_attr(stripcslashes($label)); ?>">
 					</div>
+					<div class="form-group col-md-6">
+						<label for="wlsm_class" class="wlsm-font-bold">
+							<span class="wlsm-important">*</span> <?php esc_html_e('Class', 'school-management'); ?>:
+						</label>
+						<select name="class_id" class="form-control selectpicker" data-nonce="<?php echo esc_attr(wp_create_nonce('get-class-sections')); ?>" id="wlsm_class" data-live-search="true">
+							<option value=""><?php esc_html_e('Select Class', 'school-management'); ?></option>
+							<?php foreach ($classes as $class) { ?>
+								<option value="<?php echo esc_attr($class->ID); ?>" <?php selected($class->ID, $class_id, true); ?>>
+									<?php echo esc_html(WLSM_M_Class::get_label_text($class->label)); ?>
+								</option>
+							<?php } ?>
+						</select>
+					</div>
 				</div>
+
 
 				<div class="form-row">
 					<div class="form-group col-md-6">

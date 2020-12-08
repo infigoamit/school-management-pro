@@ -409,6 +409,17 @@ class WLSM_M_Staff_Class
 		WHERE cs.school_id = ' . absint($school_id);
 		return $query;
 	}
+	
+	public static function fetch_subject_query_by_class_id($school_id, $class_id) {
+		global $wpdb;
+		$query = 'SELECT sj.ID, sj.label as subject_name FROM ' . WLSM_SUBJECTS . ' as sj
+		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = sj.class_school_id
+		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
+		LEFT OUTER JOIN ' . WLSM_ADMIN_SUBJECT . ' as asj ON asj.subject_id = sj.ID
+		WHERE cs.school_id = ' . absint($school_id) .' AND cs.class_id =  '. $class_id;
+		$subjects = $wpdb->get_results($query);
+		return $subjects;
+	}
 
 	public static function fetch_subject_query_group_by()
 	{

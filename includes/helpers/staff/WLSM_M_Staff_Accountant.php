@@ -587,7 +587,7 @@ class WLSM_M_Staff_Accountant {
 
 	public static function fetch_fee( $school_id, $id ) {
 		global $wpdb;
-		$fee = $wpdb->get_row( $wpdb->prepare( 'SELECT ft.ID, ft.label, ft.amount, ft.period, ft.active_on_admission, ft.active_on_dashboard FROM ' . WLSM_FEES . ' as ft
+		$fee = $wpdb->get_row( $wpdb->prepare( 'SELECT ft.ID, ft.label, ft.amount, ft.period, ft.active_on_admission, ft.active_on_dashboard,  ft.class_id FROM ' . WLSM_FEES . ' as ft
 		WHERE ft.school_id = %d AND ft.ID = %d', $school_id, $id ) );
 		return $fee;
 	}
@@ -600,7 +600,7 @@ class WLSM_M_Staff_Accountant {
 			$where .= ' AND ft.active_on_admission = 1';
 		}
 
-		$fees = $wpdb->get_results( $wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, ft.period, ft.period, ft.active_on_dashboard FROM ' . WLSM_FEES . ' as ft
+		$fees = $wpdb->get_results( $wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, ft.period, ft.period, ft.active_on_dashboard,  ft.class_id  FROM ' . WLSM_FEES . ' as ft
 		WHERE ft.school_id = %d' . $where, $school_id ) );
 		return $fees;
 	}
