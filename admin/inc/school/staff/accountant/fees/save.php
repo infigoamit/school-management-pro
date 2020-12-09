@@ -32,7 +32,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 		$active_on_dashboard = $fee->active_on_dashboard;
 	}
 }
-
+$classes = WLSM_M_Staff_Class::fetch_classes($school_id);
 $fee_periods = WLSM_Helper::fee_period_list();
 ?>
 <div class="row">

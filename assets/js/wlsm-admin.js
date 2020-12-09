@@ -5641,14 +5641,13 @@
 			var ftFeeTypePlaceholder = feesBox.data('fee-type-placeholder');
 			var ftAmountPlaceholder = feesBox.data('fee-amount-placeholder');
 			
-			
 			fees_list.forEach(function (item , index ) {
-				let class_name 				= 'class-id-'+item.class_id;
+				let class_name = 'class-id-'+item.class_id;
 				var feePeriods = '<select name="fee_period[]" class="form-control selectpicker wlsm_fee_period_selectpicker" id="wlsm_fee_period_' + item.ID + '">';
 				$.each(ftFeePeriods, function(key, value) {
-					var selected = (key == item.period ) ? 'selected':'';
-					feePeriods += '<option value="' + key + '" '+  selected +'>' + value;
-					feePeriods += '</option>';
+					var selected    = (key == item.period ) ? 'selected':'';
+					    feePeriods += '<option value="' + key + '" '+  selected +'>' + value;
+					    feePeriods += '</option>';
 				});
 				feePeriods += '</select>';
 				feesBox.append('' +
