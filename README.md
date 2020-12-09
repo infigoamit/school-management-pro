@@ -1,4 +1,4 @@
-# School Management pro
+# School Management Pro
 
 School management Improvement List
 
