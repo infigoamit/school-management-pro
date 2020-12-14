@@ -30,7 +30,6 @@ $due = $invoice->payable - $invoice->paid;
 <!-- Print invoice section. -->
 <div class="wlsm-container wlsm" id="wlsm-print-invoice">
 	<div class="wlsm-print-invoice-container">
-
 		<?php require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/print/partials/school_header.php'; ?>
 
 		<div class="row">
@@ -64,81 +63,67 @@ $due = $invoice->payable - $invoice->paid;
 			</div>
 		</div>
 
-		<div class="row mt-2">
-			<div class="col-12">
-				<div class="table-responsive w-100">
-					<table class="table table-bordered">
-						<tr>
-							<th><?php esc_html_e( 'Invoice Title', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Staff_Accountant::get_invoice_title_text( $invoice->invoice_title ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Invoice Number', 'school-management' ); ?></th>
-							<td><?php echo esc_html( $invoice->invoice_number ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Date Issued:', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_Config::get_date_text( $invoice->date_issued ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Due Date:', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_Config::get_date_text( $invoice->due_date ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Student Name', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Staff_Class::get_name_text( $invoice->student_name ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Enrollment Number', 'school-management' ); ?></th>
-							<td><?php echo esc_html( $invoice->enrollment_number ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Phone', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Staff_Class::get_phone_text( $invoice->phone ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Email', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Staff_Class::get_name_text( $invoice->email ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Class', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Class::get_label_text( $invoice->class_label ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Section', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Class::get_label_text( $invoice->section_label ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Roll Number', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Staff_Class::get_roll_no_text( $invoice->roll_number ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Father Name', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_M_Staff_Class::get_name_text( $invoice->father_name ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Amount', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Discount', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_Config::get_money_text( $invoice->discount ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Payable', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Paid', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_Config::get_money_text( $invoice->paid ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Due', 'school-management' ); ?></th>
-							<td><?php echo esc_html( WLSM_Config::get_money_text( $due ) ); ?></td>
-						</tr>
-						<tr>
-							<th><?php esc_html_e( 'Status', 'school-management' ); ?></th>
-							<td>
+   <div class="col-md-12">
+      <div class="invoice">
+         <!-- begin invoice-header -->
+         <div class="invoice-header">
+            <div class="invoice-from">
+               <address class="m-t-5 m-b-5">
+                  <strong class="text-inverse"><?php esc_html_e( 'Student Name', 'school-management' ); ?> :</strong><br>
+                  <strong><?php esc_html_e( 'Scholar Number', 'school-management' ); ?></strong> :<br>
+                  <strong><?php esc_html_e( 'Phone', 'school-management' ); ?> :</strong><br>
+                 <Strong><?php esc_html_e( 'Email', 'school-management' ); ?> :</Strong><br>
+				 <strong><?php esc_html_e( 'Class', 'school-management' ); ?> :</strong><br>
+				 <strong><?php esc_html_e( 'Section', 'school-management' ); ?> :</strong><br>
+				 <strong><?php esc_html_e( 'Roll Number', 'school-management' ); ?> :</strong><br>
+				 <strong><?php esc_html_e( 'Father Name', 'school-management' ); ?> :</strong>
+               </address>
+            </div>
+            <div class="invoice-to">
+               <address class="m-t-5 m-b-5">
+                  <?php echo esc_html( WLSM_M_Staff_Class::get_name_text( $invoice->student_name ) ); ?><br>
+                  <?php echo esc_html( $invoice->enrollment_number ); ?><br>
+                  <?php echo esc_html( WLSM_M_Staff_Class::get_phone_text( $invoice->phone ) ); ?><br>
+                  <?php echo esc_html( WLSM_M_Staff_Class::get_name_text( $invoice->email ) ); ?><br>
+				  <?php echo esc_html( WLSM_M_Class::get_label_text( $invoice->class_label ) ); ?><br>
+				  <?php echo esc_html( WLSM_M_Class::get_label_text( $invoice->section_label ) ); ?><br>
+				  <?php echo esc_html( WLSM_M_Staff_Class::get_roll_no_text( $invoice->roll_number ) ); ?><br>
+				  <?php echo esc_html( WLSM_M_Staff_Class::get_name_text( $invoice->father_name ) ); ?>
+               </address>
+            </div>
+            <div class="invoice-date">
+			<div class="date text-inverse m-t-5"><?php echo esc_html( WLSM_M_Staff_Accountant::get_invoice_title_text( $invoice->invoice_title ) ); ?></div>
+               <div class="date text-inverse m-t-5">Date - <?php echo esc_html( WLSM_Config::get_date_text( $invoice->date_issued ) ); ?></div>
+               
+               <div class="invoice-detail">
+			   <?php esc_html_e( 'Due Date:', 'school-management' ); ?> - 
+							<?php echo esc_html( WLSM_Config::get_date_text( $invoice->due_date ) ); ?>
+               </div>
+            </div>
+         </div>
+         <!-- end invoice-header -->
+         <!-- begin invoice-content -->
+         <div class="invoice-content">
+            <!-- begin table-responsive -->
+            <div class="table-responsive">
+               <table class="table table-invoice">
+                  <thead>
+                     <tr>
+                        <th><?php esc_html_e( 'Amount', 'school-management' ); ?></th>
+                        <th class="text-center" ><?php esc_html_e( 'Discount', 'school-management' ); ?></th>
+                        <th class="text-center" ><?php esc_html_e( 'Payable', 'school-management' ); ?></th>
+						<th class="text-center" ><?php esc_html_e( 'Due', 'school-management' ); ?></th>
+						<th class="text-center" ><?php esc_html_e( 'Status', 'school-management' ); ?></th>
+						
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
+						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->discount ) ); ?></td>
+						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
+						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $due ) ); ?></td>
+						<td class="text-center" >
 							<?php
 							echo wp_kses(
 								WLSM_M_Invoice::get_status_text( $invoice->status ),
@@ -146,12 +131,34 @@ $due = $invoice->payable - $invoice->paid;
 							);
 							?>
 							</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-
+                     </tr>
+                    
+                  </tbody>
+               </table>
+            </div>
+            <!-- end table-responsive -->
+            <!-- begin invoice-price -->
+            <div class="invoice-price">
+               <div class="invoice-price-left">
+                  <div class="invoice-price-row">
+                     <div class="sub-price">
+                        <span class="text-inverse">TOTAL PAID :</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="invoice-price-right ">
+                  <span class="text-inverse"><strong><?php echo esc_html( WLSM_Config::get_money_text( $invoice->paid ) ); ?></strong></span>
+               </div>
+            </div>
+            <!-- end invoice-price -->
+         </div>
+         <!-- end invoice-note -->
+         <!-- begin invoice-footer -->
+         <div class="invoice-footer">
+         </div>
+         <!-- end invoice-footer -->
+      </div>
+   </div>
 		<?php if ( count( $payments ) ) { ?>
 		<div class="row mt-2">
 			<div class="col-12">
