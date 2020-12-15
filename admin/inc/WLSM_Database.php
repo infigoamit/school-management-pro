@@ -167,6 +167,12 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_INQUIRIES . " ADD gdpr_agreed tinyint(1) NOT NULL DEFAULT '0'");
 		}
 
+		/* Add section_id column if not exists to inquiries table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INQUIRIES . "' AND COLUMN_NAME = 'section_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_INQUIRIES . " ADD section_id tinyint(1) NOT NULL DEFAULT '0'");
+		}
+
 		/* Add reference column if not exists to inquiries table */
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INQUIRIES . "' AND COLUMN_NAME = 'reference'");
 		if (empty($row)) {

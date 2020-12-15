@@ -40,6 +40,7 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 		$is_active      = $inquiry->is_active;
 
 		$class_id = $inquiry->class_id;
+		$section_id = $inquiry->section_id;
 	}
 }
 
@@ -80,22 +81,39 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 			<!-- Inquiry -->
 			<div class="wlsm-form-section">
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-4">
 						<label for="wlsm_name" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e( 'Name', 'school-management' ); ?>:
 						</label>
 						<input type="text" name="name" class="form-control" id="wlsm_name" placeholder="<?php esc_attr_e( 'Enter name', 'school-management' ); ?>" value="<?php echo esc_attr( stripslashes( $name ) ); ?>">
 					</div>
-					<div class="form-group col-md-6">
-						<label for="wlsm_class_id" class="wlsm-font-bold">
-							<?php esc_html_e( 'Class', 'school-management' ); ?>:
+					<div class="form-group col-md-4">
+						<label for="wlsm_class" class="wlsm-font-bold">
+							<span class="wlsm-important">*</span> <?php esc_html_e('Class', 'school-management'); ?>:
 						</label>
-						<select name="class_id" class="form-control selectpicker" id="wlsm_class_id" data-live-search="true">
-							<option value=""><?php esc_html_e( 'Select Class', 'school-management' ); ?></option>
-							<?php foreach ( $classes as $class ) { ?>
-							<option <?php selected( $class_id, $class->ID, true ); ?> value="<?php echo esc_attr( $class->ID ); ?>">
-								<?php echo esc_html( WLSM_M_Class::get_label_text( $class->label ) ); ?>
-							</option>
+						<?php if ($student) { ?>
+							<div class="ml-2"><?php echo esc_html(WLSM_M_Class::get_label_text($class_label)); ?></div>
+						<?php } else { ?>
+							<select name="class_id" class="form-control selectpicker" data-nonce="<?php echo esc_attr(wp_create_nonce('get-class-sections')); ?>" id="wlsm_class" data-live-search="true">
+								<option value=""><?php esc_html_e('Select Class', 'school-management'); ?></option>
+								<?php foreach ($classes as $class) { ?>
+									<option value="<?php echo esc_attr($class->ID); ?>" <?php selected($class->ID, $class_id, true); ?>>
+										<?php echo esc_html(WLSM_M_Class::get_label_text($class->label)); ?>
+									</option>
+								<?php } ?>
+							</select>
+						<?php } ?>
+					</div>
+
+					<div class="form-group col-md-4">
+						<label for="wlsm_section" class="wlsm-font-bold">
+							<span class="wlsm-important">*</span> <?php esc_html_e('Section', 'school-management'); ?>:
+						</label>
+						<select name="section_id" class="form-control selectpicker" id="wlsm_section" data-live-search="true" title="<?php esc_attr_e('Select Section', 'school-management'); ?>">
+							<?php foreach ($sections as $section) { ?>
+								<option value="<?php echo esc_attr($section->ID); ?>" <?php selected($section->ID, $section_id, true); ?>>
+									<?php echo esc_html(WLSM_M_Staff_Class::get_section_label_text($section->label)); ?>
+								</option>
 							<?php } ?>
 						</select>
 					</div>

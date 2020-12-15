@@ -4964,6 +4964,7 @@ class WLSM_Staff_General
 			$email    = isset($_POST['email']) ? sanitize_text_field($_POST['email']) : '';
 			$message  = isset($_POST['message']) ? sanitize_text_field($_POST['message']) : '';
 			$class_id = isset($_POST['class_id']) ? absint($_POST['class_id']) : 0;
+			$section_id = isset($_POST['section_id']) ? absint($_POST['section_id']) : 0;
 
 			// Status.
 			$is_active      = isset($_POST['is_active']) ? (bool) $_POST['is_active'] : 1;
@@ -5032,6 +5033,7 @@ class WLSM_Staff_General
 					'is_active'       => $is_active,
 					'next_follow_up'  => $next_follow_up,
 					'class_school_id' => $class_school_id,
+					'section_id'      => $section_id,
 				);
 
 				if ($inquiry_id) {
