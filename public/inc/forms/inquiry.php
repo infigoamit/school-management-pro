@@ -121,20 +121,7 @@ $nonce_action = 'wlsm-submit-inquiry';
 							?>
 						</select>
 					</div>
-					<div class="form-group col-md-4">
-					<div class="wlsm-col-4">
-						<label for="wlsm_section" class="wlsm-form-label wlsm-font-bold">
-							<?php esc_html_e('Section', 'school-management'); ?>:
-						</label>
-					</div>
-						<select name="section_id" class="wlsm-form-control selectpicker" id="wlsm_section" data-live-search="true" title="<?php esc_attr_e('Select Section', 'school-management'); ?>">
-							<?php foreach ($sections as $section) { ?>
-								<option value="<?php echo esc_attr($section->ID); ?>" <?php selected($section->ID, $section_id, true); ?>>
-									<?php echo esc_html(WLSM_M_Staff_Class::get_section_label_text($section->label)); ?>
-								</option>
-							<?php } ?>
-						</select>
-					</div>
+					
 				</div>
 				<div class="wlsm-form-group wlsm-row wlsm-mb-2">
 					<div class="wlsm-col-4">

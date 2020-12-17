@@ -191,7 +191,7 @@ $subject_types = WLSM_Helper::subject_type_list();
 					?>
 					<div class="wlsm-exam-paper-box card col" data-exam-paper="<?php echo esc_attr( $index ); ?>">
 						<button type="button" class="btn btn-sm btn-danger wlsm-remove-exam-paper-btn"><i class="fas fa-times"></i></button>
-
+						
 						<input type="hidden" name="paper_id[]" value="<?php echo esc_attr( $exam_paper->ID ); ?>">
 
 						<div class="form-row">
