@@ -3,7 +3,6 @@
 School management Improvement List
 
 1. Add third option for gender in admission form - done
-2. Add show and hide option for gender and remaining fields to registration form. -done
 3. add section option in inquiry form -done
 4. Parent dashboard [Parent information and password reset and change] and profile button
 5. Notification badges for student panel for notification new.
