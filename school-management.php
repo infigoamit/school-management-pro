@@ -20,7 +20,7 @@ if ( ! defined( 'WLSM_PLUGIN_DIR_PATH' ) ) {
 }
 
 define( 'WLSM_WEBLIZAR_PLUGIN_URL', 'https://weblizar.com/plugins/school-management/' );
-define( 'WLSM_VERSION', '6.7' );
+define( 'WLSM_VERSION', '6.8' );
 
 include 'update-checker.php';
 
