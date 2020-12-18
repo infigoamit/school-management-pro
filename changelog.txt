@@ -1,3 +1,10 @@
+Version 6.8 [17-12-2020]
+========
+* Updated : Class wise fee type.
+* Updated : gender show hide option
+* Updated : fee receipt layout.
+* Updated : admission for updated.
+
 Version 6.7 [24-11-2020]
 ========
 * Updated : SMS Settings Infigo point & MsgClub.
