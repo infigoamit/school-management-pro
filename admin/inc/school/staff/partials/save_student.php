@@ -751,6 +751,10 @@ foreach ($routes_vehicles as $route_vehicle) {
 						</div>
 					</div>
 				</div>
+				
+				<?php if (!$fees): ?>
+				<h6 class="text-danger text-center"><strong><?php esc_html_e('No Fee Type Found!', 'school-management'); ?></strong></h6>
+				<?php endif ?>
 
 				<div id="fees-box" class="wlsm-fees-box" data-fees-type-list="<?php echo !empty($fees) ? esc_attr(json_encode((array)$fees)) : ''; ?>" data-fee-type="<?php esc_attr_e('Fee Type', 'school-management'); ?>" data-fee-type-placeholder="<?php esc_attr_e('Enter fee type', 'school-management'); ?>" data-fee-period="<?php esc_attr_e('Period', 'school-management'); ?>" data-fee-amount="<?php esc_attr_e('Amount', 'school-management'); ?>" data-fee-amount-placeholder="<?php esc_attr_e('Enter amount', 'school-management'); ?>" data-fee-periods="<?php echo esc_attr(json_encode($fee_periods)); ?>">
 

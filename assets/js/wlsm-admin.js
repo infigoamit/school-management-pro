@@ -5641,35 +5641,37 @@
 			var ftFeeTypePlaceholder = feesBox.data('fee-type-placeholder');
 			var ftAmountPlaceholder = feesBox.data('fee-amount-placeholder');
 			
-			fees_list.forEach(function (item , index ) {
-				let class_name = 'class-id-'+item.class_id;
-				var feePeriods = '<select name="fee_period[]" class="form-control selectpicker wlsm_fee_period_selectpicker" id="wlsm_fee_period_' + item.ID + '">';
-				$.each(ftFeePeriods, function(key, value) {
-					var selected    = (key == item.period ) ? 'selected':'';
-					    feePeriods += '<option value="' + key + '" '+  selected +'>' + value;
-					    feePeriods += '</option>';
+			if (fees_list.length > 0) {
+				fees_list.forEach(function (item , index ) {
+					let class_name = 'class-id-'+item.class_id;
+					var feePeriods = '<select name="fee_period[]" class="form-control selectpicker wlsm_fee_period_selectpicker" id="wlsm_fee_period_' + item.ID + '">';
+					$.each(ftFeePeriods, function(key, value) {
+						var selected    = (key == item.period ) ? 'selected':'';
+							feePeriods += '<option value="' + key + '" '+  selected +'>' + value;
+							feePeriods += '</option>';
+					});
+					feePeriods += '</select>';
+					feesBox.append('' +
+						'<div class="wlsm-fee-box card col '+class_name +'" data-fee="' + item.ID + '">' +
+							'<button type="button" class="btn btn-sm btn-danger wlsm-remove-fee-btn"><i class="fas fa-times"></i></button>' +
+							'<input type="hidden" name="fee_id[]" value="'+ item.ID+'">' +
+							'<div class="form-row">' +
+								'<div class="form-group col-md-4">' +
+									'<label for="wlsm_fee_label_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeeType + ':' + '</label>' +
+									'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.ID + '" placeholder="' + ftFeeTypePlaceholder + '" value="'+ item.label +'">' +
+								'</div>' +
+								'<div class="form-group col-md-4">' +
+									'<label for="wlsm_fee_period_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeePeriod + ':' + '</label>' + feePeriods +
+								'</div>' +
+								'<div class="form-group col-md-4">' +
+									'<label for="wlsm_fee_amount_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeeAmount + ':' + '</label>' +
+									'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.ID + '" placeholder="' + ftAmountPlaceholder + '" value="'+ item.amount+'">' +
+								'</div>' +
+							'</div>' +
+						'</div>'
+					);
 				});
-				feePeriods += '</select>';
-				feesBox.append('' +
-					'<div class="wlsm-fee-box card col '+class_name +'" data-fee="' + item.ID + '">' +
-						'<button type="button" class="btn btn-sm btn-danger wlsm-remove-fee-btn"><i class="fas fa-times"></i></button>' +
-						'<input type="hidden" name="fee_id[]" value="'+ item.ID+'">' +
-						'<div class="form-row">' +
-							'<div class="form-group col-md-4">' +
-								'<label for="wlsm_fee_label_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeeType + ':' + '</label>' +
-								'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.ID + '" placeholder="' + ftFeeTypePlaceholder + '" value="'+ item.label +'">' +
-							'</div>' +
-							'<div class="form-group col-md-4">' +
-								'<label for="wlsm_fee_period_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeePeriod + ':' + '</label>' + feePeriods +
-							'</div>' +
-							'<div class="form-group col-md-4">' +
-								'<label for="wlsm_fee_amount_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> ' + ftFeeAmount + ':' + '</label>' +
-								'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.ID + '" placeholder="' + ftAmountPlaceholder + '" value="'+ item.amount+'">' +
-							'</div>' +
-						'</div>' +
-					'</div>'
-				);
-			});
+			}
 			$('.wlsm_fee_period_selectpicker').selectpicker();
 			$('.wlsm-fee-box').not('.class-id-'+classId).remove();
 		}
