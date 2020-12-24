@@ -10,7 +10,6 @@ School management Improvement List
 7. Fee Receipt layout update. - done
 8. class wise fee type selection. - done
 9. Exam subject and subject code selection instead of manual entering..
-10 select multiple classed in the fee type 
 
 
 # Extra 

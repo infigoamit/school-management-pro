@@ -605,6 +605,19 @@ class WLSM_M_Staff_Accountant {
 		return $fees;
 	}
 
+	public static function fetch_fees_by_class( $school_id, $class_id, $active_on_admission = true ) {
+		global $wpdb;
+
+		$where = '';
+		if ( $active_on_admission ) {
+			$where .= ' AND ft.active_on_admission = 1';
+		}
+
+		$fees = $wpdb->get_results( $wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, ft.period, ft.period, ft.active_on_dashboard,  ft.class_id  FROM ' . WLSM_FEES . ' as ft
+		WHERE ft.school_id = %d AND ft.class_id = %d' . $where, $school_id, $class_id ) );
+		return $fees;
+	}
+	
 	public static function fetch_fees_paid_dashboard($school_id, $active_on_dashboard = true)
 	{
 		global $wpdb;

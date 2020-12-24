@@ -391,7 +391,7 @@ class WLSM_P_Registration {
 				}
 
 				// Fees.
-				$fees = WLSM_M_Staff_Accountant::fetch_fees( $school_id );
+				$fees = WLSM_M_Staff_Accountant::fetch_fees_by_class( $school_id, $class_id );
 
 				$fee_order = 10;
 				if ( count( $fees ) ) {
