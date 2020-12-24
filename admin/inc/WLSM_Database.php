@@ -243,6 +243,12 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_ADMINS . " ADD note text DEFAULT NULL");
 		}
 
+		/* Add api_key, api_secret column if not exists to admins table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ADMINS . "' AND COLUMN_NAME = 'api_secret'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_ADMINS . " ADD api_secret text DEFAULT NULL");
+			$wpdb->query("ALTER TABLE " . WLSM_ADMINS . " ADD api_key text DEFAULT NULL");
+		}
 		/* Create sections table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_SECTIONS . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

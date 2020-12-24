@@ -493,9 +493,11 @@ class WLSM_SMS {
 				'https://api.msg91.com/api/sendhttp.php'
 			);
 
+			
+
 			$response = wp_remote_get( $url );
 			$result   = wp_remote_retrieve_body( $response );
-
+			var_dump($result);
 			if ( $result ) {
 				return true;
 			}

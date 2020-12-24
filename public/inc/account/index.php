@@ -6,6 +6,7 @@ global $wp;
 $current_page_url = home_url( add_query_arg( array(), $wp->request ) );
 if ( ! is_user_logged_in() ) {
 	$login_form_args = array(
+		'redirect'       => $current_page_url, 
 		'form_id'        => 'wlsm-login-form',
 		'id_username'    => 'wlsm-login-username',
 		'id_password'    => 'wlsm-login-password',
@@ -45,7 +46,7 @@ if ( ! is_user_logged_in() ) {
 			<?php esc_html_e( 'Logout', 'school-management' ); ?>
 		</a>
 		<br>
-		<!-- <a href="<?php echo esc_url( add_query_arg( array( 'action' => 'settings' ), $current_page_url ) ); ?>"><?php esc_html_e( 'Account Settings', 'school-management' ); ?></a> -->
+		
 	</div>
 	<?php
 	if ( $student ) {

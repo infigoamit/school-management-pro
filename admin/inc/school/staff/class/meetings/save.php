@@ -7,6 +7,7 @@ $school_id = $current_school['id'];
 
 require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/class/meetings/check_compatibility.php';
 
+
 $meeting = NULL;
 
 $nonce_action = 'add-meeting';

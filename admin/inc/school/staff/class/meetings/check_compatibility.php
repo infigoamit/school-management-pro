@@ -8,6 +8,8 @@ $settings_zoom            = WLSM_M_Setting::get_settings_zoom( $school_id );
 $settings_zoom_api_key    = $settings_zoom['api_key'];
 $settings_zoom_api_secret = $settings_zoom['api_secret'];
 
+
+
 $zoom_error = false;
 
 if ( WLSM_Helper::is_php_incompatible_for_meetings() ) {

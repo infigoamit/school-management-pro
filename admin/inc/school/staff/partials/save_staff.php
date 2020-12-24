@@ -32,6 +32,9 @@ $username            = '';
 $login_email         = '';
 $is_active           = 1;
 
+$api_key    = '';
+$api_secret = '';
+
 $sections   = array();
 $class_id   = NULL;
 $section_id = NULL;
@@ -62,6 +65,8 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 		$username            = $staff->username;
 		$login_email         = $staff->login_email;
 		$is_active           = $staff->is_active;
+		$api_key             = $staff->api_key;
+		$api_secret          = $staff->api_secret;
 
 		$class_id   = $staff->class_id;
 		$section_id = $staff->section_id;
@@ -455,6 +460,32 @@ $permissions = WLSM_M_Role::get_role_permissions( $role, $permissions );
 						</label>
 						<input type="password" name="password" class="form-control" id="wlsm_login_password" placeholder="<?php esc_attr_e( 'Enter password', 'school-management' ); ?>">
 					</div>
+				</div>
+			</div>
+
+			<!-- Zoom Settings  -->
+			<div class="wlsm-form-section">
+				<div class="row">
+					<div class="form-group col-md-4">
+							<label for="wlsm_api_key" class="wlsm-font-bold">
+							 <?php esc_html_e( 'Zoom API Key', 'school-management' ); ?>:
+							</label>
+							<input type="text" name="api_key" class="form-control" id="wlsm_api_key" placeholder="<?php esc_attr_e( 'Enter API Key', 'school-management' ); ?>" value="<?php 
+							if($api_key) { 
+								echo $api_key;
+							} 
+							?>">
+					</div>
+
+					<div class="form-group col-md-4">
+						<label for="wlsm_api_secret" class="wlsm-font-bold">
+						 <?php esc_html_e( 'Zoom API Secret', 'school-management' ); ?>:
+						</label>
+						<input type="text" name="api_secret" class="form-control" id="wlsm_api_secret" placeholder="<?php esc_attr_e( 'Enter API Secret', 'school-management' ); ?>" value="<?php if ($api_secret) {
+							echo $api_secret;
+						} ?>">
+					</div>
+
 				</div>
 			</div>
 

@@ -217,3 +217,4 @@ add_action( 'rest_api_init', array( 'WLSM_Api', 'register_rest_routes' ) );
 
 // Filter API response.
 add_filter( 'jwt_auth_token_before_dispatch', array( 'WLSM_Api', 'token_before_dispatch' ), 10, 2 );
+

@@ -1,6 +1,7 @@
-Version 6.9 [21-12-2020]
+Version 7.0 [24-12-2020]
 ========
 * Fixed : Fee type bug fixed.
+* Fixed : url redirect bug fixed.
 
 Version 6.8 [17-12-2020]
 ========

@@ -617,7 +617,7 @@ class WLSM_M_Staff_Accountant {
 		WHERE ft.school_id = %d AND ft.class_id = %d' . $where, $school_id, $class_id ) );
 		return $fees;
 	}
-	
+
 	public static function fetch_fees_paid_dashboard($school_id, $active_on_dashboard = true)
 	{
 		global $wpdb;
