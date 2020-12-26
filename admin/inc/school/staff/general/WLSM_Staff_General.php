@@ -2258,11 +2258,6 @@ class WLSM_Staff_General
 			// Status.
 			$is_active = isset($_POST['is_active']) ? (bool) $_POST['is_active'] : 1;
 
-			// zoom api 
-			$api_key          = isset($_POST['api_key']) ? sanitize_text_field($_POST['api_key']) : '';
-			$api_secret          = isset($_POST['api_secret']) ? sanitize_text_field($_POST['api_secret']) : '';
-
-
 			// Start validation.
 			$errors = array();
 
@@ -2487,8 +2482,6 @@ class WLSM_Staff_General
 					'vehicle_id'   => $vehicle_id,
 					'role_id'      => $staff_role,
 					'is_active'    => $is_active,
-					'api_key'    => $api_key,
-					'api_secret' => $api_secret,
 				);
 
 				$staff_data = array(
@@ -2496,7 +2489,7 @@ class WLSM_Staff_General
 					'permissions' => serialize($permissions),
 					'user_id'     => $user_id,
 				);
-
+ 
 				if ($admin_id) {
 					// Update staff.
 					$staff_data['updated_at'] = current_time('Y-m-d H:i:s');

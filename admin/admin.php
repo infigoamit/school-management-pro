@@ -349,3 +349,46 @@ add_action( 'wp_ajax_wlsm-get-subject-teachers', array( 'WLSM_Staff_General', 'g
 
 // Bulk Action.
 add_action( 'wp_ajax_wlsm-bulk-action', array( 'WLSM_Bulk_Action', 'bulk_action' ) );
+
+// zoom api settings 
+
+add_action( 'show_user_profile', 'extra_user_profile_fields' );
+add_action( 'edit_user_profile', 'extra_user_profile_fields' );
+
+function extra_user_profile_fields( $user ) { ?>
+    <h3><?php _e("Zoom API Settings", "blank"); ?></h3>
+
+    <table class="form-table">
+    <tr>
+        <th><label for="api_key"><?php _e("API KEY"); ?></label></th>
+        <td>
+            <input type="text" name="api_key" id="api_key" value="<?php echo esc_attr( get_the_author_meta( 'api_key', $user->ID ) ); ?>" class="regular-text" /><br />
+            <span class="description"><?php _e("Please enter your API KEY."); ?></span>
+        </td>
+    </tr>
+    <tr>
+        <th><label for="api_secret"><?php _e("API SECRET"); ?></label></th>
+        <td>
+            <input type="text" name="api_secret" id="api_secret" value="<?php echo esc_attr( get_the_author_meta( 'api_secret', $user->ID ) ); ?>" class="regular-text" /><br />
+            <span class="description"><?php _e("Please enter your api secret."); ?></span>
+        </td>
+        <h5><?php esc_html_e( 'Accessing your Zoom API Key & Secret', 'school-management' ); ?></h5>
+			<p>
+				<?php esc_html_e( 'To access the API Key and Secret, Create a JWT App on the Marketplace. After providing basic information about your app, locate your API Key and Secret in the App Credentials page.', 'school-management' ); ?>
+				<a target="_blank" href="https://marketplace.zoom.us/docs/guides/auth/jwt"><?php esc_html_e( 'Click here for more information', 'school-management' ); ?></a>
+			</p>
+    </tr>
+    </table>
+<?php }
+
+
+add_action( 'personal_options_update', 'save_extra_user_profile_fields' );
+add_action( 'edit_user_profile_update', 'save_extra_user_profile_fields' );
+
+function save_extra_user_profile_fields( $user_id ) {
+    if ( !current_user_can( 'edit_user', $user_id ) ) { 
+        return false; 
+    }
+    update_user_meta( $user_id, 'api_key', $_POST['api_key'] );
+    update_user_meta( $user_id, 'api_secret', $_POST['api_secret'] );
+}

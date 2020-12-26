@@ -316,7 +316,7 @@ class WLSM_M_Staff_General {
 
 	public static function fetch_staff( $school_id, $role, $id ) {
 		global $wpdb;
-		$staff = $wpdb->get_row( $wpdb->prepare( 'SELECT a.ID, a.name, a.gender, a.dob, a.phone, a.email, a.address, a.salary, a.designation, a.note, a.joining_date, a.role_id, a.assigned_by_manager, a.is_active, a.api_secret, a.api_key, sf.role, sf.permissions, r.name as role_name, u.user_email as login_email, u.user_login as username, a.section_id, a.vehicle_id, cs.ID as class_school_id, cs.class_id FROM ' . WLSM_ADMINS . ' as a
+		$staff = $wpdb->get_row( $wpdb->prepare( 'SELECT a.ID, a.name, a.gender, a.dob, a.phone, a.email, a.address, a.salary, a.designation, a.note, a.joining_date, a.role_id, a.assigned_by_manager, a.is_active, sf.role, sf.permissions, r.name as role_name, u.user_email as login_email, u.user_login as username, a.section_id, a.vehicle_id, cs.ID as class_school_id, cs.class_id FROM ' . WLSM_ADMINS . ' as a
 		JOIN ' . WLSM_STAFF . ' as sf ON sf.ID = a.staff_id
 		LEFT OUTER JOIN ' . WLSM_ROLES . ' as r ON r.ID = a.role_id
 		LEFT OUTER JOIN ' . WLSM_USERS . ' as u ON u.ID = sf.user_id

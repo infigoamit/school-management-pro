@@ -88,11 +88,11 @@ $currency = WLSM_Config::currency();
 							<?php esc_html_e('Charts', 'school-management'); ?>
 						</a>
 					</li>
-					<li class="nav-item ml-1">
+					<!-- <li class="nav-item ml-1">
 						<a class="nav-link border border-primary" id="wlsm-school-zoom-tab" data-toggle="tab" href="#wlsm-school-zoom" role="tab" aria-controls="wlsm-school-zoom" aria-selected="true">
 							<?php esc_html_e('Zoom - Live Classes', 'school-management'); ?>
 						</a>
-					</li>
+					</li> -->
 					<li class="nav-item ml-1">
 						<a class="nav-link border border-primary" id="wlsm-school-logs-tab" data-toggle="tab" href="#wlsm-school-logs" role="tab" aria-controls="wlsm-school-logs" aria-selected="true">
 							<?php esc_html_e('Logging', 'school-management'); ?>
@@ -115,7 +115,7 @@ $currency = WLSM_Config::currency();
 			require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/dashboard/index.php';
 			require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/shortcodes/index.php';
 			require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/charts/index.php';
-			require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/zoom/index.php';
+			// require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/zoom/index.php';
 			require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/logging/index.php';
 			?>
 		</div>

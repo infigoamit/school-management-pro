@@ -3384,9 +3384,16 @@ class WLSM_Staff_Class
 			}
 
 			// Zoom settings.
-			$settings_zoom            = WLSM_M_Setting::get_settings_zoom($school_id);
-			$settings_zoom_api_key    = $settings_zoom['api_key'];
-			$settings_zoom_api_secret = $settings_zoom['api_secret'];
+			// $settings_zoom            = WLSM_M_Setting::get_settings_zoom($school_id);
+			// $settings_zoom_api_key    = $settings_zoom['api_key'];
+			// $settings_zoom_api_secret = $settings_zoom['api_secret'];
+			
+			$user_id = get_current_user_id();
+
+			if ($user_id) {
+				$settings_zoom_api_key    = get_user_meta($user_id, 'api_key', true);
+				$settings_zoom_api_secret = get_user_meta($user_id, 'api_secret', true);
+			}
 
 			require_once WLSM_PLUGIN_DIR_PATH . 'includes/vendor/autoload.php';
 			$meetings = new \Zoom\Endpoint\Meetings($settings_zoom_api_key, $settings_zoom_api_secret);
