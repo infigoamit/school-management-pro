@@ -2208,7 +2208,7 @@ class WLSM_Staff_General
 			// Checks if staff exists.
 			if ($admin_id) {
 				$admin = WLSM_M_Staff_General::get_staff($school_id, $role, $admin_id);
-
+				
 				if (!$admin) {
 					/* translators: %s: staff role */
 					throw new Exception(sprintf(esc_html__('%s not found.', 'school-management'), WLSM_M_Role::get_role_text($role)));
@@ -2218,6 +2218,7 @@ class WLSM_Staff_General
 
 				$user_id  = $admin->user_id;
 				$staff_id = $admin->staff_id;
+			
 			}
 
 			// Personal Detail.
@@ -2257,6 +2258,10 @@ class WLSM_Staff_General
 
 			// Status.
 			$is_active = isset($_POST['is_active']) ? (bool) $_POST['is_active'] : 1;
+
+			// zoom api 
+			$api_key          = isset($_POST['api_key']) ? sanitize_text_field($_POST['api_key']) : '';
+			$api_secret          = isset($_POST['api_secret']) ? sanitize_text_field($_POST['api_secret']) : '';
 
 			// Start validation.
 			$errors = array();
@@ -2489,6 +2494,12 @@ class WLSM_Staff_General
 					'permissions' => serialize($permissions),
 					'user_id'     => $user_id,
 				);
+
+				// if User id exists then store then api keys
+				if ($user_id) {
+					update_user_meta( $user_id, 'api_key', $_POST['api_key'] );
+					update_user_meta( $user_id, 'api_secret', $_POST['api_secret'] );
+				}
  
 				if ($admin_id) {
 					// Update staff.
