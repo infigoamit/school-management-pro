@@ -3377,22 +3377,22 @@ class WLSM_Staff_Class
 				$errors['registration_type'] = esc_html__('Please select registration type.', 'school-management');
 			}
 
+			/** Get user id from the staff table  */
+			$staff_id = WLSM_M_Staff_General::get_staff_id($admin_id);
+			$staff_id = $staff_id->user_id;
+			/** If user id exists */
+			if ($staff_id) {
+				$settings_zoom_api_key    = get_user_meta($staff_id, 'api_key', true);
+				$settings_zoom_api_secret = get_user_meta($staff_id, 'api_secret', true);
+			}
+			if (!$settings_zoom_api_key) {
+				$errors = esc_html__('This Staff User Does Not Have API!', 'school-management');
+			}
+
 			$weekly_days = implode(',', $weekly_days);
 
 			if (count($errors) > 0) {
 				wp_send_json_error($errors);
-			}
-
-			// Zoom settings.
-			// $settings_zoom            = WLSM_M_Setting::get_settings_zoom($school_id);
-			// $settings_zoom_api_key    = $settings_zoom['api_key'];
-			// $settings_zoom_api_secret = $settings_zoom['api_secret'];
-			
-			$user_id = get_current_user_id();
-
-			if ($user_id) {
-				$settings_zoom_api_key    = get_user_meta($user_id, 'api_key', true);
-				$settings_zoom_api_secret = get_user_meta($user_id, 'api_secret', true);
 			}
 
 			require_once WLSM_PLUGIN_DIR_PATH . 'includes/vendor/autoload.php';

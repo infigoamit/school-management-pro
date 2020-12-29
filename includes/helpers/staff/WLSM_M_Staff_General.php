@@ -305,6 +305,15 @@ class WLSM_M_Staff_General {
 		return $staff;
 	}
 
+	public static function get_staff_id($id ) {
+		global $wpdb;
+		$staff = $wpdb->get_row( $wpdb->prepare( 'SELECT a.ID, a.staff_id, sf.user_id FROM ' . WLSM_ADMINS . ' as a
+		JOIN ' . WLSM_STAFF . ' as sf ON sf.ID = a.staff_id
+		LEFT OUTER JOIN ' . WLSM_USERS . ' as u ON u.ID = sf.user_id
+		WHERE a.ID = %d', $id ) );
+		return $staff;
+	}
+
 	public static function get_active_admin( $school_id, $id ) {
 		global $wpdb;
 		$staff = $wpdb->get_row( $wpdb->prepare( 'SELECT a.ID, a.staff_id, sf.user_id, a.assigned_by_manager FROM ' . WLSM_ADMINS . ' as a
