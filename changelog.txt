@@ -1,6 +1,7 @@
 Version 7.2 [13-01-2021]
 ========
-* Added: India Text sms api added.
+* Added : India Text sms api added.
+* Fixed : inquiry class issue fixed.
 
 Version 7.1 [29-12-2020]
 ========

@@ -106,7 +106,7 @@ $nonce_action = 'wlsm-submit-inquiry';
 						</label>
 					</div>
 					<div class="wlsm-col-8">
-						<select name="class_id" class="wlsm-form-control" id="wlsm_class">
+						<select name="class_id" class="wlsm-form-control" id="wlsm_school_class">
 							<option value=""><?php esc_html_e( 'Select Class', 'school-management' ); ?></option>
 							<?php
 							if ( isset( $classes ) ) {
