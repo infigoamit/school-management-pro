@@ -32,8 +32,6 @@ final class WLSM_LM {
 	}
 
 	public function is_valid() {
-		return true;
-
 		if ( get_option( 'wlsm-valid' ) ) {
 			return true;
 		}

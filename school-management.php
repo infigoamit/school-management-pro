@@ -3,7 +3,7 @@
  * Plugin Name: The School Management
  * Plugin URI: https://weblizar.com/plugins/school-management/
  * Description: The School Management is a WordPress plugin to manage multiple schools and their entities such as classes, sections, students, exams, ID cards, admit cards, teachers, staff, fees, invoices, income, expense, noticeboard, study materials and much more.
- * Version: 7.1
+ * Version: 7.2
  * Author: Weblizar
  * Author URI: https://weblizar.com
  * Text Domain: school-management
@@ -20,7 +20,7 @@ if ( ! defined( 'WLSM_PLUGIN_DIR_PATH' ) ) {
 }
 
 define( 'WLSM_WEBLIZAR_PLUGIN_URL', 'https://weblizar.com/plugins/school-management/' );
-define( 'WLSM_VERSION', '7.1' );
+define( 'WLSM_VERSION', '7.2' );
 
 include 'update-checker.php';
 

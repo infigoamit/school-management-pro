@@ -29,6 +29,13 @@ $school_pointsms_channel   = $settings_pointsms['channel'];
 $school_pointsms_route     = $settings_pointsms['route'];
 $school_pointsms_peid      = $settings_pointsms['peid'];
 
+// India Text settings.
+$settings_indiatext         = WLSM_M_Setting::get_settings_indiatext($school_id);
+$school_indiatext_username  = $settings_indiatext['username'];
+$school_indiatext_sender_id = $settings_indiatext['sender_id'];
+$school_indiatext_channel   = $settings_indiatext['channel'];
+$school_indiatext_route     = $settings_indiatext['route'];
+
 // vinuthan SMS settings.
 $settings_vinuthansms = WLSM_M_Setting::get_settings_vinuthan($school_id);
 $school_vinuthansms_username = $settings_vinuthansms['username'];
@@ -288,6 +295,7 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						</div>
 					</div>
 				</div>
+
 				<div class="wlsm_sms_carrier wlsm_pointsms">
 					<div class="row">
 						<div class="col-md-3">
@@ -300,6 +308,73 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						</div>
 					</div>
 				</div>
+
+				
+				<div class="wlsm_sms_carrier wlsm_indiatext">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_indiatext_sender_id" class="wlsm-font-bold"><?php esc_html_e('Sender ID', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="indiatext_sender_id" type="text" id="wlsm_indiatext_sender_id" value="<?php echo esc_attr($school_indiatext_sender_id); ?>" class="form-control" placeholder="<?php esc_attr_e('India Text Sender ID', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_indiatext">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_indiatext_username" class="wlsm-font-bold"><?php esc_html_e('Username', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="indiatext_username" type="text" id="wlsm_indiatext_username" value="<?php echo esc_attr($school_indiatext_username); ?>" class="form-control" placeholder="<?php esc_attr_e('India Text Username', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_indiatext">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_indiatext_password" class="wlsm-font-bold"><?php esc_html_e('Password', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="indiatext_password" type="password" id="wlsm_indiatext_password" class="form-control" placeholder="<?php esc_attr_e('India Text Password', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_indiatext">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_indiatext_channel" class="wlsm-font-bold"><?php esc_html_e('Channel', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="indiatext_channel" type="text" id="wlsm_indiatext_channel" value="<?php echo esc_attr($school_indiatext_channel); ?>" class="form-control" placeholder="<?php esc_attr_e('India Text Channel: Trans or Promo', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_indiatext">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_indiatext_route" class="wlsm-font-bold"><?php esc_html_e('Route', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="indiatext_route" type="text" id="wlsm_indiatext_route" value="<?php echo esc_attr($school_indiatext_route); ?>" class="form-control" placeholder="<?php esc_attr_e('India Text Route', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+				
 
 				<div class="wlsm_sms_carrier wlsm_vinuthansms">
 					<div class="row">

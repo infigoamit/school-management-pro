@@ -1,5 +1,10 @@
-Version 7.1 [26-12-2020]
+Version 7.2 [13-01-2021]
 ========
+* Added: India Text sms api added.
+
+Version 7.1 [29-12-2020]
+========
+* Changed: twillio api update.
 * Changed: Zoom Live classes are separated by staff users.
 
 Version 7.0 [24-12-2020]

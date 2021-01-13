@@ -5567,6 +5567,7 @@
 		var smsstriker = $('.wlsm_smsstriker');
 		var msgclub = $('.wlsm_msgclub');
 		var pointsms = $('.wlsm_pointsms');
+		var indiatext = $('.wlsm_indiatext');
 		var nexmo = $('.wlsm_nexmo');
 		var twilio = $('.wlsm_twilio');
 		var msg91 = $('.wlsm_msg91');
@@ -5579,7 +5580,9 @@
 			msgclub.show();
 		} else if('pointsms' === wlsmSMSCarrier) {
 			pointsms.show();
-		}else if('pob' === wlsmSMSCarrier) {
+		} else if('indiatext' === wlsmSMSCarrier) {
+			indiatext.show();
+		} else if('pob' === wlsmSMSCarrier) {
 			pob.show();
 		} else if ('vinuthan' === wlsmSMSCarrier) {
 			vinuthan.show();
@@ -5608,7 +5611,9 @@
 				msgclub.fadeIn();
 			} else if('pointsms' === wlsmSMSCarrier) {
 				pointsms.fadeIn();
-			}else if('pob' === wlsmSMSCarrier) {
+			} else if('indiatext' === wlsmSMSCarrier) {
+				indiatext.fadeIn();
+			} else if('pob' === wlsmSMSCarrier) {
 				pob.fadeIn();
 			} else if('nexmo' === wlsmSMSCarrier) {
 				nexmo.fadeIn();

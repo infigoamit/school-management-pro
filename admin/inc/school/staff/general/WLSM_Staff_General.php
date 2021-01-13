@@ -7887,6 +7887,13 @@ class WLSM_Staff_General
 			$pointsms_route     = isset($_POST['pointsms_route']) ? sanitize_text_field($_POST['pointsms_route']) : '';
 			$pointsms_peid      = isset($_POST['pointsms_peid']) ? sanitize_text_field($_POST['pointsms_peid']) : '';
 
+			$indiatext_sender_id = isset($_POST['indiatext_sender_id']) ? sanitize_text_field($_POST['indiatext_sender_id']) : '';
+			$indiatext_username  = isset($_POST['indiatext_username']) ? sanitize_text_field($_POST['indiatext_username']) : '';
+			$indiatext_password  = isset($_POST['indiatext_password']) ? $_POST['indiatext_password'] : '';
+			$indiatext_channel   = isset($_POST['indiatext_channel']) ? sanitize_text_field($_POST['indiatext_channel']) : '';
+			$indiatext_route     = isset($_POST['indiatext_route']) ? sanitize_text_field($_POST['indiatext_route']) : '';
+			
+
 			$vinuthan_sender_id = isset($_POST['vinuthansms_sender_id']) ? sanitize_text_field($_POST['vinuthansms_sender_id']) : '';
 			$vinuthan_username = isset($_POST['vinuthansms_username']) ? sanitize_text_field($_POST['vinuthansms_username']) : '';
 			$vinuthan_channel = isset($_POST['vinuthansms_channel']) ? sanitize_text_field($_POST['vinuthansms_channel']) : '';
@@ -8047,6 +8054,40 @@ class WLSM_Staff_General
 						WLSM_SETTINGS,
 						array('setting_value' => serialize($pointsms_data)),
 						array('ID'            => $pointsms->ID)
+					);
+				}
+
+				// india text SMS.
+				$indiatext = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "indiatext"', $school_id));
+
+				$indiatext_data = array(
+					'sender_id' => $indiatext_sender_id,
+					'username'  => $indiatext_username,
+					'password'  => $indiatext_password,
+					'channel'   => $indiatext_channel,
+					'route'     => $indiatext_route
+				);
+
+				if (!$indiatext) {
+					$wpdb->insert(
+						WLSM_SETTINGS,
+						array(
+							'setting_key'   => 'indiatext',
+							'setting_value' => serialize($indiatext_data),
+							'school_id'     => $school_id,
+						)
+					);
+				} else {
+					$indiatext_saved_data = unserialize($indiatext->setting_value);
+
+					if (empty($indiatext_data['password'])) {
+						$indiatext_data['password'] = $indiatext_saved_data['password'];
+					}
+
+					$wpdb->update(
+						WLSM_SETTINGS,
+						array('setting_value' => serialize($indiatext_data)),
+						array('ID'            => $indiatext->ID)
 					);
 				}
 

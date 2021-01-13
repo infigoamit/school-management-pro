@@ -390,6 +390,36 @@ class WLSM_M_Setting {
 		);
 	}
 
+	public static function get_settings_indiatext( $school_id ) {
+		global $wpdb;
+
+		$username  = NULL;
+		$password  = NULL;
+		$sender_id = NULL;
+		$channel   = NULL;
+		$route     = NULL;
+		
+
+		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "indiatext"', $school_id ) );
+		if ( $settings ) {
+			$settings  = unserialize( $settings->setting_value );
+			$username  = isset( $settings['username'] ) ? $settings['username'] : '';
+			$password  = isset( $settings['password'] ) ? $settings['password'] : '';
+			$sender_id = isset( $settings['sender_id'] ) ? $settings['sender_id'] : '';
+			$channel   = isset( $settings['channel'] ) ? $settings['channel'] : '';
+			$route     = isset( $settings['route'] ) ? $settings['route'] : '';
+			
+		}
+
+		return array(
+			'username'  => $username,
+			'password'  => $password,
+			'sender_id' => $sender_id,
+			'channel'   => $channel,
+			'route'     => $route,
+		);
+	}
+
 	public static function get_settings_vinuthan($school_id)
 	{
 		global $wpdb;

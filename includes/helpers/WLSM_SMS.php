@@ -17,6 +17,7 @@ class WLSM_SMS {
 			'ebulksms'   => esc_html__('EBulkSMS', 'school-management'),
 			'pob'        => esc_html__('Pob Talk', 'school-management'),
 			'vinuthan'   => esc_html__('vinuthan', 'school-management'),
+			'indiatext'   => esc_html__('India Text', 'school-management'),
 		);
 	}
 
@@ -70,6 +71,8 @@ class WLSM_SMS {
 			return self::msgclub($school_id, $message, $to);
 		} elseif ('pointsms' === $sms_carrier) {
 			return self::pointsms($school_id, $message, $to);
+		} elseif ('indiatext' === $sms_carrier) {
+			return self::indiatext($school_id, $message, $to);
 		} elseif ('nexmo' === $sms_carrier) {
 			return self::nexmo($school_id, $message, $to);
 		} elseif ('twilio' === $sms_carrier) {
@@ -240,6 +243,71 @@ class WLSM_SMS {
 
 			$response = wp_remote_get($url);
 			$result   = wp_remote_retrieve_body($response);
+			if ($result) {
+				return true;
+			}
+		} catch (Exception $e) {
+		}
+
+		return false;
+	}
+
+	public static function indiatext($school_id, $message, $numbers) {
+		try {
+			$indiatext  = WLSM_M_Setting::get_settings_indiatext($school_id);
+			$username  = $indiatext['username'];
+			$password  = $indiatext['password'];
+			$sender_id = $indiatext['sender_id'];
+			$channel   = $indiatext['channel'];
+			$route     = $indiatext['route'];
+			$peid      = $indiatext['peid'];
+
+			if (is_array($numbers)) {
+				foreach ($numbers as $key => $number) {
+					if ((12 == strlen($number)) && ('91' == substr($number, 0, 2))) {
+						$numbers[$key] = substr($number, 2, 10);
+					} elseif ((13 == strlen($number)) && ('+91' == substr($number, 0, 3))) {
+						$numbers[$key] = substr($number, 3, 10);
+					} elseif ((11 == strlen($number)) && ('0' == substr($number, 0, 1))) {
+						$numbers[$key] = substr($number, 3, 10);
+					}
+				}
+				$number = implode(',', $numbers);
+			} else {
+				if ((12 == strlen($numbers)) && ('91' == substr($numbers, 0, 2))) {
+					$number = substr($numbers, 2, 10);
+				} elseif ((13 == strlen($numbers)) && ('+91' == substr($numbers, 0, 3))) {
+					$number = substr($numbers, 3, 10);
+				} elseif ((11 == strlen($numbers)) && ('0' == substr($numbers, 0, 1))) {
+					$number = substr($numbers, 1, 10);
+				} else {
+					$number = $numbers;
+				}
+			}
+
+			if (!($username && $password && $sender_id)) {
+				return false;
+			}
+
+			$url = add_query_arg(
+				array(
+					"user"     => $username,
+					"password" => $password,
+					"senderid" => $sender_id,
+					"channel"  => $channel,
+					"DCS"      => 0,
+					"flashsms" => 0,
+					"number"   => $number,
+					"text"     => $message,
+					"route"    => $route,
+				),
+				'http://sms.indiatext.in/api/mt/SendSMS'
+			);
+			
+
+			$response = wp_remote_get($url);
+			$result   = wp_remote_retrieve_body($response);
+			
 			if ($result) {
 				return true;
 			}
@@ -426,7 +494,7 @@ class WLSM_SMS {
 			}
 
 			$client = new \Twilio\Rest\Client($sid, $token);
-			// var_dump($client);
+
 			$response = array();
 			if (is_array($numbers)) {
 				foreach ($numbers as $number) {
