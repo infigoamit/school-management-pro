@@ -3338,12 +3338,13 @@ class WLSM_Staff_Accountant {
 		$filter_rows_limit = $wpdb->get_results($query_filter . $limit);
 
 		$data = array();
-
+		
 		if (count($filter_rows_limit)) {
 			foreach ($filter_rows_limit as $row) {
 				// Table columns.
 				$data[] = array(
 					esc_html(WLSM_M_Staff_Accountant::get_label_text($row->label)),
+					esc_html($row->label),
 					esc_html(WLSM_Config::get_money_text($row->amount)),
 					esc_html(WLSM_M_Staff_Accountant::get_fee_period_text($row->period)),
 					'<a class="text-primary" href="' . esc_url($page_url . "&action=save&id=" . $row->ID) . '"><span class="dashicons dashicons-edit"></span></a>&nbsp;&nbsp;
@@ -3400,10 +3401,9 @@ class WLSM_Staff_Accountant {
 			$label               = isset($_POST['label']) ? sanitize_text_field($_POST['label']) : '';
 			$amount              = isset($_POST['amount']) ? WLSM_Config::sanitize_money($_POST['amount']) : 0;
 			$period              = isset($_POST['period']) ? sanitize_text_field($_POST['period']) : '';
-			$class_id            = isset($_POST['class_id']) ? sanitize_text_field($_POST['class_id']) : '';
+			$class_id            = (isset($_POST['class_id']) && is_array($_POST['class_id'])) ? $_POST['class_id'] : array();
 			$active_on_admission = isset($_POST['active_on_admission']) ? (bool) ($_POST['active_on_admission']) : 0;
 			$active_on_dashboard = isset($_POST['active_on_dashboard']) ? (bool) ($_POST['active_on_dashboard']) : 0;
-
 			// Start validation.
 			$errors = array();
 
@@ -3448,7 +3448,6 @@ class WLSM_Staff_Accountant {
 					'label'               => $label,
 					'amount'              => $amount,
 					'period'              => $period,
-					'class_id'            => $class_id,
 					'active_on_admission' => $active_on_admission,
 					'active_on_dashboard' => $active_on_dashboard,
 				);
@@ -3458,11 +3457,15 @@ class WLSM_Staff_Accountant {
 
 					$success = $wpdb->update(WLSM_FEES, $data, array('ID' => $fee_id, 'school_id' => $school_id));
 				} else {
+					foreach ($class_id as $id) {
+					$data['class_id']   = $id;
+					
 					$data['created_at'] = current_time('Y-m-d H:i:s');
 
-					$data['school_id'] = $school_id;
+					$data['school_id']  = $school_id;
 
 					$success = $wpdb->insert(WLSM_FEES, $data);
+					}
 				}
 
 				$buffer = ob_get_clean();

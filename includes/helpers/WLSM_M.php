@@ -41,8 +41,8 @@ class WLSM_M {
 
 	public static function notices_query() {
 		return 'SELECT n.ID, n.title, n.attachment, n.url, n.link_to, n.is_active, n.created_at, COUNT(DISTINCT csn.ID) as classes_count, COUNT(DISTINCT csn2.ID) as other_classes_count FROM ' . WLSM_NOTICES . ' as n
-		LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn ON csn.notice_id = n.ID AND (csn.class_school_id = %d)
-		LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn2 ON csn2.notice_id = n.ID AND (csn2.class_school_id != %d)
+		LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn ON csn.notice_id = n.ID AND (csn.student_school_id = %d)
+		LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn2 ON csn2.notice_id = n.ID AND (csn2.student_school_id != %d)
 		WHERE n.school_id = %d AND n.is_active = 1 GROUP BY n.ID HAVING (classes_count = 0 AND other_classes_count = 0) OR classes_count = 1';
 	}
 

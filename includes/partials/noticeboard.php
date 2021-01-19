@@ -5,10 +5,11 @@ global $wpdb;
 
 $notices_per_page = WLSM_M::notices_per_page();
 
-if ( ! isset( $class_school_id ) ) {
-	$class_school_id = '';
-}
+// if ( ! isset( $class_school_id ) ) {
+// 	$class_school_id = '';
+// }
 
+$class_school_id = $student->ID;
 $notices_query = WLSM_M::notices_query();
 
 $notices_total = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(1) FROM ({$notices_query}) AS combined_table", $class_school_id, $class_school_id, $school_id ) );
@@ -18,6 +19,8 @@ $notices_page = isset( $_GET['notices_page'] ) ? absint( $_GET['notices_page'] )
 $notices_page_offset = ( $notices_page * $notices_per_page ) - $notices_per_page;
 
 $notices = $wpdb->get_results( $wpdb->prepare( $notices_query . ' ORDER BY n.ID DESC LIMIT %d, %d', $class_school_id, $class_school_id, $school_id, $notices_page_offset, $notices_per_page ) );
+
+
 ?>
 <div class="wlsm-content-area wlsm-section-noticeboard wlsm-student-noticeboard">
 	<div class="wlsm-st-main-title">

@@ -755,6 +755,13 @@ class WLSM_Database
 				) ENGINE=InnoDB " . $charset_collate;
 		dbDelta($sql);
 
+
+		/* Add remark column if not exists to fees table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_CLASS_SCHOOL_NOTICE . "' AND COLUMN_NAME = 'class_school_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_CLASS_SCHOOL_NOTICE . " ADD student_school_id bigint(20) UNSIGNED DEFAULT NULL");
+		}
+
 		/* Create study_materials table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STUDY_MATERIALS . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

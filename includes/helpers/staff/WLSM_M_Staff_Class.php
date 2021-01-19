@@ -37,6 +37,19 @@ class WLSM_M_Staff_Class
 		return $class;
 	}
 
+	public static function get_student( $school_id, $student_id) {
+		global $wpdb;
+		$student = $wpdb->get_row(
+			$wpdb->prepare( 'SELECT sr.ID, sr.session_id, s.ID as school_id, cs.ID as class_school_id, sr.section_id FROM ' . WLSM_STUDENT_RECORDS . ' as sr
+			JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
+			JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = se.class_school_id
+			JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
+			JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = cs.school_id
+			WHERE s.ID= %d AND sr.ID = %d', $school_id, $student_id )
+		);
+		return $student;
+	}
+
 	public static function get_class_with_label($school_id, $label)
 	{
 		global $wpdb;
@@ -267,7 +280,7 @@ class WLSM_M_Staff_Class
 	public static function get_school_notices($school_id, $limit = '', $class_school_id = '')
 	{
 		global $wpdb;
-		$sql = 'SELECT n.ID, n.title, n.attachment, n.url, n.link_to, n.is_active, n.created_at, COUNT(DISTINCT csn.ID) as classes_count, COUNT(DISTINCT csn2.ID) as other_classes_count FROM ' . WLSM_NOTICES . ' as n LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn ON csn.notice_id = n.ID AND (csn.class_school_id = %d) LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn2 ON csn2.notice_id = n.ID AND (csn2.class_school_id != %d) WHERE n.school_id = %d AND n.is_active = 1 GROUP BY n.ID HAVING (classes_count = 0 AND other_classes_count = 0) OR classes_count = 1 ORDER BY n.ID DESC';
+		$sql = 'SELECT n.ID, n.title, n.attachment, n.url, n.link_to, n.is_active, n.created_at, COUNT(DISTINCT csn.ID) as classes_count, COUNT(DISTINCT csn2.ID) as other_classes_count FROM ' . WLSM_NOTICES . ' as n LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn ON csn.notice_id = n.ID AND (csn.student_school_id = %d) LEFT OUTER JOIN ' . WLSM_CLASS_SCHOOL_NOTICE . ' as csn2 ON csn2.notice_id = n.ID AND (csn2.student_school_id != %d) WHERE n.school_id = %d AND n.is_active = 1 GROUP BY n.ID HAVING (classes_count = 0 AND other_classes_count = 0) OR classes_count = 1 ORDER BY n.ID DESC';
 		if ($limit) {
 			$sql .= (' LIMIT ' . absint($limit));
 		}

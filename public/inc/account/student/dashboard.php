@@ -6,7 +6,9 @@ require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_M_Setting.php';
 
 $student_name = WLSM_M_Staff_Class::get_name_text($student->student_name);
 
-$notices = WLSM_M_Staff_Class::get_school_notices($school_id, 7, $class_school_id);
+$notices = WLSM_M_Staff_Class::get_school_notices($school_id, 7, $student->ID);
+// var_dump($notices);
+// die;
 
 $section = WLSM_M_Staff_Class::get_school_section($school_id, $student->section_id);
 

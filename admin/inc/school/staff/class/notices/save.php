@@ -135,20 +135,42 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 				</div>
 				<hr>
 
+				
+
+				<div class="wlsm-form-section">
 				<div class="form-row">
-					<div class="form-group col-md-6">
-						<label for="wlsm_classes" class="wlsm-font-bold">
-							<?php esc_html_e( 'Classes', 'school-management' ); ?>:
+					<div class="form-group col-md-4">
+						<label for="wlsm_class" class="wlsm-font-bold">
+							<?php esc_html_e( 'Class', 'school-management' ); ?>:
 						</label>
-						<select multiple name="classes[]" class="form-control selectpicker" id="wlsm_classes" data-actions-box="true" data-none-selected-text="<?php esc_attr_e( 'Select', 'school-management' ); ?>">
+						<select name="class_id" class="form-control selectpicker" data-nonce="<?php echo esc_attr( wp_create_nonce( 'get-class-sections' ) ); ?>" id="wlsm_class" data-live-search="true">
+							<option value=""><?php esc_html_e( 'Select Class', 'school-management' ); ?></option>
 							<?php foreach ( $classes as $class ) { ?>
-							<option <?php selected( in_array( $class->ID, $notice_classes ), true, true ); ?> value="<?php echo esc_attr( $class->ID ); ?>">
+							<option value="<?php echo esc_attr( $class->ID ); ?>">
 								<?php echo esc_html( WLSM_M_Class::get_label_text( $class->label ) ); ?>
 							</option>
 							<?php } ?>
 						</select>
 					</div>
+					<div class="form-group col-md-4">
+						<label for="wlsm_section" class="wlsm-font-bold">
+							<?php esc_html_e( 'Section', 'school-management' ); ?>:
+						</label>
+						<select name="section_id" class="form-control selectpicker wlsm_section" id="wlsm_section" data-live-search="true" title="<?php esc_attr_e( 'All Sections', 'school-management' ); ?>" data-all-sections="1" data-fetch-students="1" data-skip-transferred="0" data-only-active="0" data-nonce="<?php echo esc_attr( wp_create_nonce( 'get-section-students' ) ); ?>">
+						</select>
+					</div>
+					<div class="form-group col-md-4 wlsm-student-select-block">
+						<label for="wlsm_student" class="wlsm-font-bold">
+							<?php esc_html_e( 'Students', 'school-management' ); ?>:
+						</label>
+						<select name="student[]" class="form-control selectpicker" id="wlsm_student" multiple data-live-search="true" data-actions-box="true" data-none-selected-text="<?php esc_attr_e( 'Select Students', 'school-management' ); ?>">
+						</select>
+					</div>
+				</div>
+			</div>
+			
 
+			<div class="form-row">
 					<div class="form-group col-md-6">
 						<label for="wlsm_status" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e( 'Status', 'school-management' ); ?>:
@@ -168,7 +190,7 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 						</div>
 					</div>
 				</div>
-			</div>
+				</div>
 
 			<div class="row mt-2">
 				<div class="col-md-12 text-center">

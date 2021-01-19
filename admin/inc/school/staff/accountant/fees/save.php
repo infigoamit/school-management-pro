@@ -88,8 +88,7 @@ $fee_periods = WLSM_Helper::fee_period_list();
 						<label for="wlsm_class" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e('Class', 'school-management'); ?>:
 						</label>
-						<select name="class_id" class="form-control selectpicker" data-nonce="<?php echo esc_attr(wp_create_nonce('get-class-sections')); ?>" id="wlsm_class" data-live-search="true">
-							<option value=""><?php esc_html_e('Select Class', 'school-management'); ?></option>
+						<select name="class_id[]" class="form-control selectpicker" data-nonce="<?php echo esc_attr(wp_create_nonce('get-class-sections')); ?>" id="wlsm_class" multiple data-live-search="true" data-actions-box="true">
 							<?php foreach ($classes as $class) { ?>
 								<option value="<?php echo esc_attr($class->ID); ?>" <?php selected($class->ID, $class_id, true); ?>>
 									<?php echo esc_html(WLSM_M_Class::get_label_text($class->label)); ?>
@@ -105,7 +104,7 @@ $fee_periods = WLSM_Helper::fee_period_list();
 						<label for="wlsm_period" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e('Period', 'school-management'); ?>:
 						</label>
-						<select name="period" class="form-control selectpicker" id="wlsm_period" data-live-search="true">
+						<select name="period" class="form-control selectpicker" multiple id="wlsm_period" data-live-search="true">
 							<?php foreach ($fee_periods as $key => $value) { ?>
 								<option value="<?php echo esc_attr($key); ?>" <?php selected($key, $period, true); ?>>
 									<?php echo esc_html($value); ?>

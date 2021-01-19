@@ -2,6 +2,9 @@ Version 7.2 [13-01-2021]
 ========
 * Added : India Text sms api added.
 * Fixed : inquiry class issue fixed.
+* Changed : Noticeboard setting is Changed classes to Stduents.
+* Changed : You can select multiple classes in fee type.
+* Added : Class colum is add in fee type .
 
 Version 7.1 [29-12-2020]
 ========

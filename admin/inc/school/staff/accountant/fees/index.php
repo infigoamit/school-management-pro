@@ -23,6 +23,7 @@ $page_url = WLSM_M_Staff_Accountant::get_fees_page_url();
 				<thead>
 					<tr class="text-white bg-primary">
 						<th scope="col"><?php esc_html_e( 'Fee Type', 'school-management' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Class', 'school-management' ); ?></th>
 						<th scope="col"><?php esc_html_e( 'Amount', 'school-management' ); ?></th>
 						<th scope="col"><?php esc_html_e( 'Period', 'school-management' ); ?></th>
 						<th scope="col" class="text-nowrap"><?php esc_html_e( 'Action', 'school-management' ); ?></th>

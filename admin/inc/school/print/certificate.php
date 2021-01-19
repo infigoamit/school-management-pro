@@ -96,6 +96,7 @@ if ( isset( $from_ajax ) ) {
 					}
 				}
 
+				
 				foreach ( $fields as $field_key => $field_value ) {
 					if ( isset( $student ) ) {
 						if ( 'name' === $field_key ) {
