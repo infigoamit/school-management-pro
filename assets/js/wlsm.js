@@ -724,6 +724,7 @@
 					url: wlsmajaxurl,
 					type: 'POST',
 					success: function(res) {
+						console.log(res)
 						var options = [firstOptionLabel];
 						res.forEach(function(item) {
 							var option = '<option value="' + item.ID + '">' + item.label + '</option>';

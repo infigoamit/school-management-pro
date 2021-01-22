@@ -761,6 +761,11 @@ class WLSM_Database
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_CLASS_SCHOOL_NOTICE . " ADD student_school_id bigint(20) UNSIGNED DEFAULT NULL");
 		}
+		/* Add student_school_id column if not exists to fees table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_CLASS_SCHOOL_NOTICE . "' AND COLUMN_NAME = 'student_school_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_CLASS_SCHOOL_NOTICE . " ADD student_school_id bigint(20) UNSIGNED DEFAULT NULL");
+		}
 
 		/* Create study_materials table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STUDY_MATERIALS . " (
@@ -799,6 +804,13 @@ class WLSM_Database
 				FOREIGN KEY (study_material_id) REFERENCES " . WLSM_STUDY_MATERIALS . " (ID) ON DELETE CASCADE
 				) ENGINE=InnoDB " . $charset_collate;
 		dbDelta($sql);
+
+		/* Add study_material_section_id, study_material_subject_id column if not exists to fees table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . "' AND COLUMN_NAME = 'study_material_section_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . " ADD study_material_section_id bigint(20) UNSIGNED DEFAULT NULL");
+			$wpdb->query("ALTER TABLE " . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . " ADD study_material_subject_id bigint(20) UNSIGNED DEFAULT NULL");
+		}
 
 		/* Create homework table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_HOMEWORK . " (

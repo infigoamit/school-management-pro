@@ -3942,12 +3942,14 @@ class WLSM_Staff_Class
 				}
 			}
 
-			$label       = isset($_POST['label']) ? sanitize_text_field($_POST['label']) : '';
-			$description = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
-			$url         = isset($_POST['link']) ? sanitize_text_field($_POST['link']) : '';
-			$classes     = (isset($_POST['classes']) && is_array($_POST['classes'])) ? $_POST['classes'] : array();
-			$attachments = (isset($_FILES['attachment']) && is_array($_FILES['attachment'])) ? $_FILES['attachment'] : array();
-
+			$label                     = isset($_POST['label']) ? sanitize_text_field($_POST['label']) : '';
+			$description               = isset($_POST['description']) ? sanitize_text_field($_POST['description']) : '';
+			$url                       = isset($_POST['link']) ? sanitize_text_field($_POST['link']) : '';
+			$classes                   = (isset($_POST['classes']) && is_array($_POST['classes'])) ? $_POST['classes'] : array();
+			$study_material_section_id  = isset($_POST['section']) ? sanitize_text_field($_POST['section']) : '';
+			$study_material_subject_id = isset($_POST['subject']) ? sanitize_text_field($_POST['subject']) : '';
+			$attachments               = (isset($_FILES['attachment']) && is_array($_FILES['attachment'])) ? $_FILES['attachment'] : array();
+			
 			$attachments_from_input = (isset($_POST['saved_attachment']) && is_array($_POST['saved_attachment'])) ? $_POST['saved_attachment'] : array();
 
 			// Start validation.
@@ -3959,6 +3961,12 @@ class WLSM_Staff_Class
 				if (strlen($label) > 100) {
 					$errors['label'] = esc_html__('Maximum length cannot exceed 100 characters.', 'school-management');
 				}
+			}
+			if (empty($label)) {
+				$errors['subject'] = esc_html__('Please select Subject ', 'school-management');
+			}
+			if (empty($label)) {
+				$errors['classes[]'] = esc_html__('Please select class ', 'school-management');
 			}
 
 			$class_schools = array();
@@ -3977,7 +3985,7 @@ class WLSM_Staff_Class
 
 				$class_schools = array_unique($class_schools);
 			}
-
+			
 			$files = array();
 			if (isset($attachments['tmp_name']) && is_array($attachments) && count($attachments)) {
 				foreach ($attachments['tmp_name'] as $key => $attachment) {
@@ -4085,13 +4093,13 @@ class WLSM_Staff_Class
 						$place_holders               = array();
 						$place_holders_class_schools = array();
 						foreach ($class_schools as $class_school_id) {
-							array_push($values, $class_school_id, $study_material_id);
-							array_push($place_holders, '(%d, %d)');
+							array_push($values, $class_school_id, $study_material_id, $study_material_section_id, $study_material_subject_id);
+							array_push($place_holders, '(%d, %d, %d, %d)');
 							array_push($place_holders_class_schools, '%d');
 						}
 
 						// Insert class_school_study_material records.
-						$sql     = 'INSERT IGNORE INTO ' . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . '(class_school_id, study_material_id) VALUES ';
+						$sql     = 'INSERT IGNORE INTO ' . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . '(class_school_id, study_material_id, study_material_section_id, study_material_subject_id) VALUES ';
 						$sql     .= implode(', ', $place_holders);
 						$success = $wpdb->query($wpdb->prepare("$sql ", $values));
 

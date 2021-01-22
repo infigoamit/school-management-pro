@@ -121,10 +121,18 @@ class WLSM_M_Staff_Class
 		return $query;
 	}
 
-	public static function get_section($school_id, $id, $class_school_id)
-	{
+	public static function get_section($school_id, $id, $class_school_id) {
 		global $wpdb;
 		$section = $wpdb->get_row($wpdb->prepare('SELECT se.ID FROM ' . WLSM_SECTIONS . ' as se JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.school_id = %d AND se.ID = %d AND se.class_school_id = %d', $school_id, $id, $class_school_id));
+		return $section;
+	}
+	public static function get_subjects($school_id, $id, $class_school_id) {
+		global $wpdb;
+		$section = $wpdb->get_row($wpdb->prepare('SELECT ss.ID, ss.label FROM ' . WLSM_SECTIONS . ' as se 
+		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON 
+		JOIN ' . WLSM_SUBJECTS . ' as ss ON cs.ID = ss.class_school_id
+		
+		cs.school_id = %d AND se.ID = %d AND se.class_school_id = %d', $school_id, $id, $class_school_id));
 		return $section;
 	}
 

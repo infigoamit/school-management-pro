@@ -109,7 +109,8 @@ class WLSM_Staff_General
 			if ($section_id) {
 				// Checks if section exists.
 				$section = WLSM_M_Staff_Class::get_section($school_id, $section_id, $class_school_id);
-
+				$subjects = WLSM_M_Staff_Class::get_section($school_id, $section_id, $class_school_id);
+				array_push($section, $subjects);
 				if (!$section) {
 					throw new Exception(esc_html__('Section not found.', 'school-management'));
 				}

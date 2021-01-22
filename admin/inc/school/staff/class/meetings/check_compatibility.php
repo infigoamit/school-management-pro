@@ -35,6 +35,9 @@ if ($user_id) {
 		?>
 			<div class="notice notice-error">
 				<p><?php esc_html_e('Please configure your Zoom API keys in " Profile > Zoom API Settings".', 'school-management'); ?></p>
+				<a href="<?php esc_attr_e( get_edit_profile_url() ); ?>">
+					<?php esc_html_e( 'Link to your profile' ); ?>
+				</a>
 			</div>
 <?php
 		}

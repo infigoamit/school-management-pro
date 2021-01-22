@@ -1,10 +1,19 @@
-Version 7.2 [13-01-2021]
+Version 7.3 [22-01-2021]
+========
+* Added :Study material now support videos as well.
+* Changed :Study material assigning process now you have to select class and subject.
+* Fixed :Noticeboard bug Fixed ( notice was not showing ).
+* Added :zoom api settings added to settings ( guide how to setup ).
+* Changed :zoom live classes now class,subject and teacher field is required .
+
+Version 7.2 [19-01-2021]
 ========
 * Added : India Text sms api added.
 * Fixed : inquiry class issue fixed.
 * Changed : Noticeboard setting is Changed classes to Stduents.
 * Changed : You can select multiple classes in fee type.
-* Added : Class colum is add in fee type .
+* Added : Class colum is add in fee type.
+* Added : Now you can select section and students in noticeboard.
 
 Version 7.1 [29-12-2020]
 ========

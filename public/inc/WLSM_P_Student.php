@@ -76,7 +76,7 @@ class WLSM_P_Student {
 			</li>
 			<li>
 				<span class="wlsm-font-bold"><?php esc_html_e( 'Url', 'school-management' ); ?>:</span>
-				<span><?php echo esc_html( stripslashes( $study_material->url ) ); ?></span>
+				<a href="<?php echo esc_html( stripslashes( $study_material->url ) ); ?>"><?php echo esc_html( stripslashes( $study_material->url ) ); ?></a>
 			</li>
 			<li>
 				<span class="wlsm-font-bold"><?php esc_html_e( 'Date', 'school-management' ); ?>:</span>
@@ -93,12 +93,25 @@ class WLSM_P_Student {
 					foreach ( $attachments as $attachment ) {
 						if ( ! empty ( $attachment ) ) {
 							$file_name = basename( get_attached_file( $attachment ) );
-						?>
-						<li>
-							<a target="_blank" href="<?php echo esc_url( wp_get_attachment_url( $attachment ) ); ?>">
-								<?php echo esc_html( $file_name ); ?>
-							</a>
-						</li>
+							$supported_image = array( 'gif', 'jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx', );
+							$ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // Using strtolower to overcome case sensitive
+							if (in_array($ext, $supported_image)) {
+								?>
+								<a target="_blank" href="<?php echo esc_url( wp_get_attachment_url( $attachment ) ); ?>">
+									<?php echo esc_html( $file_name ); ?>
+								</a>
+								<br>
+								<hr>
+								<?php ;
+							} else { ?> 
+									<div class="container">
+										<iframe class="responsive-iframe" height="400px" width="700px" src="<?php echo esc_url( wp_get_attachment_url( $attachment ) ); ?>"></iframe>
+									</div>
+									<br>
+									<hr>
+								<?php 
+								
+							} ?>						
 						<?php
 						}
 					}

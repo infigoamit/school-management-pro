@@ -5684,6 +5684,7 @@
 			var nonce = $(this).data('nonce');
 			var sections = $('#wlsm_section');
 			var subjects = $('#wlsm_subject_table');
+			var subjects_study = $('#wlsm_subjects');
 			var fetchStudents = sections.data('fetch-students');
 			$('div.text-danger').remove();
 			if(classId && nonce) {
@@ -5698,6 +5699,7 @@
 					success: function(res) {
 						var options = [];
 						var subjts    = [];
+						var option_study    = [];
 						// console.log(res);
 						res.forEach(function(item) {
 							if (typeof item.section.ID !== 'undefined') {
@@ -5715,11 +5717,22 @@
 								subjts.push(subj);
 							}
 						});
+
+						res.forEach(function(item) {
+							if (item.subject) {
+								console.log(item.subject);
+								var optstudy = '<option value="' + item.subject.ID + '">' + item.subject.subject_name + '</option>';
+								option_study.push(optstudy);
+							}
+						});
 						
 						sections.html(options);
 						subjects.html(subjts);
+						subjects_study.html(option_study);
 						$('#wlsm_subject_table').selectpicker();
+						$('#wlsm_subject').selectpicker();
 						sections.selectpicker('refresh');
+						subjects_study.selectpicker('refresh');
 						if(fetchStudents) {
 							sections.trigger('change');
 						}
@@ -5742,6 +5755,7 @@
 			}
 			var nonce = $(this).data('nonce');
 			var students = $('#wlsm_student');
+			var subjects = $('#wlsm_subjects');
 			$('div.text-danger').remove();
 			if(classId && nonce) {
 				var data = 'action=wlsm-get-section-students&nonce=' + nonce + '&section_id=' + sectionId + '&class_id=' + classId;

@@ -149,7 +149,7 @@ $registration_types  = WLSM_Helper::meeting_registration_types();
 						<label for="wlsm_class" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e( 'Class', 'school-management' ); ?>:
 						</label>
-						<select name="class_id" class="form-control selectpicker wlsm_class_subjects" data-nonce-subjects="<?php echo esc_attr( wp_create_nonce( 'get-class-subjects' ) ); ?>" id="wlsm_class" data-live-search="true">
+						<select name="class_id" class="form-control selectpicker wlsm_class_subjects" data-nonce-subjects="<?php echo esc_attr( wp_create_nonce( 'get-class-subjects' ) ); ?>" id="wlsm_class" data-live-search="true" required>
 							<option value=""><?php esc_html_e( 'Select Class', 'school-management' ); ?></option>
 							<?php foreach ( $classes as $class ) { ?>
 							<option <?php selected( $class->ID, $class_id, true ); ?> value="<?php echo esc_attr( $class->ID ); ?>" <?php selected( $class->ID, $class_id, true ); ?>>
@@ -161,9 +161,9 @@ $registration_types  = WLSM_Helper::meeting_registration_types();
 
 					<div class="form-group col-md-4">
 						<label for="wlsm_section" class="wlsm-font-bold">
-							<?php esc_html_e( 'Subject', 'school-management' ); ?>:
+						<span class="wlsm-important">*</span>	<?php esc_html_e( 'Subject', 'school-management' ); ?>:
 						</label>
-						<select name="subject_id" class="form-control selectpicker wlsm_subject_teachers" id="wlsm_subject" data-nonce-teachers="<?php echo esc_attr( wp_create_nonce( 'get-subject-teachers' ) ); ?>" data-live-search="true" title="<?php esc_attr_e( 'Select Subject', 'school-management' ); ?>">
+						<select name="subject_id" class="form-control selectpicker wlsm_subject_teachers" id="wlsm_subject" data-nonce-teachers="<?php echo esc_attr( wp_create_nonce( 'get-subject-teachers' ) ); ?>" data-live-search="true" title="<?php esc_attr_e( 'Select Subject', 'school-management' ); ?>" required>
 							<?php foreach ( $subjects as $subject ) { ?>
 							<option value="<?php echo esc_attr( $subject->ID ); ?>" <?php selected( $subject->ID, $subject_id, true ); ?>>
 								<?php
@@ -184,9 +184,9 @@ $registration_types  = WLSM_Helper::meeting_registration_types();
 
 					<div class="form-group col-md-4">
 						<label for="wlsm_teacher" class="wlsm-font-bold">
-							<?php esc_html_e( 'Teacher', 'school-management' ); ?>:
+						<span class="wlsm-important">*</span><?php esc_html_e( 'Teacher', 'school-management' ); ?>:
 						</label>
-						<select name="admin_id" class="form-control selectpicker" id="wlsm_teacher" data-live-search="true" title="<?php esc_attr_e( 'Select Teacher', 'school-management' ); ?>">
+						<select name="admin_id" class="form-control selectpicker" id="wlsm_teacher" data-live-search="true" title="<?php esc_attr_e( 'Select Teacher', 'school-management' ); ?>" required>
 							<option value=""></option>
 							<?php foreach ( $teachers as $teacher ) { ?>
 							<option value="<?php echo esc_attr( $teacher->ID ); ?>" <?php selected( $teacher->ID, $teacher_id, true ); ?>>
