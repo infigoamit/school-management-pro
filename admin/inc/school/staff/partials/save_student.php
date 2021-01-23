@@ -17,6 +17,7 @@ $admissions_page_url = WLSM_M_Staff_General::get_admissions_page_url();
 // Registration settings.
 $settings_registration = WLSM_M_Setting::get_settings_registration($school_id);
 $auto_admission_number = $settings_registration['auto_admission_number'];
+$auto_roll_number      = $settings_registration['auto_roll_number'];
 
 $gender_list = WLSM_Helper::gender_list();
 
@@ -454,9 +455,12 @@ foreach ($routes_vehicles as $route_vehicle) {
 
 					<div class="form-group col-md-4">
 						<label for="wlsm_roll_number" class="wlsm-font-bold">
-							<?php esc_html_e('Roll Number', 'school-management'); ?>:
+							<span class="wlsm-important">*</span> <?php esc_html_e('Roll Number', 'school-management'); ?>:
+							<?php if ($auto_roll_number) { ?>
+								<small class="text-dark"><?php esc_html_e('(Auto Generated)', 'school-management'); ?></small>
+							<?php } ?>
 						</label>
-						<input type="text" name="roll_number" class="form-control" id="wlsm_roll_number" placeholder="<?php esc_attr_e('Enter class roll number', 'school-management'); ?>" value="<?php echo esc_attr($roll_number); ?>">
+						<input <?php if ($auto_roll_number) { echo 'readonly'; } ?> type="text" name="roll_number" class="form-control" id="wlsm_roll_number" placeholder="<?php if ($auto_roll_number) { esc_attr_e('---- Auto Generated ----', 'school-management'); } else { esc_attr_e('Enter roll number', 'school-management'); } ?>" value="<?php echo esc_attr($roll_number); ?>">
 					</div>
 
 					<div class="form-group col-md-4">

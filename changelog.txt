@@ -1,10 +1,12 @@
-Version 7.3 [22-01-2021]
+Version 7.3 [23-01-2021]
 ========
-* Added :Study material now support videos as well.
-* Changed :Study material assigning process now you have to select class and subject.
-* Fixed :Noticeboard bug Fixed ( notice was not showing ).
-* Added :zoom api settings added to settings ( guide how to setup ).
-* Changed :zoom live classes now class,subject and teacher field is required .
+* Added  : Study material now support videos as well.
+* Changed: Study material now you have to select class and subject (sections can be selected all or single).
+* Fixed  : Noticeboard bug Fixed ( Notices was not showing on student dashboard ).
+* Added  : zoom api settings tab added to sm school settings ( Guide how to setup Zoom api keys ).
+* Added  : zoom api settings input link is added for staff users.
+* Changed: In zoom live classes - now class, subject and teacher field is required.
+* Added  : Settings addded for Auto generate roll number.
 
 Version 7.2 [19-01-2021]
 ========

@@ -8,6 +8,7 @@ $school_registration_login_user            = $settings_registration['login_user'
 $school_registration_redirect_url          = $settings_registration['redirect_url'];
 $school_registration_create_invoice        = $settings_registration['create_invoice'];
 $school_registration_auto_admission_number = $settings_registration['auto_admission_number'];
+$school_registration_auto_roll_number      = $settings_registration['auto_roll_number'];
 $school_registration_admin_phone           = $settings_registration['admin_phone'];
 $school_registration_admin_email           = $settings_registration['admin_email'];
 $school_registration_success_message       = $settings_registration['success_message'];
@@ -115,6 +116,23 @@ $school_registration_success_placeholders = WLSM_Helper::registration_success_me
 							</label>
 							<p class="description">
 								<?php esc_html_e('Admission number is auto-generated in front-end form. With this, you can auto-generate admission number in back-end form also.', 'school-management'); ?>
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<label for="wlsm_registration_auto_roll_number" class="wlsm-font-bold"><?php esc_html_e('Auto Generate Roll Number', 'school-management'); ?>:</label>
+					</div>
+					<div class="col-md-9">
+						<div class="form-group">
+							<input <?php checked($school_registration_auto_roll_number, true, true); ?> class="form-check-input mt-1" type="checkbox" name="registration_auto_roll_number" id="wlsm_registration_auto_roll_number" value="1">
+							<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_registration_auto_roll_number">
+								<?php esc_html_e('Auto Generate roll Number for Back-end Form?', 'school-management'); ?>
+							</label>
+							<p class="description">
+								<?php esc_html_e('Roll number is auto-generated.', 'school-management'); ?>
 							</p>
 						</div>
 					</div>

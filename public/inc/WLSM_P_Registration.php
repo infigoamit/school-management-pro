@@ -324,6 +324,7 @@ class WLSM_P_Registration {
 
 				// Roll number.
 				$roll_number = WLSM_M_Staff_General::get_roll_number( $school_id, $session_id, $class_id );
+				
 
 				$student_record_data['roll_number'] = $roll_number;
 

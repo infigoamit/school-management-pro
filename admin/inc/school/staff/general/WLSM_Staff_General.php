@@ -391,6 +391,7 @@ class WLSM_Staff_General
 			// Registration settings.
 			$settings_registration = WLSM_M_Setting::get_settings_registration($school_id);
 			$auto_admission_number = $settings_registration['auto_admission_number'];
+			$auto_roll_number      = $settings_registration['auto_roll_number'];
 
 			// Personal Detail.
 			$name            = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
@@ -895,6 +896,15 @@ class WLSM_Staff_General
 					} else {
 						// If new admission and auto generate admission number.
 						$student_record_data['admission_number'] = WLSM_M_Staff_General::get_admission_number($school_id, $session_id);
+					}
+				}
+				if ($auto_roll_number) {
+					if ($student_id) {
+						// If editing student and auto generate admission number then don't update admission number.
+						unset($student_record_data['roll_number']);
+					} else {
+						// If new admission and auto generate admission number.
+						$student_record_data['roll_number'] = WLSM_M_Staff_General::get_roll_number( $school_id, $session_id, $class_id );
 					}
 				}
 
@@ -9143,6 +9153,7 @@ class WLSM_Staff_General
 			$redirect_url          = isset($_POST['redirect_url']) ? esc_url_raw($_POST['redirect_url']) : '';
 			$create_invoice        = isset($_POST['registration_create_invoice']) ? (bool) ($_POST['registration_create_invoice']) : '';
 			$auto_admission_number = isset($_POST['registration_auto_admission_number']) ? (bool) ($_POST['registration_auto_admission_number']) : '';
+			$auto_roll_number = isset($_POST['registration_auto_roll_number']) ? (bool) ($_POST['registration_auto_roll_number']) : '';
 			$success_message       = isset($_POST['registration_success_message']) ? sanitize_text_field($_POST['registration_success_message']) : '';
 			$admin_phone           = isset($_POST['registration_admin_phone']) ? sanitize_text_field($_POST['registration_admin_phone']) : '';
 			$admin_email           = isset($_POST['registration_admin_email']) ? sanitize_text_field($_POST['registration_admin_email']) : '';
@@ -9171,6 +9182,7 @@ class WLSM_Staff_General
 				'redirect_url'          => $redirect_url,
 				'create_invoice'        => $create_invoice,
 				'auto_admission_number' => $auto_admission_number,
+				'auto_roll_number'      => $auto_roll_number,
 				'success_message'       => $success_message,
 				'admin_phone'           => $admin_phone,
 				'admin_email'           => $admin_email,

@@ -681,6 +681,7 @@ class WLSM_M_Setting {
 		$redirect_url          = '';
 		$create_invoice        = 1;
 		$auto_admission_number = 0; // Auto generate admission number when registering student from back-end.
+		$auto_roll_number      = 0; // Auto generate roll nubmer 
 		$admin_email           = '';
 		$admin_phone           = '';
 		$success_message       = '';
@@ -709,6 +710,7 @@ class WLSM_M_Setting {
 			$redirect_url          = isset( $settings['redirect_url'] ) ? $settings['redirect_url'] : '';
 			$create_invoice        = isset( $settings['create_invoice'] ) ? $settings['create_invoice'] : '';
 			$auto_admission_number = isset( $settings['auto_admission_number'] ) ? $settings['auto_admission_number'] : '';
+			$auto_roll_number      = isset( $settings['auto_roll_number'] ) ? $settings['auto_roll_number'] : '';
 			$admin_email           = isset( $settings['admin_email'] ) ? $settings['admin_email'] : '';
 			$admin_phone           = isset( $settings['admin_phone'] ) ? $settings['admin_phone'] : '';
 			$success_message       = isset( $settings['success_message'] ) ? $settings['success_message'] : '';
@@ -739,6 +741,7 @@ class WLSM_M_Setting {
 			'redirect_url'          => $redirect_url,
 			'create_invoice'        => (bool) $create_invoice,
 			'auto_admission_number' => (bool) $auto_admission_number,
+			'auto_roll_number'      => (bool) $auto_roll_number,
 			'admin_email'           => $admin_email,
 			'admin_phone'           => $admin_phone,
 			'success_message'       => $success_message,
