@@ -25,6 +25,8 @@ $page_url = WLSM_M_Staff_Class::get_study_materials_page_url();
 				<thead>
 					<tr class="text-white bg-primary">
 						<th scope="col" class="text-nowrap"><?php esc_html_e( 'Title', 'school-management' ); ?></th>
+						<th scope="col" class="text-nowrap"><?php esc_html_e( 'Class', 'school-management' ); ?></th>
+						<th scope="col" class="text-nowrap"><?php esc_html_e( 'Subject', 'school-management' ); ?></th>
 						<th scope="col"><?php esc_html_e( 'Description', 'school-management' ); ?></th>
 						<th scope="col" class="text-nowrap"><?php esc_html_e( 'Date Added', 'school-management' ); ?></th>
 						<th scope="col" class="text-nowrap"><?php esc_html_e( 'Added By', 'school-management' ); ?></th>

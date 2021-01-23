@@ -605,10 +605,14 @@ class WLSM_M_Staff_Class
 		return admin_url('admin.php?page=' . WLSM_MENU_STAFF_STUDY_MATERIALS);
 	}
 
-	public static function fetch_study_material_query($school_id)
-	{
-		$query = 'SELECT sm.ID, sm.label as title, sm.description, sm.attachments, sm.created_at, u.user_login as username FROM ' . WLSM_STUDY_MATERIALS . ' as sm
+	public static function fetch_study_material_query($school_id) {
+		$query = 'SELECT sm.ID, sm.label as title, sm.description, c.label as class_label, ss.label as subject_label, sm.attachments, sm.created_at, u.user_login as username FROM ' . WLSM_STUDY_MATERIALS . ' as sm
+		JOIN ' . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . ' as ssm ON ssm.study_material_id = sm.ID
 		JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = sm.school_id
+		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = ssm.class_school_id
+		LEFT OUTER JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
+		LEFT OUTER JOIN ' . WLSM_SUBJECTS . ' as ss ON s.ID = ssm.study_material_subject_id
+		
 		LEFT OUTER JOIN ' . WLSM_USERS . ' as u ON u.ID = sm.added_by
 		WHERE s.ID = ' . absint($school_id);
 		return $query;

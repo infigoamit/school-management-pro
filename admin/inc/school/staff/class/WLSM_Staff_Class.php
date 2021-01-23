@@ -3878,6 +3878,8 @@ class WLSM_Staff_Class
 				// Table columns.
 				$data[] = array(
 					esc_html(stripcslashes($row->title)),
+					esc_html(stripcslashes($row->class_label)),
+					esc_html(stripcslashes($row->subject_label)),
 					esc_html(WLSM_Config::limit_string(WLSM_M_Staff_Class::get_name_text($row->description))),
 					esc_html(WLSM_Config::get_date_text($row->created_at)),
 					esc_html(WLSM_M_Staff_Class::get_name_text($row->username)),

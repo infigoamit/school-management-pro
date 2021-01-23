@@ -469,10 +469,23 @@ $permissions = WLSM_M_Role::get_role_permissions( $role, $permissions );
 
 			<!-- Zoom Settings  -->
 			<div class="wlsm-form-section">
+
+			<div class="row">
+					<div class="col-md-12">
+						<div class="wlsm-form-sub-heading wlsm-font-bold">
+							<?php esc_html_e( 'Zoom API ', 'school-management' ); ?>
+							<p>
+							<?php esc_html_e( 'To access the API Key and Secret, Create a JWT App on the Marketplace. After providing basic information about your app, locate your API Key and Secret in the App Credentials page.', 'school-management' ); ?>
+							<a target="_blank" href="https://marketplace.zoom.us/docs/guides/auth/jwt"><?php esc_html_e( 'Click here for more information', 'school-management' ); ?></a>
+							</p>
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="form-group col-md-4">
 							<label for="wlsm_api_key" class="wlsm-font-bold">
 							 <?php esc_html_e( 'Zoom API Key', 'school-management' ); ?>:
+							
 							</label>
 							<input type="text" name="api_key" class="form-control" id="wlsm_api_key" placeholder="<?php esc_attr_e( 'Enter API Key', 'school-management' ); ?>" value="<?php 
 							if($api_key) { 
