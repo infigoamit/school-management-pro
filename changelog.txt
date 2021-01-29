@@ -1,3 +1,7 @@
+Version 7.4 [29-01-2021]
+========
+* Added  : SSLCommerz Payment Gateway.
+
 Version 7.3 [23-01-2021]
 ========
 * Added  : Study material now support videos as well.

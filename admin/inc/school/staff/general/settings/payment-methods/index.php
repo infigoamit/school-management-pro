@@ -37,6 +37,14 @@ $school_pesapal_consumer_secret = $settings_pesapal['consumer_secret'];
 $school_pesapal_mode            = $settings_pesapal['mode'];
 $school_pesapal_notify_url      = $settings_pesapal['notify_url'];
 
+// sslcommerzal settings.
+$settings_sslcommerz            = WLSM_M_Setting::get_settings_sslcommerz( $school_id );
+$school_sslcommerz_enable       = $settings_sslcommerz['enable'];
+$school_sslcommerz_store_id     = $settings_sslcommerz['store_id'];
+$school_sslcommerz_store_passwd = $settings_sslcommerz['store_passwd'];
+$school_sslcommerz_mode         = $settings_sslcommerz['mode'];
+$school_sslcommerz_notify_url   = $settings_sslcommerz['notify_url'];
+
 // Paystack settings.
 $settings_paystack          = WLSM_M_Setting::get_settings_paystack( $school_id );
 $school_paystack_enable     = $settings_paystack['enable'];
@@ -50,6 +58,7 @@ $school_bank_transfer_branch  = $settings_bank_transfer['branch'];
 $school_bank_transfer_account = $settings_bank_transfer['account'];
 $school_bank_transfer_name    = $settings_bank_transfer['name'];
 $school_bank_transfer_message = $settings_bank_transfer['message'];
+
 ?>
 <div class="tab-pane fade" id="wlsm-school-payment-method" role="tabpanel" aria-labelledby="wlsm-school-payment-method-tab">
 
@@ -550,7 +559,107 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 							</div>
 						</div>
 					</div>
+				</div>
 
+				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_sslcommerz_fields" aria-expanded="true" aria-controls="wlsm_sslcommerz_fields">
+					<?php esc_html_e( 'SSLCommerz Payment Gateway', 'school-management' ); ?>
+				</button>
+
+				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_sslcommerz_fields">
+
+					<div class="wlsm_payment_method wlsm_sslcommerz">
+						<div class="row">
+							<div class="col-md-3">
+								<label for="wlsm_sslcommerz_enable" class="wlsm-font-bold">
+									<?php esc_html_e( 'SSLCommerz Payment', 'school-management' ); ?>:
+								</label>
+							</div>
+							<div class="col-md-9">
+								<div class="form-group">
+									<label for="wlsm_sslcommerz_enable" class="wlsm-font-bold">
+										<input <?php checked( $school_sslcommerz_enable, true, true ); ?> type="checkbox" name="sslcommerz_enable" id="wlsm_sslcommerz_enable" value="1">
+										<?php esc_html_e( 'Enable', 'school-management' ); ?>
+									</label>
+									<?php if ( ! WLSM_Payment::currency_supports_sslcommerz( $currency ) ) { ?>
+									<br>
+									<small class="text-secondary">
+										<?php
+										printf(
+											/* translators: %s: currency code */
+											__( 'SSLCommerz does not support currency %s.', 'school-management' ),
+											esc_html( $currency )
+										);
+										?>
+									</small>
+									<?php } ?>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="wlsm_payment_method wlsm_sslcommerz">
+						<div class="row">
+							<div class="col-md-3">
+								<label for="wlsm_sslcommerz_store_id" class="wlsm-font-bold"><?php esc_html_e( 'SSLCommerz Store ID', 'school-management' ); ?>:</label>
+							</div>
+							<div class="col-md-9">
+								<div class="form-group">
+									<input name="sslcommerz_store_id" type="text" class="form-control" id="wlsm_sslcommerz_store_id" value="<?php echo esc_attr( $school_sslcommerz_store_id ); ?>" class="form-control" placeholder="<?php esc_attr_e( 'SSLCommerz Store ID', 'school-management' ); ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="wlsm_payment_method wlsm_sslcommerz">
+						<div class="row">
+							<div class="col-md-3">
+								<label for="wlsm_sslcommerz_store_passwd" class="wlsm-font-bold"><?php esc_html_e( 'SSLCommerz Store Passwd', 'school-management' ); ?>:</label>
+							</div>
+							<div class="col-md-9">
+								<div class="form-group">
+									<input name="sslcommerz_store_passwd" type="text" class="form-control" id="wlsm_sslcommerz_store_passwd" value="<?php echo esc_attr( $school_sslcommerz_store_passwd ); ?>" class="form-control" placeholder="<?php esc_attr_e( 'SSLCommerz Store Passwd', 'school-management' ); ?>">
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="wlsm_payment_method wlsm_sslcommerz">
+						<div class="row">
+							<div class="col-md-3">
+								<label for="wlsm_sslcommerz_mode" class="wlsm-font-bold"><?php esc_html_e( 'Payment Mode', 'school-management' ); ?>:</label>
+							</div>
+							<div class="col-md-9">
+								<div class="form-group">
+									<select name="sslcommerz_mode" class="form-control" id="wlsm_sslcommerz_mode">
+										<option <?php selected( $school_sslcommerz_mode, 'sandbox', true ); ?> value="sandbox"><?php esc_html_e( 'Sandbox', 'school-management' ); ?></option>
+										<option <?php selected( $school_sslcommerz_mode, 'live', true ); ?> value="live"><?php esc_html_e( 'Live', 'school-management' ); ?></option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="wlsm_payment_method wlsm_sslcommerz">
+						<div class="row">
+							<div class="col-md-12">
+								<label class="wlsm-font-bold"><?php esc_html_e( 'SSLCommerz Notify URL', 'school-management' ); ?>: </label><br>
+								<span class="text-primary"><?php echo esc_url( $school_sslcommerz_notify_url ); ?></span><br>
+								<small class="font-weight-bold">
+									( <?php esc_html_e( 'To save transactions, you need to enable SSLCommerz IPN (Instant Payment Notification) in your SSLCommerz Account and use this notify URL', 'school-management' ); ?>
+									)
+								</small>
+								<small>
+									<ol>
+										<li><?php esc_html_e( 'Log into your SSLCommerz account.', 'school-management' ); ?></li>
+										<li><?php esc_html_e( 'Go to "My Account" then "Account Settings".', 'school-management' ); ?></li>
+										<li><?php esc_html_e( 'Look for an option labelled "IPN Settings". Click on the update button for that option.', 'school-management' ); ?></li>
+										<li><?php esc_html_e( 'Click "Choose IPN Settings".', 'school-management' ); ?></li>
+										<li><?php esc_html_e( 'Enter the "Website Domain" and URL given above in "IPN Listener Url" and hit "Save URL".', 'school-management' ); ?></li>
+									</ol>
+								</small>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_bank_transfer_fields" aria-expanded="true" aria-controls="wlsm_bank_transfer_fields">

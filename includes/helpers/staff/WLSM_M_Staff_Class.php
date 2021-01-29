@@ -645,8 +645,13 @@ class WLSM_M_Staff_Class
 	public static function fetch_study_material($school_id, $id)
 	{
 		global $wpdb;
-		$study_material = $wpdb->get_row($wpdb->prepare('SELECT sm.ID, sm.label as title, sm.description, sm.url, sm.attachments FROM ' . WLSM_STUDY_MATERIALS . ' as sm
+		$study_material = $wpdb->get_row($wpdb->prepare('SELECT sm.ID, sm.label as title, c.label as class_label, ss.ID as subject_id, ssm.study_material_section_id, wl.label as section_label, c.ID as class_id,  ss.label as subject_label, sm.description, sm.url, sm.attachments FROM ' . WLSM_STUDY_MATERIALS . ' as sm
+			JOIN ' . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . ' as ssm ON ssm.study_material_id = sm.ID
 			JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = sm.school_id
+			JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = ssm.class_school_id
+			LEFT OUTER JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
+			LEFT OUTER JOIN ' . WLSM_SUBJECTS . ' as ss ON s.ID = ssm.study_material_subject_id
+			LEFT OUTER JOIN ' . WLSM_SECTIONS . ' as wl ON wl.ID = ssm.study_material_section_id
 			WHERE s.ID = %d AND sm.ID = %d', $school_id, $id));
 		return $study_material;
 	}

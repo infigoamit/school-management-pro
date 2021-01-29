@@ -12,6 +12,8 @@ require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_M_Invoice.php';
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_General.php';
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_Class.php';
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_Accountant.php';
+require_once WLSM_PLUGIN_DIR_PATH . 'includes/libs/sslcommerz/SslCommerzNotification.php';
+use SslCommerz\SslCommerzNotification;
 
 class WLSM_P_Invoice
 {
@@ -322,6 +324,10 @@ class WLSM_P_Invoice
 		// Pesapal settings.
 		$settings_pesapal      = WLSM_M_Setting::get_settings_pesapal($school_id);
 		$school_pesapal_enable = $settings_pesapal['enable'];
+		
+		// sslcommerzal settings.
+		$settings_sslcommerz      = WLSM_M_Setting::get_settings_sslcommerz( $school_id );
+		$school_sslcommerz_enable = $settings_sslcommerz['enable'];
 
 		// Paystack settings.
 		$settings_paystack      = WLSM_M_Setting::get_settings_paystack($school_id);
@@ -454,6 +460,14 @@ class WLSM_P_Invoice
 							<?php echo esc_html(WLSM_M_Invoice::get_payment_method_text('pesapal')); ?>
 						</label>
 					<?php
+						$payment_methods_count++;
+					}
+					if ($school_sslcommerz_enable && WLSM_Payment::currency_supports_sslcommerz($currency)) { ?>
+						<br>
+						<label class="radio-inline wlsm-mr-3">
+							<input type="radio" name="payment_method" class="wlsm-mr-2" value="sslcommerz" id="wlsm-payment-sslcommerz">
+							<?php echo esc_html(WLSM_M_Invoice::get_payment_method_text('sslcommerz')); ?>
+						</label> <?php
 						$payment_methods_count++;
 					}
 					if ($school_paystack_enable && WLSM_Payment::currency_supports_paystack($currency)) { ?>
@@ -863,6 +877,120 @@ EOT;
 					$json = json_encode(
 						array(
 							'payment_method' => esc_attr($payment_method)
+						)
+					);
+				} elseif ('sslcommerz' === $payment_method) {
+
+					$settings_sslcommerz            = WLSM_M_Setting::get_settings_sslcommerz($school_id);
+
+					$school_sslcommerz_enable       = $settings_sslcommerz['enable'];
+					$school_sslcommerz_store_id     = $settings_sslcommerz['store_id'];
+					$school_sslcommerz_store_passwd = $settings_sslcommerz['store_passwd'];
+					$school_sslcommerz_mode         = $settings_sslcommerz['mode'];
+					$school_sslcommerz_notify_url   = $settings_sslcommerz['notify_url'];
+
+					if (!$school_sslcommerz_enable || ! WLSM_Payment::currency_supports_sslcommerz($currency) ) {
+						wp_send_json_error(esc_html__('SSLCOMMERZ payment method is currently unavailable.', 'school-management'));
+					}
+
+	
+					if ('live' === $school_sslcommerz_mode) {
+						$apiDomain = 'https://securepay.sslcommerz.com';
+						$is_localhost = false;
+					} else {
+						$apiDomain = 'https://sandbox.sslcommerz.com';
+						$is_localhost = true;
+					}
+
+					$token = $params = NULL;
+					
+					$store_id    = $school_sslcommerz_store_id;
+					$store_passwd = $school_sslcommerz_store_passwd;
+					$callback_url = $school_sslcommerz_notify_url;
+
+
+					
+					$amount = esc_attr($payment_amount);
+					$type = 'checkout';
+					$invoice_id = esc_attr($invoice_id);
+					$reference  = time() . '-' . $invoice_id . '-' . $payment_amount;
+
+					
+					
+
+					// Create unique transaction id for sslcommerz.
+					$tran_id = $invoice_id . '-' . time();
+					
+					// sslcommerz Lib.
+					require_once WLSM_PLUGIN_DIR_PATH . 'includes/libs/sslcommerz/SslCommerzNotification.php';
+
+					$post_data = array(
+						'store_id' => $store_id,
+						'store_passwd' => $store_passwd,
+						'total_amount' => $payment_amount,
+						'currency' => $currency,
+						'tran_id' => $tran_id,
+						'product_category' => 'FEE-INVOICE',
+						'success_url' => $current_page_url,
+						'fail_url' => $current_page_url,
+						'cancel_url' => $current_page_url,
+					);
+
+					$post_data['cus_name'] = $invoice->student_name; // string (50)	Mandatory - Your customer name to address the customer in payment receipt email
+					$post_data['cus_email'] = $invoice->email; // string (50)	Mandatory - Valid email address of your customer to send payment receipt from SSLCommerz end
+					$post_data['cus_add1'] = $invoice->address; // string (50)	Mandatory - Address of your customer. Not mandatory but useful if provided
+					$post_data['cus_phone'] = $invoice->phone; // string (20)	Mandatory - The phone/mobile number of your customer to contact if any issue arises
+					
+					// $post_data["product_category"] = "fees";
+					$post_data["product_name"] = "Fee Invoice";
+					$post_data["previous_customer"] = "Yes";
+					$post_data["shipping_method"] = "NO";
+					$post_data["num_of_item"] = "1";
+					
+					$post_data["product_profile_id"] = "2";
+					$post_data["product_profile"] = "general";
+
+					# SPECIAL PARAM
+					$post_data['tokenize_id'] = "1";
+					
+					# Call the Payment Gateway Library
+					$sslcomz = new SslCommerzNotification(
+						array(
+							'apiDomain' => $apiDomain,
+							'apiCredentials' => [
+								'store_id' => $store_id,
+								'store_password' => $store_passwd,
+							],
+							'connect_from_localhost' => $is_localhost,
+							'success_url' => $current_page_url,
+							'failed_url' => $current_page_url,
+							'cancel_url' => $current_page_url,
+							'ipn_url' => $callback_url,
+						)
+					);
+
+					$response = $sslcomz->makePayment($post_data, 'checkout', 'array');
+					// print_r($response);
+
+					$return_data = [];
+					if( $response['status'] === 'success') {
+						$return_data = array(
+							'redirect_url' => $response['data'], 
+							'logo' => $response['logo'], 
+						);
+						$html ="<h2>Your are redirected Hold ON</h2>";
+					} else {
+						$return_data = array(
+							'redirect_url' => $response['data'], 
+							'logo' => $response['logo'], 
+						);
+						$html ="<h2>Details Are Incorrect</h2>";
+					}
+
+					$json = json_encode(
+						array(
+							'payment_method' => esc_attr($payment_method),
+							'return_data' => $return_data,
 						)
 					);
 				} elseif ('paytm' === $payment_method) {
@@ -1888,10 +2016,194 @@ EOT;
 			if (!empty($error)) {
 				$js = 'window.alert("' . esc_attr($error) . '");';
 			} else {
-				$js = 'window.alert("' . esc_attr($success) . '");';
+				$js = 'window.alert("' . esc_attr($success) . '");window.location.replace("'.$current_page_url.'");';
 			}
 
 			wp_add_inline_script('wlsm-paytm-status', $js);
+		}
+	}
+
+	public static function process_sslcommerz()
+	{
+		if (!empty($_POST) && isset($_POST['tran_id'])) {
+
+			$current_page_url = ((isset($_SERVER['HTTPS']) && 'on' === $_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$current_page_url = esc_url($current_page_url);
+
+			$unexpected_error_message = esc_html__('An unexpected error occurred!', 'school-management');
+
+			$error   = '';
+			$success = '';
+			$status  = $_POST['status'];
+			$tran_id = $transaction_id = $_POST['tran_id'];
+
+			global $wpdb;
+
+			try {
+				$wpdb->query('BEGIN;');
+
+				$tran_id = sanitize_text_field($_POST['tran_id']);
+
+				$tran_id_parts = explode('-', $tran_id);
+
+				if (2 !== count($tran_id_parts)) {
+					throw new Exception($unexpected_error_message);
+				}
+
+				$invoice_id = absint($tran_id_parts[0]);
+
+				// Checks if pending invoice exists.
+				$invoice = WLSM_M_Staff_Accountant::get_student_pending_invoice($invoice_id);
+
+				if (!$invoice) {
+					throw new Exception(esc_html__('Invoice not found or already paid.', 'school-management'));
+				}
+
+				$school_id  = $invoice->school_id;
+				$session_id = $invoice->session_id;
+				
+				$settings_sslcommerz     = WLSM_M_Setting::get_settings_sslcommerz($school_id);
+
+				$sslcommerz_store_id     = $settings_sslcommerz['store_id'];
+				$sslcommerz_store_passwd = $settings_sslcommerz['store_passwd'];
+				$sslcommerz_mode         = $settings_sslcommerz['mode'];
+				$sslcommerz_notify_url   = $settings_sslcommerz['notify_url'];
+
+				$store_id    = $sslcommerz_store_id;
+				$store_passwd = $sslcommerz_store_passwd;
+				$callback_url = $sslcommerz_notify_url;
+				
+				if ('live' === $sslcommerz_mode) {
+					$apiDomain = 'https://securepay.sslcommerz.com';
+					$is_localhost = false;
+				} else {
+					$apiDomain = 'https://sandbox.sslcommerz.com';
+					$is_localhost = true;
+				}
+
+				$sslc  = new SslCommerzNotification(
+					array(
+						'apiDomain' => $apiDomain,
+						'apiCredentials' => [
+							'store_id' => $store_id,
+							'store_password' => $store_passwd,
+						],
+						'connect_from_localhost' => $is_localhost,
+						'success_url' => $current_page_url,
+						'failed_url' => $current_page_url,
+						'cancel_url' => $current_page_url,
+						'ipn_url' => $callback_url,
+					)
+				);
+
+				$amount   = $_POST['amount'];
+				$currency = $_POST['currency'];
+
+				if (empty($_POST['amount']) || empty($_POST['currency'])) {
+					echo "Invalid Information.";
+					exit;
+				}
+
+
+				if ($sslc->orderValidate($tran_id, $amount, $currency, $_POST)) {
+					# code...
+					if( 'VALID' === $_POST['status'] ) {
+
+						$payment_amount = WLSM_Config::sanitize_money($_POST['currency_amount']);
+			
+						$partial_payment = $invoice->partial_payment;
+					
+						$due = $invoice->payable - $invoice->paid;
+
+						if (($payment_amount <= 0) || ($payment_amount > $due) || (!$partial_payment && ($payment_amount != $due))) {
+							throw new Exception($unexpected_error_message);
+						}
+
+						$request_param_list = array(
+							'store_id' => $store_id, 
+							'tran_id' => $_POST['tran_id'],
+							'currency_amount' => $_POST['currency_amount'],
+							'status' => $_POST['status']
+						);
+
+						if ('VALID' === $request_param_list['status'] && $request_param_list['currency_amount'] === $_POST['currency_amount']) {
+							
+							$receipt_number = WLSM_M_Invoice::get_receipt_number($school_id);
+							// Payment data.
+							$payment_data = array(
+								'receipt_number'    => $receipt_number,
+								'amount'            => $payment_amount,
+								'transaction_id'    => $transaction_id,
+								'payment_method'    => 'sslcommerz',
+								'invoice_label'     => $invoice->invoice_title,
+								'invoice_payable'   => $invoice->payable,
+								'student_record_id' => $invoice->student_id,
+								'invoice_id'        => $invoice_id,
+								'school_id'         => $school_id,
+							);
+
+							$payment_data['created_at'] = current_time('Y-m-d H:i:s');
+
+							$success = $wpdb->insert(WLSM_PAYMENTS, $payment_data);
+
+							$new_payment_id = $wpdb->insert_id;
+
+							$buffer = ob_get_clean();
+							if (!empty($buffer)) {
+								throw new Exception($buffer);
+							}
+
+							if (false === $success) {
+								throw new Exception($wpdb->last_error);
+							}
+
+							$invoice_status = WLSM_M_Staff_Accountant::refresh_invoice_status($invoice_id);
+
+							$wpdb->query('COMMIT;');
+
+							if (isset($new_payment_id)) {
+								// Notify for online fee submission.
+								$data = array(
+									'school_id'  => $school_id,
+									'session_id' => $session_id,
+									'payment_id' => $new_payment_id,
+								);
+
+								wp_schedule_single_event(time() + 30, 'wlsm_notify_for_online_fee_submission', $data);
+								wp_schedule_single_event(time() + 30, 'wlsm_notify_for_online_fee_submission_to_parent', $data);
+							}
+
+							$success = esc_html__('Payment made successfully.', 'school-management');
+						} else {
+							throw new Exception(esc_html__('It seems some issue in server to server communication. Please connect with administrator.', 'school-management'));
+						}
+					} else {
+						throw new Exception($unexpected_error_message);
+					}
+				} else {
+					throw new Exception(
+						sprintf(
+							/* translators: %s reason for transaction failed via paytm */
+							esc_html__('The transaction has been failed for reason: %s', 'school-management'),
+							esc_html($_POST['error'])
+						)
+					);
+				}
+			} catch (Exception $exception) {
+				$wpdb->query('ROLLBACK;');
+				$error = $exception->getMessage();
+			}
+
+			wp_register_script('wlsm-sslcommerz-status', '');
+			wp_enqueue_script('wlsm-sslcommerz-status');
+
+			if (!empty($error)) {
+				$js = 'window.alert("' . esc_attr($error) . '");window.location.replace("'.$current_page_url.'");';
+			} else {
+				$js = 'window.alert("' . esc_attr($success) . '");window.location.replace("'.$current_page_url.'");';
+			}
+			wp_add_inline_script('wlsm-sslcommerz-status', $js);
+			return true;
 		}
 	}
 }

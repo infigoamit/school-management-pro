@@ -8813,6 +8813,11 @@ class WLSM_Staff_General
 			$pesapal_consumer_secret = isset($_POST['pesapal_consumer_secret']) ? sanitize_text_field($_POST['pesapal_consumer_secret']) : '';
 			$pesapal_mode            = isset($_POST['pesapal_mode']) ? sanitize_text_field($_POST['pesapal_mode']) : 'sandbox';
 
+			$sslcommerz_enable       = isset($_POST['sslcommerz_enable']) ? (bool) ($_POST['sslcommerz_enable']) : 0;
+			$sslcommerz_store_id     = isset($_POST['sslcommerz_store_id']) ? sanitize_text_field($_POST['sslcommerz_store_id']) : '';
+			$sslcommerz_store_passwd = isset($_POST['sslcommerz_store_passwd']) ? sanitize_text_field($_POST['sslcommerz_store_passwd']) : '';
+			$sslcommerz_mode         = isset($_POST['sslcommerz_mode']) ? sanitize_text_field($_POST['sslcommerz_mode']) : 'sandbox';
+
 			$paystack_enable     = isset($_POST['paystack_enable']) ? (bool) ($_POST['paystack_enable']) : 0;
 			$paystack_public_key = isset($_POST['paystack_public_key']) ? sanitize_text_field($_POST['paystack_public_key']) : '';
 			$paystack_secret_key = isset($_POST['paystack_secret_key']) ? sanitize_text_field($_POST['paystack_secret_key']) : '';
@@ -8956,6 +8961,33 @@ class WLSM_Staff_General
 					WLSM_SETTINGS,
 					array('setting_value' => serialize($pesapal_data)),
 					array('ID'            => $pesapal->ID)
+				);
+			}
+
+			// SSLCommerz.
+			$sslcommerz = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sslcommerz"', $school_id));
+
+			$sslcommerz_data = array(
+				'enable'          => $sslcommerz_enable,
+				'store_id'    => $sslcommerz_store_id,
+				'store_passwd' => $sslcommerz_store_passwd,
+				'mode'            => $sslcommerz_mode,
+			);
+
+			if (!$sslcommerz) {
+				$wpdb->insert(
+					WLSM_SETTINGS,
+					array(
+						'setting_key'   => 'sslcommerz',
+						'setting_value' => serialize($sslcommerz_data),
+						'school_id'     => $school_id,
+					)
+				);
+			} else {
+				$wpdb->update(
+					WLSM_SETTINGS,
+					array('setting_value' => serialize($sslcommerz_data)),
+					array('ID'            => $sslcommerz->ID)
 				);
 			}
 

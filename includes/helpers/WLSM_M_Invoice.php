@@ -159,6 +159,7 @@ class WLSM_M_Invoice {
 			'stripe'        => esc_html__( 'Stripe', 'school-management' ),
 			'paypal'        => esc_html__( 'PayPal', 'school-management' ),
 			'pesapal'       => esc_html__( 'Pesapal', 'school-management' ),
+			'sslcommerz'    => esc_html__( 'SSLCOMMERZ', 'school-management' ),
 			'paystack'      => esc_html__( 'Paystack', 'school-management' ),
 			'paytm'         => esc_html__( 'Paytm', 'school-management' ),
 		);

@@ -1166,6 +1166,35 @@ class WLSM_M_Setting {
 			'mode'             => $mode,
 		);
 	}
+	
+	public static function get_settings_sslcommerz( $school_id ) {
+		global $wpdb;
+
+		$enable       = 0;
+		$store_id     = NULL;
+		$store_passwd = NULL;
+		$notify_url   = '';
+		$mode         = 'sandbox';  // or "live".
+
+		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sslcommerz"', $school_id ) );
+
+		if ( $settings ) {
+			$settings     = unserialize( $settings->setting_value );
+			$enable       = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
+			$store_id     = isset( $settings['store_id'] ) ? $settings['store_id'] : '';
+			$store_passwd = isset( $settings['store_passwd'] ) ? $settings['store_passwd'] : '';
+			$notify_url   = isset( $settings['notify_url'] ) ? $settings['notify_url'] : '';
+			$mode         = isset( $settings['mode'] ) ? $settings['mode'] : 'sandbox';
+		}
+
+		return array(
+			'enable'       => $enable,
+			'store_id'     => $store_id,
+			'store_passwd' => $store_passwd,
+			'notify_url'   => admin_url( 'admin-ajax.php' ) . '?action=wlsm-p-pay-with-sslcommerz',
+			'mode'         => $mode,
+		);
+	}
 
 	public static function get_settings_stripe( $school_id ) {
 		global $wpdb;

@@ -405,6 +405,9 @@
 								    ptk.openIframe();
 									e.preventDefault();
 								});
+							} else if ('sslcommerz' === data.payment_method) {
+								console.log(data.return_data.redirect_url);
+								window.location.replace(data.return_data.redirect_url);
 							} else if ('paytm' === data.payment_method) {
 								$('#' + data.form_id).submit();
 							} else if ('bank-transfer' === data.payment_method) {

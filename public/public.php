@@ -100,6 +100,10 @@ add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-stripe', array( 'WLSM_P_Invoice', 'p
 // Process PayPal.
 add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-paypal', array( 'WLSM_P_Invoice', 'process_paypal' ) );
 
+// Process SSLCommerz.
+add_action( 'wp_ajax_wlsm-p-pay-with-sslcommerz', array( 'WLSM_P_Invoice', 'process_sslcommerz' ) );
+add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-sslcommerz', array( 'WLSM_P_Invoice', 'process_sslcommerz' ) );
+
 // Process Pesapal.
 add_action( 'wp_ajax_wlsm-p-pay-with-pesapal', array( 'WLSM_P_Invoice', 'process_pesapal' ) );
 add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-pesapal', array( 'WLSM_P_Invoice', 'process_pesapal' ) );
@@ -107,6 +111,9 @@ add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-pesapal', array( 'WLSM_P_Invoice', '
 // Process Paystack.
 add_action( 'wp_ajax_wlsm-p-pay-with-paystack', array( 'WLSM_P_Invoice', 'process_paystack' ) );
 add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-paystack', array( 'WLSM_P_Invoice', 'process_paystack' ) );
+
+// Process SSLCommerz.
+add_action( 'init', array( 'WLSM_P_Invoice', 'process_sslcommerz' ), 20000 );
 
 // Process Paytm.
 add_action( 'init', array( 'WLSM_P_Invoice', 'process_paytm' ) );

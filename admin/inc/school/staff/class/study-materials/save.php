@@ -26,9 +26,14 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 	if ( $study_material ) {
 		$nonce_action = 'edit-study-material-' . $study_material->ID;
 
-		$title       = $study_material->title;
-		$description = $study_material->description;
-		$link        = $study_material->url;
+		$title         = $study_material->title;
+		$description   = $study_material->description;
+		$link          = $study_material->url;
+		$class_id      = $study_material->class_id;
+		$subject_label = $study_material->subject_label;
+		$subject_id    = $study_material->subject_id;
+		$section_label = $study_material->section_label;
+		$section_id    = $study_material->study_material_section_id;
 
 		$attachments = $study_material->attachments;
 		if ( is_serialized( $attachments ) ) {
@@ -94,10 +99,11 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 						<select name="classes[]" class="form-control selectpicker" data-nonce="<?php echo esc_attr( wp_create_nonce( 'get-class-sections' ) ); ?>" id="wlsm_class" data-live-search="true">
 							<option value=""><?php esc_html_e( 'Select Class', 'school-management' ); ?></option>
 							<?php foreach ( $classes as $class ) { ?>
-							<option value="<?php echo esc_attr( $class->ID ); ?>">
+							<option value="<?php echo esc_attr( $class->ID ); ?>" <?php if($class_id == $class->ID ){ echo 'selected';} ?>>
 								<?php echo esc_html( WLSM_M_Class::get_label_text( $class->label ) ); ?>
 							</option>
 							<?php } ?>
+							
 						</select>
 					</div>
 					<div class="form-group col-md-4">
@@ -105,6 +111,9 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 							<?php esc_html_e( 'Section', 'school-management' ); ?>:
 						</label>
 						<select name="section" class="form-control selectpicker wlsm_section" id="wlsm_section" data-live-search="true" title="<?php esc_attr_e( 'All Sections', 'school-management' ); ?>" data-all-sections="1" data-fetch-students="1" data-skip-transferred="0" data-only-active="0" data-nonce="<?php echo esc_attr( wp_create_nonce( 'get-section-students' ) ); ?>">
+						<?php if ($section_label): ?>
+							<option value="<?php echo $section_id; ?>" selected><?php esc_html_e(  $section_label); ?></option>
+						<?php endif ?>
 						</select>
 					</div>
 					<div class="form-group col-md-4 wlsm-subjects-select-block">
@@ -112,6 +121,9 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 							<?php esc_html_e( 'subject', 'school-management' ); ?>:
 						</label>
 						<select name="subject" class="form-control selectpicker" id="wlsm_subjects" data-live-search="true" data-actions-box="true" data-none-selected-text="<?php esc_attr_e( 'Select subject', 'school-management' ); ?>">
+						<?php if ($subject_label): ?>
+							<option value="<?php echo $subject_id; ?>" selected><?php esc_html_e(  $subject_label); ?></option>
+						<?php endif ?>
 						</select>
 					</div>
 				</div>
