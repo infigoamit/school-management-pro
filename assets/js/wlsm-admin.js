@@ -5572,6 +5572,7 @@
 		var twilio = $('.wlsm_twilio');
 		var msg91 = $('.wlsm_msg91');
 		var textlocal = $('.wlsm_textlocal');
+		var kivalosolutions = $('.wlsm_kivalosolutions');
 		var ebulksms = $('.wlsm_ebulksms');
 		var pob = $('.wlsm_pob');
 		var vinuthan = $('.wlsm_vinuthansms');
@@ -5594,6 +5595,8 @@
 			msg91.show();
 		} else if('textlocal' === wlsmSMSCarrier) {
 			textlocal.show();
+		} else if('kivalosolutions' === wlsmSMSCarrier) {
+			kivalosolutions.show();
 		} else if('ebulksms' === wlsmSMSCarrier) {
 			ebulksms.show();
 		} else {
@@ -5621,6 +5624,8 @@
 				msg91.fadeIn();
 			} else if('textlocal' === wlsmSMSCarrier) {
 				textlocal.fadeIn();
+			} else if('kivalosolutions' === wlsmSMSCarrier) {
+				kivalosolutions.fadeIn();
 			} else if('twilio' === wlsmSMSCarrier) {
 				twilio.fadeIn();
 			} else if('ebulksms' === wlsmSMSCarrier) {

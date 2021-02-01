@@ -558,6 +558,25 @@ class WLSM_M_Setting {
 		);
 	}
 
+	public static function get_settings_kivalosolutions( $school_id ) {
+		global $wpdb;
+
+		$api_key = NULL;
+		$sender  = NULL;
+
+		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "kivalosolutions"', $school_id ) );
+		if ( $settings ) {
+			$settings = unserialize( $settings->setting_value );
+			$api_key  = isset( $settings['api_key'] ) ? $settings['api_key'] : '';
+			$sender   = isset( $settings['sender'] ) ? $settings['sender'] : '';
+		}
+
+		return array(
+			'api_key' => $api_key,
+			'sender'  => $sender,
+		);
+	}
+
 	public static function get_settings_ebulksms( $school_id ) {
 		global $wpdb;
 

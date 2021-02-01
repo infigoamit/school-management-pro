@@ -74,6 +74,12 @@ $settings_textlocal       = WLSM_M_Setting::get_settings_textlocal($school_id);
 $school_textlocal_api_key = $settings_textlocal['api_key'];
 $school_textlocal_sender  = $settings_textlocal['sender'];
 
+// kivalosolutions settings.
+$settings_kivalosolutions       = WLSM_M_Setting::get_settings_kivalosolutions($school_id);
+
+$school_kivalosolutions_api_key = $settings_kivalosolutions['api_key'];
+$school_kivalosolutions_sender  = $settings_kivalosolutions['sender'];
+
 // EBulkSMS settings.
 $settings_ebulksms        = WLSM_M_Setting::get_settings_ebulksms($school_id);
 $school_ebulksms_username = $settings_ebulksms['username'];
@@ -620,6 +626,32 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						<div class="col-md-9">
 							<div class="form-group">
 								<input name="textlocal_sender" type="text" id="wlsm_textlocal_sender" value="<?php echo esc_attr($school_textlocal_sender); ?>" class="form-control" placeholder="<?php esc_attr_e('Textlocal Sender', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_kivalosolutions">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_kivalosolutions_api_key" class="wlsm-font-bold"><?php esc_html_e('API Key', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="kivalosolutions_api_key" type="text" id="wlsm_kivalosolutions_api_key" value="<?php echo esc_attr($school_kivalosolutions_api_key); ?>" class="form-control" placeholder="<?php esc_attr_e('kivalosolutions API Key', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_kivalosolutions">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_kivalosolutions_sender" class="wlsm-font-bold"><?php esc_html_e('Sender ID', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="kivalosolutions_sender" type="text" id="wlsm_kivalosolutions_sender" value="<?php echo esc_attr($school_kivalosolutions_sender); ?>" class="form-control" placeholder="<?php esc_attr_e('kivalosolutions Sender', 'school-management'); ?>">
 							</div>
 						</div>
 					</div>

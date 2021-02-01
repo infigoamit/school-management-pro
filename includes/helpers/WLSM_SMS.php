@@ -18,6 +18,7 @@ class WLSM_SMS {
 			'pob'        => esc_html__('Pob Talk', 'school-management'),
 			'vinuthan'   => esc_html__('vinuthan', 'school-management'),
 			'indiatext'   => esc_html__('India Text', 'school-management'),
+			'kivalosolutions'   => esc_html__('kivalosolutions SMS', 'school-management'),
 		);
 	}
 
@@ -81,6 +82,8 @@ class WLSM_SMS {
 			return self::msg91($school_id, $message, $to);
 		} elseif ('textlocal' === $sms_carrier) {
 			return self::textlocal($school_id, $message, $to);
+		} elseif ('kivalosolutions' === $sms_carrier) {
+			return self::kivalosolutions($school_id, $message, $to);
 		} elseif ('ebulksms' === $sms_carrier) {
 			return self::ebulksms($school_id, $message, $to);
 		} elseif ('pob' === $sms_carrier) {
@@ -600,6 +603,39 @@ class WLSM_SMS {
 				return true;
 			}
 		} catch (Exception $e) {
+		}
+
+		return false;
+	}
+
+	public static function kivalosolutions($school_id, $message, $numbers) {
+		try {
+			$kivalosolutions = WLSM_M_Setting::get_settings_kivalosolutions($school_id);
+			$api_key   = $kivalosolutions['api_key'];
+			$sender    = $kivalosolutions['sender'];
+
+			if (is_array($numbers)) {
+				$numbers = implode(',', $numbers);
+			}
+
+			if (!($api_key && $sender)) {
+				return false;
+			}
+
+			$data = array(
+				"apikey"  => $api_key,
+				"numbers" => $numbers,
+				"sender"  => urlencode($sender),
+				"message" => urlencode($message),
+			);
+
+			$response = wp_remote_post("http://sms.kivalosolutions.com/sms/api?action=send-sms&api_key=$api_key&to=$numbers&from=$sender&sms=$message");
+			$result   = wp_remote_retrieve_body($response);
+			
+			if ($result) {
+				return $result;
+			}
+		} catch (Exception $result) {
 		}
 
 		return false;

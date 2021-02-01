@@ -7926,6 +7926,9 @@ class WLSM_Staff_General
 			$textlocal_api_key = isset($_POST['textlocal_api_key']) ? sanitize_text_field($_POST['textlocal_api_key']) : '';
 			$textlocal_sender  = isset($_POST['textlocal_sender']) ? sanitize_text_field($_POST['textlocal_sender']) : '';
 
+			$kivalosolutions_api_key = isset($_POST['kivalosolutions_api_key']) ? sanitize_text_field($_POST['kivalosolutions_api_key']) : '';
+			$kivalosolutions_sender  = isset($_POST['kivalosolutions_sender']) ? sanitize_text_field($_POST['kivalosolutions_sender']) : '';
+
 			$ebulksms_username = isset($_POST['ebulksms_username']) ? sanitize_text_field($_POST['ebulksms_username']) : '';
 			$ebulksms_api_key  = isset($_POST['ebulksms_api_key']) ? sanitize_text_field($_POST['ebulksms_api_key']) : '';
 			$ebulksms_sender   = isset($_POST['ebulksms_sender']) ? sanitize_text_field($_POST['ebulksms_sender']) : '';
@@ -8268,6 +8271,31 @@ class WLSM_Staff_General
 						WLSM_SETTINGS,
 						array('setting_value' => serialize($textlocal_data)),
 						array('ID'            => $textlocal->ID)
+					);
+				}
+
+				// kivalosolutions.
+				$kivalosolutions = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "kivalosolutions"', $school_id));
+
+				$kivalosolutions_data = array(
+					'api_key' => $kivalosolutions_api_key,
+					'sender'  => $kivalosolutions_sender,
+				);
+
+				if (!$kivalosolutions) {
+					$wpdb->insert(
+						WLSM_SETTINGS,
+						array(
+							'setting_key'   => 'kivalosolutions',
+							'setting_value' => serialize($kivalosolutions_data),
+							'school_id'     => $school_id,
+						)
+					);
+				} else {
+					$wpdb->update(
+						WLSM_SETTINGS,
+						array('setting_value' => serialize($kivalosolutions_data)),
+						array('ID'            => $kivalosolutions->ID)
 					);
 				}
 
@@ -8763,7 +8791,7 @@ class WLSM_Staff_General
 			$sent = WLSM_SMS::send_sms($school_id, $sms_to, $message);
 
 			if ($sent) {
-				wp_send_json_success(array('message' => 'SMS sent.'));
+				wp_send_json_success(array('message' => $sent));
 			}
 
 			wp_send_json_error(esc_html__('SMS was not sent.', 'school-management'));
