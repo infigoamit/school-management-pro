@@ -7882,6 +7882,11 @@ class WLSM_Staff_General
 			$smsstriker_username  = isset($_POST['smsstriker_username']) ? sanitize_text_field($_POST['smsstriker_username']) : '';
 			$smsstriker_password  = isset($_POST['smsstriker_password']) ? $_POST['smsstriker_password'] : '';
 
+			$gatewaysms_sender_id = isset($_POST['gatewaysms_sender_id']) ? sanitize_text_field($_POST['gatewaysms_sender_id']) : '';
+			$gatewaysms_username  = isset($_POST['gatewaysms_username']) ? sanitize_text_field($_POST['gatewaysms_username']) : '';
+			$gatewaysms_password  = isset($_POST['gatewaysms_password']) ? $_POST['gatewaysms_password'] : '';
+			$gatewaysms_gwid  = isset($_POST['gatewaysms_gwid']) ? $_POST['gatewaysms_gwid'] : '';
+
 			$msgclub_auth_key         = isset($_POST['msgclub_auth_key']) ? sanitize_text_field($_POST['msgclub_auth_key']) : '';
 			$msgclub_sender_id        = isset($_POST['msgclub_sender_id']) ? sanitize_text_field($_POST['msgclub_sender_id']) : '';
 			$msgclub_route_id         = isset($_POST['msgclub_route_id']) ? sanitize_text_field($_POST['msgclub_route_id']) : '';
@@ -8006,6 +8011,39 @@ class WLSM_Staff_General
 						WLSM_SETTINGS,
 						array('setting_value' => serialize($smsstriker_data)),
 						array('ID'            => $smsstriker->ID)
+					);
+				}
+
+				// SMS gatewaysms.
+				$gatewaysms = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "gatewaysms"', $school_id));
+
+				$gatewaysms_data = array(
+					'sender_id' => $gatewaysms_sender_id,
+					'gwid' => $gatewaysms_gwid,
+					'username'  => $gatewaysms_username,
+					'password'  => $gatewaysms_password,
+				);
+
+				if (!$gatewaysms) {
+					$wpdb->insert(
+						WLSM_SETTINGS,
+						array(
+							'setting_key'   => 'gatewaysms',
+							'setting_value' => serialize($gatewaysms_data),
+							'school_id'     => $school_id,
+						)
+					);
+				} else {
+					$gatewaysms_saved_data = unserialize($gatewaysms->setting_value);
+
+					if (empty($gatewaysms_data['password'])) {
+						$gatewaysms_data['password'] = $gatewaysms_saved_data['password'];
+					}
+
+					$wpdb->update(
+						WLSM_SETTINGS,
+						array('setting_value' => serialize($gatewaysms_data)),
+						array('ID'            => $gatewaysms->ID)
 					);
 				}
 

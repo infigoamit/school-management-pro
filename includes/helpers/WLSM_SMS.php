@@ -7,18 +7,19 @@ require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_Config.php';
 class WLSM_SMS {
 	public static function sms_carriers() {
 		return array(
-			'smsstriker' => esc_html__('SMS Striker', 'school-management'),
-			'msgclub'    => esc_html__('Infigo Msg', 'school-management'),
-			'pointsms'   => esc_html__('Infigo Point', 'school-management'),
-			'nexmo'      => esc_html__('Nexmo', 'school-management'),
-			'twilio'     => esc_html__('Twilio', 'school-management'),
-			'msg91'      => esc_html__('Msg91', 'school-management'),
-			'textlocal'  => esc_html__('Textlocal', 'school-management'),
-			'ebulksms'   => esc_html__('EBulkSMS', 'school-management'),
-			'pob'        => esc_html__('Pob Talk', 'school-management'),
-			'vinuthan'   => esc_html__('vinuthan', 'school-management'),
-			'indiatext'   => esc_html__('India Text', 'school-management'),
-			'kivalosolutions'   => esc_html__('kivalosolutions SMS', 'school-management'),
+			'smsstriker'      => esc_html__('SMS Striker ( India )', 'school-management'),
+			'msgclub'         => esc_html__('Infigo Msg ( Weblizar india)', 'school-management'),
+			'pointsms'        => esc_html__('Infigo Point ( Weblizar india)', 'school-management'),
+			'nexmo'           => esc_html__('Nexmo ( International )', 'school-management'),
+			'twilio'          => esc_html__('Twilio ( International)', 'school-management'),
+			'msg91'           => esc_html__('Msg91 (India)', 'school-management'),
+			'textlocal'       => esc_html__('Textlocal ( International )', 'school-management'),
+			'ebulksms'        => esc_html__('EBulkSMS ( Nigeria )', 'school-management'),
+			'pob'             => esc_html__('Pob Talk ( Nigeria )', 'school-management'),
+			'vinuthan'        => esc_html__('vinuthan', 'school-management'),
+			'indiatext'       => esc_html__('India Text ( India )', 'school-management'),
+			'kivalosolutions' => esc_html__('kivalosolutions SMS ( Franse)', 'school-management'),
+			'gatewaysms'      => esc_html__('gatewaysms ( India )', 'school-management'),
 		);
 	}
 
@@ -70,6 +71,8 @@ class WLSM_SMS {
 			return self::smsstriker($school_id, $message, $to);
 		} elseif ('msgclub' === $sms_carrier) {
 			return self::msgclub($school_id, $message, $to);
+		} elseif ('gatewaysms' === $sms_carrier) {
+			return self::gatewaysms($school_id, $message, $to);
 		} elseif ('pointsms' === $sms_carrier) {
 			return self::pointsms($school_id, $message, $to);
 		} elseif ('indiatext' === $sms_carrier) {
@@ -138,6 +141,55 @@ class WLSM_SMS {
 			);
 
 			$response = wp_remote_post('https://www.smsstriker.com/API/sms.php', $data);
+			$result   = wp_remote_retrieve_body($response);
+
+			if ($result) {
+				return true;
+			}
+		} catch (Exception $e) {
+		}
+
+		return false;
+	}
+
+	public static function gatewaysms($school_id, $message, $numbers) {
+		try {
+			$gatewaysms = WLSM_M_Setting::get_settings_gatewaysms($school_id);
+			$username  = $gatewaysms['username'];
+			$password  = $gatewaysms['password'];
+			$sender_id = $gatewaysms['sender_id'];
+			$gwid      = $gatewaysms['gwid'];
+
+			if (is_array($numbers)) {
+				foreach ($numbers as $key => $number) {
+					if ((12 == strlen($number)) && ('91' == substr($number, 0, 2))) {
+						$numbers[$key] = substr($number, 2, 10);
+					} elseif ((13 == strlen($number)) && ('+91' == substr($number, 0, 3))) {
+						$numbers[$key] = substr($number, 3, 10);
+					} elseif ((11 == strlen($number)) && ('0' == substr($number, 0, 1))) {
+						$numbers[$key] = substr($number, 3, 10);
+					}
+				}
+				$number = implode(', ', $numbers);
+			} else {
+				if ((12 == strlen($numbers)) && ('91' == substr($numbers, 0, 2))) {
+					$number = substr($numbers, 2, 10);
+				} elseif ((13 == strlen($numbers)) && ('+91' == substr($numbers, 0, 3))) {
+					$number = substr($numbers, 3, 10);
+				} elseif ((11 == strlen($numbers)) && ('0' == substr($numbers, 0, 1))) {
+					$number = substr($numbers, 1, 10);
+				} else {
+					$number = $numbers;
+				}
+			}
+
+			if (!($username && $password && $sender_id)) {
+				return false;
+			}
+
+			$data = '';
+
+			$response = wp_remote_post("https://getwaysms.com/vendorsms/pushsms.aspx?user=$username&password=$password&msisdn=$number&sid=$sender_id&msg=$message&fl=0&gwid=$gwid", $data);
 			$result   = wp_remote_retrieve_body($response);
 
 			if ($result) {

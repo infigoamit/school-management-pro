@@ -5565,6 +5565,7 @@
 
 		// SMS carriers.
 		var smsstriker = $('.wlsm_smsstriker');
+		var gatewaysms = $('.wlsm_gatewaysms');
 		var msgclub = $('.wlsm_msgclub');
 		var pointsms = $('.wlsm_pointsms');
 		var indiatext = $('.wlsm_indiatext');
@@ -5589,6 +5590,8 @@
 			vinuthan.show();
 		} else if('smsstriker' === wlsmSMSCarrier) {
 			smsstriker.show();
+		} else if('gatewaysms' === wlsmSMSCarrier) {
+			gatewaysms.show();
 		} else if('nexmo' === wlsmSMSCarrier) {
 			nexmo.show();
 		} else if('msg91' === wlsmSMSCarrier) {
@@ -5612,6 +5615,8 @@
 				smsstriker.fadeIn();
 			} else if('msgclub' === wlsmSMSCarrier) {
 				msgclub.fadeIn();
+			}  else if('gatewaysms' === wlsmSMSCarrier) {
+				gatewaysms.fadeIn();
 			} else if('pointsms' === wlsmSMSCarrier) {
 				pointsms.fadeIn();
 			} else if('indiatext' === wlsmSMSCarrier) {

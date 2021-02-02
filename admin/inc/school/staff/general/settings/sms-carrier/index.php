@@ -14,6 +14,13 @@ $school_smsstriker_username  = $settings_smsstriker['username'];
 $school_smsstriker_password  = $settings_smsstriker['password'];
 $school_smsstriker_sender_id = $settings_smsstriker['sender_id'];
 
+// gateway sms settings.
+$settings_gatewaysms         = WLSM_M_Setting::get_settings_gatewaysms($school_id);
+$school_gatewaysms_username  = $settings_gatewaysms['username'];
+$school_gatewaysms_password  = $settings_gatewaysms['password'];
+$school_gatewaysms_sender_id = $settings_gatewaysms['sender_id'];
+$school_gatewaysms_gwid = $settings_gatewaysms['gwid'];
+
 // MsgClub settings.
 $settings_msgclub                = WLSM_M_Setting::get_settings_msgclub($school_id);
 $school_msgclub_auth_key         = $settings_msgclub['auth_key'];
@@ -119,6 +126,21 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 				<div class="wlsm_sms_carrier wlsm_smsstriker">
 					<div class="row">
 						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://www.smsstriker.com">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_smsstriker">
+					<div class="row">
+						<div class="col-md-3">
 							<label for="wlsm_smsstriker_sender_id" class="wlsm-font-bold"><?php esc_html_e('Sender ID', 'school-management'); ?>:</label>
 						</div>
 						<div class="col-md-9">
@@ -150,6 +172,73 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						<div class="col-md-9">
 							<div class="form-group">
 								<input name="smsstriker_password" type="password" id="wlsm_smsstriker_password" class="form-control" placeholder="<?php esc_attr_e('SMSStriker Password', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_gatewaysms">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://getwaysms.com">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_gatewaysms">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_gatewaysms_sender_id" class="wlsm-font-bold"><?php esc_html_e('Sender ID', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="gatewaysms_sender_id" type="text" id="wlsm_gatewaysms_sender_id" value="<?php echo esc_attr($school_gatewaysms_sender_id); ?>" class="form-control" placeholder="<?php esc_attr_e('gatewaysms Sender ID', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+                <div class="wlsm_sms_carrier wlsm_gatewaysms">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_gatewaysms_gwid" class="wlsm-font-bold"><?php esc_html_e('Gwid ID', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="gatewaysms_gwid" type="text" id="wlsm_gatewaysms_gwid" value="<?php echo esc_attr($school_gatewaysms_gwid); ?>" class="form-control" placeholder="<?php esc_attr_e('gatewaysms gwid', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_gatewaysms">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_gatewaysms_username" class="wlsm-font-bold"><?php esc_html_e('Username', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="gatewaysms_username" type="text" id="wlsm_gatewaysms_username" value="<?php echo esc_attr($school_gatewaysms_username); ?>" class="form-control" placeholder="<?php esc_attr_e('gatewaysms Username', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_gatewaysms">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_gatewaysms_password" class="wlsm-font-bold"><?php esc_html_e('Password', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="gatewaysms_password" type="password" id="wlsm_gatewaysms_password" class="form-control" placeholder="<?php esc_attr_e('gatewaysms Password', 'school-management'); ?>">
 							</div>
 						</div>
 					</div>
@@ -315,7 +404,21 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 					</div>
 				</div>
 
-				
+				<div class="wlsm_sms_carrier wlsm_indiatext">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="http://sms.indiatext.in/">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="wlsm_sms_carrier wlsm_indiatext">
 					<div class="row">
 						<div class="col-md-3">
@@ -380,6 +483,22 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						</div>
 					</div>
 				</div>
+
+
+				<div class="wlsm_sms_carrier wlsm_vinuthansms">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="http://sms.vinuthan.in/">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 
 				<div class="wlsm_sms_carrier wlsm_vinuthansms">
@@ -434,6 +553,23 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						</div>
 					</div>
 				</div>
+
+
+				<div class="wlsm_sms_carrier wlsm_pob">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://talk.pob.ng/">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="wlsm_sms_carrier wlsm_pob">
 					<div class="row">
 						<div class="col-md-3">
@@ -474,6 +610,20 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 				</div>
 
 
+				<div class="wlsm_sms_carrier wlsm_nexmo">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://www.vonage.com/communications-apis/pricing/?icmp=l3nav_pricing_novalue">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<div class="wlsm_sms_carrier wlsm_nexmo">
 					<div class="row">
@@ -517,6 +667,21 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 				<div class="wlsm_sms_carrier wlsm_twilio">
 					<div class="row">
 						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://www.twilio.com/pricing">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_twilio">
+					<div class="row">
+						<div class="col-md-3">
 							<label for="wlsm_twilio_sid" class="wlsm-font-bold"><?php esc_html_e('SID', 'school-management'); ?>:</label>
 						</div>
 						<div class="col-md-9">
@@ -548,6 +713,21 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						<div class="col-md-9">
 							<div class="form-group">
 								<input name="twilio_from" type="text" id="wlsm_twilio_from" value="<?php echo esc_attr($school_twilio_from); ?>" class="form-control" placeholder="<?php esc_attr_e('A Twilio phone number you purchased at twilio.com/console', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_msg91">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://msg91.com/pricing/">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
 							</div>
 						</div>
 					</div>
@@ -608,6 +788,21 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 				<div class="wlsm_sms_carrier wlsm_textlocal">
 					<div class="row">
 						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://www.textlocal.com/pricing/">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_textlocal">
+					<div class="row">
+						<div class="col-md-3">
 							<label for="wlsm_textlocal_api_key" class="wlsm-font-bold"><?php esc_html_e('API Key', 'school-management'); ?>:</label>
 						</div>
 						<div class="col-md-9">
@@ -634,6 +829,21 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 				<div class="wlsm_sms_carrier wlsm_kivalosolutions">
 					<div class="row">
 						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="http://sms.kivalosolutions.com/">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_kivalosolutions">
+					<div class="row">
+						<div class="col-md-3">
 							<label for="wlsm_kivalosolutions_api_key" class="wlsm-font-bold"><?php esc_html_e('API Key', 'school-management'); ?>:</label>
 						</div>
 						<div class="col-md-9">
@@ -652,6 +862,21 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						<div class="col-md-9">
 							<div class="form-group">
 								<input name="kivalosolutions_sender" type="text" id="wlsm_kivalosolutions_sender" value="<?php echo esc_attr($school_kivalosolutions_sender); ?>" class="form-control" placeholder="<?php esc_attr_e('kivalosolutions Sender', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_ebulksms">
+					<div class="row">
+						<div class="col-md-3">
+							<label class="wlsm-font-bold"><?php esc_html_e('SMS Package', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<a class="wlsm-font-bold" target="_blank" href="https://www.ebulksms.com/pricing">
+									<?php esc_html_e('Click for SMS Package Features and Pricing', 'school-management'); ?>
+								</a>
 							</div>
 						</div>
 					</div>
