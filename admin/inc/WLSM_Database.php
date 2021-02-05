@@ -13,8 +13,8 @@ class WLSM_Database
 		$charset_collate = $wpdb->get_charset_collate();
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-		// WLSM_USERS
-		// WLSM_POSTS 
+		$wpdb->query("ALTER TABLE " . WLSM_USERS . " ENGINE = InnoDB");
+		$wpdb->query("ALTER TABLE " . WLSM_POSTS . " ENGINE = InnoDB");
 
 		/* Create schools table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_SCHOOLS . " (

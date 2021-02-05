@@ -470,9 +470,7 @@ class WLSM_Staff_General
 			if (empty($name)) {
 				$errors['name'] = esc_html__('Please specify student name.', 'school-management');
 			}
-			if (strlen($name) > 60) {
-				$errors['name'] = esc_html__('Maximum length cannot exceed 60 characters.', 'school-management');
-			}
+			
 			if (!empty($religion) && strlen($religion) > 40) {
 				$errors['religion'] = esc_html__('Maximum length cannot exceed 40 characters.', 'school-management');
 			}
