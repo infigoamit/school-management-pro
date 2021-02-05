@@ -262,7 +262,7 @@ class WLSM_Database
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 				enrollment_number varchar(60) DEFAULT NULL,
 				admission_number varchar(60) DEFAULT NULL,
-				name varchar(60) DEFAULT NULL,
+				name varchar(255) DEFAULT NULL,
 				gender varchar(10) DEFAULT NULL,
 				dob date NULL DEFAULT NULL,
 				phone varchar(40) DEFAULT NULL,

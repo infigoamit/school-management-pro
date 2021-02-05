@@ -3343,7 +3343,7 @@ class WLSM_Staff_Accountant {
 			foreach ($filter_rows_limit as $row) {
 				// Table columns.
 				$data[] = array(
-					esc_html(WLSM_M_Staff_Accountant::get_label_text($row->label)),
+					esc_html(WLSM_M_Staff_Accountant::get_label_text($row->fee_label)),
 					esc_html($row->label),
 					esc_html(WLSM_Config::get_money_text($row->amount)),
 					esc_html(WLSM_M_Staff_Accountant::get_fee_period_text($row->period)),

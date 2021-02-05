@@ -1,8 +1,11 @@
 Version 7.5 [02-02-2021]
 ========
-* Added  :  kivalosolutions franse sms api
-* Added  :  gatewaysms sms api
-* Changed:  Price links and locations added for Sms carriers.
+* Added  : kivalosolutions franse sms api
+* Added  : gatewaysms sms api
+* Changed: Price links and locations added for Sms carriers.
+* Changed: Now you can change student class as well.
+* Fixed  : In fee type fee title was not showing.
+* Fixed  : You can enter student full name in all languages now.
 
 Version 7.4 [29-01-2021]
 ========

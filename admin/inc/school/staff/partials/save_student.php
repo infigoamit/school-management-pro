@@ -116,6 +116,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 		$sections = WLSM_M_Staff_Class::fetch_sections($student->class_school_id);
 
 		$parent_user_id = $student->parent_user_id;
+		$classes = WLSM_M_Staff_Class::fetch_classes($school_id);
 
 		$parent_user    = get_user_by('ID', $parent_user_id);
 		if ($parent_user) {
@@ -387,6 +388,9 @@ foreach ($routes_vehicles as $route_vehicle) {
 						<div class="wlsm-form-sub-heading wlsm-font-bold">
 							<?php esc_html_e('Admission Detail', 'school-management'); ?>
 						</div>
+						<?php if ($student) { ?>
+							<h6 class="text-center text-danger"> <strong> <?php esc_html_e('Note: Make sure to menually genrate invoice according to that class as well ', 'school-management'); ?></strong></h6>
+						<?php } ?>
 					</div>
 				</div>
 
@@ -402,9 +406,7 @@ foreach ($routes_vehicles as $route_vehicle) {
 						<label for="wlsm_class" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e('Class', 'school-management'); ?>:
 						</label>
-						<?php if ($student) { ?>
-							<div class="ml-2"><?php echo esc_html(WLSM_M_Class::get_label_text($class_label)); ?></div>
-						<?php } else { ?>
+						
 							<select name="class_id" class="form-control selectpicker" data-nonce="<?php echo esc_attr(wp_create_nonce('get-class-sections')); ?>" id="wlsm_class" data-live-search="true">
 								<option value=""><?php esc_html_e('Select Class', 'school-management'); ?></option>
 								<?php foreach ($classes as $class) { ?>
@@ -413,7 +415,7 @@ foreach ($routes_vehicles as $route_vehicle) {
 									</option>
 								<?php } ?>
 							</select>
-						<?php } ?>
+						
 					</div>
 
 					<div class="form-group col-md-4">

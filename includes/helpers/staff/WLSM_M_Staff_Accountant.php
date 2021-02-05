@@ -562,7 +562,7 @@ class WLSM_M_Staff_Accountant {
 	}
 
 	public static function fetch_fee_query( $school_id ) {
-		$query = 'SELECT ft.ID, c.label, ft.amount, ft.period, ft.class_id FROM ' . WLSM_FEES . ' as ft
+		$query = 'SELECT ft.ID, c.label, ft.label as fee_label, ft.amount, ft.period, ft.class_id FROM ' . WLSM_FEES . ' as ft
 		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = ft.class_id
 		WHERE ft.school_id = ' . absint( $school_id );
 		return $query;
