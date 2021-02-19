@@ -1,8 +1,10 @@
 Version 7.7 [12-02-2021]
 ========
-* Added  : subject wise attendance
+* Added  : Subject wise attendance
 * Fixed  : Multi school students registration shortcode notices.
 * Fixed  : Noticeboard bug fixed.
+* Updated: Payment method Have more information about supported countries.
+* Updated: Pot file updated.
 
 Version 7.6 [04-02-2021]
 ========

@@ -74,7 +74,8 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 				<input type="hidden" name="action" value="wlsm-save-school-payment-method-settings">
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_stripe_fields" aria-expanded="true" aria-controls="wlsm_stripe_fields">
-					<?php esc_html_e( 'Stripe Payment Gateway', 'school-management' ); ?>
+					<?php esc_html_e( 'Stripe Payment Gateway ( Global ) ', 'school-management' ); ?>
+					<u><a class="text-white" href="https://stripe.com/global"><?php esc_html_e( 'Available countries', 'school-management' ); ?></a></u>
 				</button>
 
 				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_stripe_fields">
@@ -138,7 +139,8 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 				</div>
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_paypal_fields" aria-expanded="true" aria-controls="wlsm_paypal_fields">
-					<?php esc_html_e( 'PayPal Payment Gateway', 'school-management' ); ?>
+					<?php esc_html_e( 'PayPal Payment Gateway ( Global )', 'school-management' ); ?>
+					<u><a class="text-white" href="https://www.paypal.com/in/webapps/mpp/country-worldwide"><?php esc_html_e( 'Available countries', 'school-management' ); ?></a></u>
 				</button>
 
 				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_paypal_fields">
@@ -147,7 +149,8 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 						<div class="row">
 							<div class="col-md-3">
 								<label for="wlsm_paypal_enable" class="wlsm-font-bold">
-									<?php esc_html_e( 'PayPal Payment', 'school-management' ); ?>:
+									<?php esc_html_e( 'PayPal Payment ', 'school-management' ); ?>:
+									
 								</label>
 							</div>
 							<div class="col-md-9">
@@ -227,7 +230,7 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 				</div>
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_razorpay_fields" aria-expanded="true" aria-controls="wlsm_razorpay_fields">
-					<?php esc_html_e( 'Razorpay Payment Gateway', 'school-management' ); ?>
+					<?php esc_html_e( 'Razorpay Payment Gateway (International)', 'school-management' ); ?>
 				</button>
 
 				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_razorpay_fields">
@@ -291,7 +294,7 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 				</div>
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_paytm_fields" aria-expanded="true" aria-controls="wlsm_paytm_fields">
-					<?php esc_html_e( 'Paytm Payment Gateway', 'school-management' ); ?>
+					<?php esc_html_e( 'Paytm Payment Gateway (India)', 'school-management' ); ?>
 				</button>
 
 				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_paytm_fields">
@@ -397,7 +400,13 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 				</div>
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_pesapal_fields" aria-expanded="true" aria-controls="wlsm_pesapal_fields">
-					<?php esc_html_e( 'Pesapal Payment Gateway', 'school-management' ); ?>
+					<?php esc_html_e( 'Pesapal Payment Gateway ( Kenya,
+Malawi,
+Rwanda,
+Tanzania,
+Uganda,
+Zambia,
+Zimbabwe)', 'school-management' ); ?>
 				</button>
 
 				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_pesapal_fields">
@@ -499,7 +508,7 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 				</div>
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_paystack_fields" aria-expanded="true" aria-controls="wlsm_paystack_fields">
-					<?php esc_html_e( 'Paystack Payment Gateway', 'school-management' ); ?>
+					<?php esc_html_e( 'Paystack Payment Gateway ( Nigeria )', 'school-management' ); ?>
 				</button>
 
 				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_paystack_fields">
@@ -562,7 +571,7 @@ $school_bank_transfer_message = $settings_bank_transfer['message'];
 				</div>
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_sslcommerz_fields" aria-expanded="true" aria-controls="wlsm_sslcommerz_fields">
-					<?php esc_html_e( 'SSLCommerz Payment Gateway', 'school-management' ); ?>
+					<?php esc_html_e( 'SSLCommerz Payment Gateway ( International )', 'school-management' ); ?>
 				</button>
 
 				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_sslcommerz_fields">
