@@ -664,6 +664,7 @@ class WLSM_Menu {
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
+		wp_enqueue_script( 'alpine', WLSM_PLUGIN_URL . 'assets/js/alpine.min.js', array( 'jquery' ), true, true );
 		wp_enqueue_script( 'popper', WLSM_PLUGIN_URL . 'assets/js/popper.min.js', array( 'jquery' ), true, true );
 		wp_enqueue_script( 'bootstrap', WLSM_PLUGIN_URL . 'assets/js/bootstrap.min.js', array( 'popper' ), true, true );
 		wp_enqueue_script( 'chartjs', WLSM_PLUGIN_URL . 'assets/js/chart.js', array( 'jquery' ), true, true );

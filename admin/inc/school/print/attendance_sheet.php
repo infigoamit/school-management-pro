@@ -43,16 +43,28 @@ if ( isset( $from_front ) ) {
 
 		<div class="wlsm-font-bold">
 			<span>
-			<?php
-			printf(
-				wp_kses(
-					/* translators: 1: class label, 2: section label */
-					__( 'Attendance - Class: <span class="text-secondary">%1$s</span> | Section: <span class="text-secondary">%2$s</span>', 'school-management' ),
-					array( 'span' => array( 'class' => array() ) )
-				),
-				esc_html( WLSM_M_Class::get_label_text( $class_school->label ) ),
-				esc_html( WLSM_M_Staff_Class::get_section_label_text( $section_label ) )
-			);
+			<?php 
+				if( $attendance_by === 'subject' ) {
+					printf(
+						wp_kses(
+							__('Attendance - Class: <span class="text-secondary">%1$s</span> | Section: <span class="text-secondary">%2$s</span> | Subject: <span class="text-secondary">%3$s</span>', 'school-management'),
+							array('span' => array('class' => array()))
+						),
+						esc_html(WLSM_M_Class::get_label_text($class_school->label)),
+						esc_html(WLSM_M_Staff_Class::get_section_label_text($section_label)),
+						esc_html(WLSM_M_Staff_Class::get_subject_label_text($subject->subject_name))
+					);
+				 } else {
+					 printf(
+						 wp_kses(
+							 /* translators: 1: class label, 2: section label */
+							 __( 'Attendance - Class: <span class="text-secondary">%1$s</span> | Section: <span class="text-secondary">%2$s</span>', 'school-management' ),
+							 array( 'span' => array( 'class' => array() ) )
+						 ),
+						 esc_html( WLSM_M_Class::get_label_text( $class_school->label ) ),
+						 esc_html( WLSM_M_Staff_Class::get_section_label_text( $section_label ) )
+					 );
+				 }
 			?>
 			</span>
 			<span class="float-md-right">

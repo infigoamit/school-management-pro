@@ -571,6 +571,18 @@ class WLSM_Database
 				) ENGINE=InnoDB " . $charset_collate;
 		dbDelta($sql);
 
+		/* Add subject_id column if not exists to exams table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ATTENDANCE . "' AND COLUMN_NAME = 'subject_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " ADD subject_id bigint(20) UNSIGNED DEFAULT NULL");
+		}
+
+		// /* Remove UNIQUE attendance_date column if exists to attendance table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ATTENDANCE . "' AND COLUMN_NAME = 'attendance_date'");
+		if (!empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " DROP INDEX attendance_date");
+		}
+		
 		/* Create staff_attendance table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STAFF_ATTENDANCE . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -585,6 +597,7 @@ class WLSM_Database
 				FOREIGN KEY (admin_id) REFERENCES " . WLSM_ADMINS . " (ID) ON DELETE CASCADE
 				) ENGINE=InnoDB " . $charset_collate;
 		dbDelta($sql);
+
 
 		/* Create subjects table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_SUBJECTS . " (
@@ -630,6 +643,7 @@ class WLSM_Database
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD exam_group varchar(60) DEFAULT NULL");
 		}
+
 
 		/* Add show_in_assessment column if not exists to exams table */
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAMS . "' AND COLUMN_NAME = 'show_in_assessment'");

@@ -31,16 +31,37 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 
 			<input type="hidden" name="action" value="<?php echo esc_attr( 'wlsm-take-attendance' ); ?>">
 
+
 			<div class="wlsm-form-section">
+
+			
 				<div class="row">
 					<div class="col-md-12">
 						<div class="wlsm-form-sub-heading wlsm-font-bold">
-							<?php esc_html_e( 'Attendance', 'school-management' ); ?>
+							<?php esc_html_e( 'Attendance By', 'school-management' ); ?>
 							<br>
 							<small class="text-dark">
-								<em><?php esc_html_e( 'Select class, section and date of attendance', 'school-management' ); ?></em>
+								<em><?php esc_html_e( 'Select class, section, year, month and By Subject.', 'school-management' ); ?></em>
 							</small>
 						</div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<div class="form-check form-check-inline">
+							<input checked class="form-check-input" type="radio" name="attendance_by" id="attendance_by_all" value="all">
+							<label class="ml-1 form-check-label wlsm-font-bold" for="attendance_by_all">
+								<?php esc_html_e( 'Attendance By Month', 'school-management' ); ?>
+							</label>
+						</div>
+						<?php if ( ! $restrict_to_section ) { ?>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="attendance_by" id="attendance_by_subject" data-el_id="wlsm_subject" value="subject">
+							<label class="ml-1 form-check-label wlsm-font-bold" for="attendance_by_subject">
+								<?php esc_html_e( 'Attendance By Subject', 'school-management' ); ?>
+							</label>
+						</div>
+						<?php } ?>
 					</div>
 				</div>
 
@@ -53,9 +74,9 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 						if ( $restrict_to_section ) {
 						?>
 						<div class="ml-2">
-							<?php echo esc_html( WLSM_M_Staff_Class::get_section_label_text( $restrict_to_section_detail->section_label ) ); ?>
+							<?php echo esc_html( WLSM_M_Class::get_label_text( $restrict_to_section_detail->class_label ) ); ?>
 						</div>
-						<input type="hidden" name="section_id" id="wlsm_section" value="<?php echo esc_attr( $restrict_to_section ); ?>">
+						<input type="hidden" name="class_id" id="wlsm_class" value="<?php echo esc_attr( $restrict_to_section_detail->class_id ); ?>">
 						<?php
 						} else {
 						?>
@@ -73,15 +94,15 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 					</div>
 					<div class="form-group col-md-4">
 						<label for="wlsm_section" class="wlsm-font-bold">
-							<span class="wlsm-important">*</span> <?php esc_html_e( 'Section', 'school-management' ); ?>:
+							<?php esc_html_e( 'Section', 'school-management' ); ?>:
 						</label>
 						<?php
 						if ( $restrict_to_section ) {
 						?>
 						<div class="ml-2">
-							<?php echo esc_html( WLSM_M_Class::get_label_text( $restrict_to_section_detail->class_label ) ); ?>
+							<?php echo esc_html( WLSM_M_Staff_Class::get_section_label_text( $restrict_to_section_detail->section_label ) ); ?>
 						</div>
-						<input type="hidden" name="class_id" id="wlsm_class" value="<?php echo esc_attr( $restrict_to_section_detail->class_id ); ?>">
+						<input type="hidden" name="section_id" id="wlsm_section" value="<?php echo esc_attr( $restrict_to_section ); ?>">
 						<?php
 						} else {
 						?>
@@ -96,6 +117,13 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 							<span class="wlsm-important">*</span> <?php esc_html_e( 'Date', 'school-management' ); ?>:
 						</label>
 						<input type="text" name="attendance_date" class="form-control" id="wlsm_attendance_date" placeholder="<?php esc_attr_e( 'Date', 'school-management' ); ?>">
+					</div>
+					<div class="form-group col-md-4 form-subject-select" style="display: none;">
+						<label for="wlsm_subject" class="wlsm-font-bold">
+							<span class="wlsm-important">*</span> <?php esc_html_e( 'Subject', 'school-management' ); ?>:
+						</label>
+						<select name="subject_id" class="form-control selectpicker" id="wlsm_subject" data-live-search="true" title="<?php esc_attr_e( 'All Subjects', 'school-management' ); ?>" data-all-subjects="1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'get-class-subjects' ) ); ?>">
+						</select>
 					</div>
 				</div>
 			</div>

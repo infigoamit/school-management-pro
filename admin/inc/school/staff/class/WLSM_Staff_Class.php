@@ -574,6 +574,8 @@ class WLSM_Staff_Class
 				$section_id = isset($_POST['section_id']) ? absint($_POST['section_id']) : 0;
 			}
 
+			$subject_id = isset($_POST['subject_id']) ? sanitize_text_field($_POST['subject_id']) : NULL;
+			$attendance_by = isset($_POST['attendance_by']) ? sanitize_text_field($_POST['attendance_by']) : 'all';
 			$attendance_date = isset($_POST['attendance_date']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['attendance_date'])) : NULL;
 
 			// Start validation.
@@ -605,6 +607,7 @@ class WLSM_Staff_Class
 			} else {
 				$attendance_date = $attendance_date->format('Y-m-d');
 			}
+
 		} catch (Exception $exception) {
 			$buffer = ob_get_clean();
 			if (!empty($buffer)) {
@@ -638,13 +641,20 @@ class WLSM_Staff_Class
 					$place_holders = array_fill(0, $all_student_ids_count, '%s');
 
 					$all_student_ids_format = implode(', ', $place_holders);
-
+					$subject =  WLSM_M_Staff_Class::fetch_subject($school_id, $subject_id);
+					
 					$prepare = array_merge(array($attendance_date), $all_student_ids);
 
-					$saved_attendance = $wpdb->get_results($wpdb->prepare('SELECT student_record_id, status FROM ' . WLSM_ATTENDANCE . ' WHERE attendance_date = "%s" AND student_record_id IN (' . $all_student_ids_format . ')', $prepare), OBJECT_K);
-?>
+					if( $attendance_by === 'all' ) {
+						$saved_attendance = $wpdb->get_results($wpdb->prepare('SELECT student_record_id, status FROM ' . WLSM_ATTENDANCE . ' WHERE attendance_date = "%s" AND student_record_id IN (' . $all_student_ids_format . ')', $prepare), OBJECT_K);
+					} else {
+						$saved_attendance = $wpdb->get_results($wpdb->prepare('SELECT student_record_id, status FROM ' . WLSM_ATTENDANCE . ' WHERE attendance_date = "%s" AND subject_id = '. $subject_id .' AND student_record_id IN (' . $all_student_ids_format . ')', $prepare), OBJECT_K);
+
+					} ?>
 					<input type="hidden" name="class_id_final" value="<?php echo esc_attr($class_id); ?>">
 					<input type="hidden" name="section_id_final" value="<?php echo esc_attr($section_id); ?>">
+					<input type="hidden" name="subject_id_final" value="<?php echo esc_attr($subject_id); ?>">
+					<input type="hidden" name="attendance_by_final" value="<?php echo esc_attr($attendance_by); ?>">
 					<input type="hidden" name="attendance_date_final" value="<?php echo esc_attr($_POST['attendance_date']); ?>">
 
 					<!-- Students attendance. -->
@@ -654,15 +664,29 @@ class WLSM_Staff_Class
 								<div class="wlsm-form-sub-heading-small wlsm-font-bold">
 									<span>
 										<?php
-										/* translators: 1: class label, 2: section label */
-										printf(
-											wp_kses(
-												__('Attendance - Class: <span class="text-secondary">%1$s</span> | Section: <span class="text-secondary">%2$s</span>', 'school-management'),
-												array('span' => array('class' => array()))
-											),
-											esc_html(WLSM_M_Class::get_label_text($class_school->label)),
-											esc_html(WLSM_M_Staff_Class::get_section_label_text($section_label))
-										);
+										if( $attendance_by === 'all' ) {
+											/* translators: 1: class label, 2: section label */
+											printf(
+												wp_kses(
+													__('Attendance - Class: <span class="text-secondary">%1$s</span> | Section: <span class="text-secondary">%2$s</span>', 'school-management'),
+													array('span' => array('class' => array()))
+												),
+												esc_html(WLSM_M_Class::get_label_text($class_school->label)),
+												esc_html(WLSM_M_Staff_Class::get_section_label_text($section_label))
+											);
+											
+										} else {
+											/* translators: 1: class label, 2: section label */
+											printf(
+												wp_kses(
+													__('Attendance - Class: <span class="text-secondary">%1$s</span> | Section: <span class="text-secondary">%2$s</span> | Subject: <span class="text-secondary">%3$s</span>', 'school-management'),
+													array('span' => array('class' => array()))
+												),
+												esc_html(WLSM_M_Class::get_label_text($class_school->label)),
+												esc_html(WLSM_M_Staff_Class::get_section_label_text($section_label)),
+												esc_html(WLSM_M_Staff_Class::get_subject_label_text($subject->subject_name))
+											);
+										}
 										?>
 									</span>
 									<span class="float-md-right">
@@ -812,6 +836,8 @@ class WLSM_Staff_Class
 		}
 
 		$current_school = $current_user['school'];
+		
+		$attendance_by = isset($_POST['attendance_by_final']) ? sanitize_text_field($_POST['attendance_by_final']) : 'all';
 
 		$restrict_to_section = WLSM_M_Role::restrict_to_section($current_school);
 		if ($restrict_to_section) {
@@ -828,6 +854,10 @@ class WLSM_Staff_Class
 			} else {
 				$class_id   = isset($_POST['class_id_final']) ? absint($_POST['class_id_final']) : 0;
 				$section_id = isset($_POST['section_id_final']) ? absint($_POST['section_id_final']) : 0;
+			}
+
+			if ($attendance_by === 'subject' ) {
+				$subject_id = isset($_POST['subject_id_final']) ? absint($_POST['subject_id_final']) : 0;
 			}
 
 			$attendance_date = isset($_POST['attendance_date_final']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['attendance_date_final'])) : NULL;
@@ -910,10 +940,15 @@ class WLSM_Staff_Class
 					$status  = $status_ids[$student_id];
 
 					if (!empty($status)) {
-						$sql = 'INSERT INTO ' . WLSM_ATTENDANCE . ' (attendance_date, student_record_id, added_by, status) VALUES ("%s", %d, %d, "%s") ON DUPLICATE KEY UPDATE status = "%s", updated_at = "%s"';
 
-						$success = $wpdb->query($wpdb->prepare($sql, $attendance_date, $student_id, get_current_user_id(), $status, $status, current_time('Y-m-d H:i:s')));
-
+						if ($attendance_by === 'subject' ) {
+							$sql = 'INSERT INTO ' . WLSM_ATTENDANCE . ' (attendance_date, student_record_id, added_by, subject_id, status) VALUES ("%s", %d, %d, %d, "%s") ON DUPLICATE KEY UPDATE status = "%s", subject_id = %d, updated_at = "%s"';
+							$success = $wpdb->query($wpdb->prepare($sql, $attendance_date, $student_id, get_current_user_id(), $subject_id, $status, $status, $subject_id, current_time('Y-m-d H:i:s')));
+						} else {
+							$sql = 'INSERT INTO ' . WLSM_ATTENDANCE . ' (attendance_date, student_record_id, added_by, status) VALUES ("%s", %d, %d, "%s") ON DUPLICATE KEY UPDATE status = "%s", updated_at = "%s"';
+							$success = $wpdb->query($wpdb->prepare($sql, $attendance_date, $student_id, get_current_user_id(), $status, $status, current_time('Y-m-d H:i:s')));
+						}
+			
 						$buffer = ob_get_clean();
 						if (!empty($buffer)) {
 							throw new Exception($buffer);
@@ -931,7 +966,9 @@ class WLSM_Staff_Class
 								'student_id'      => $student_id,
 								'attendance_date' => $attendance_absent_date->format(WLSM_Config::date_format())
 							);
-
+							if ($attendance_by === 'subject' ) { 
+								$data['subject_id'] = $subject_id;
+							}
 							wp_schedule_single_event(time() + 30, 'wlsm_notify_for_absent_student', $data);
 						}
 					} else {
@@ -993,11 +1030,18 @@ class WLSM_Staff_Class
 				$class_id   = isset($_POST['class_id']) ? absint($_POST['class_id']) : 0;
 				$section_id = isset($_POST['section_id']) ? absint($_POST['section_id']) : 0;
 			}
+			
+			$attendance_by = isset($_POST['attendance_by']) ? sanitize_text_field($_POST['attendance_by']) : 'all';
+			$subject_id = isset($_POST['subject_id']) ? absint($_POST['subject_id']) : null ;
 
 			$year_month = isset($_POST['year_month']) ? DateTime::createFromFormat('F Y', sanitize_text_field($_POST['year_month'])) : NULL;
 
 			// Start validation.
 			$errors = array();
+
+			if( $attendance_by === 'subject' && empty($subject_id) ) {
+				$errors['subject_id'] = esc_html__('Please select a subject.', 'school-management');
+			}
 
 			if (empty($class_id)) {
 				$errors['class_id'] = esc_html__('Please select a class.', 'school-management');
@@ -1067,21 +1111,26 @@ class WLSM_Staff_Class
 					$all_student_ids_count = count($all_student_ids);
 
 					$place_holders = array_fill(0, $all_student_ids_count, '%s');
+					
+					$subject =  WLSM_M_Staff_Class::fetch_subject($school_id, $subject_id);
 
 					$all_student_ids_format = implode(', ', $place_holders);
+					$saved_attendance = NULL;
+					$prepare = [];
 
-					$prepare = array_merge(array($year, $month), $all_student_ids);
-
-					$saved_attendance = $wpdb->get_results($wpdb->prepare('SELECT student_record_id, attendance_date, status FROM ' . WLSM_ATTENDANCE . ' WHERE YEAR(attendance_date) = %d AND MONTH(attendance_date) = %d AND student_record_id IN (' . $all_student_ids_format . ')', $prepare));
-
+					if( $attendance_by === 'subject' ) {
+						$prepare = array_merge(array($year, $month, $subject_id), $all_student_ids);
+						$saved_attendance = $wpdb->get_results($wpdb->prepare('SELECT student_record_id, attendance_date, status FROM ' . WLSM_ATTENDANCE . ' WHERE YEAR(attendance_date) = %d AND MONTH(attendance_date) = %d AND subject_id = %d AND student_record_id IN (' . $all_student_ids_format . ')', $prepare));
+					} else {
+						$prepare = array_merge(array($year, $month), $all_student_ids);
+						$saved_attendance = $wpdb->get_results($wpdb->prepare('SELECT student_record_id, attendance_date, status FROM ' . WLSM_ATTENDANCE . ' WHERE YEAR(attendance_date) = %d AND MONTH(attendance_date) = %d AND student_record_id IN (' . $all_student_ids_format . ')', $prepare));
+					}
 					require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/print/attendance_sheet.php';
-				} else {
-				?>
+				} else { ?>
 					<div class="alert alert-warning wlsm-font-bold">
 						<i class="fas fa-exclamation-triangle"></i>
 						<?php esc_html_e('There is no student in this class or section.', 'school-management'); ?>
-					</div>
-<?php
+					</div> <?php
 				}
 				$html = ob_get_clean();
 
@@ -2182,6 +2231,21 @@ class WLSM_Staff_Class
 		);
 
 		echo json_encode($output);
+		die();
+	}
+
+	public static function fetch_subjects_by_class()
+	{
+		$current_user = WLSM_M_Role::can('manage_subjects');
+		if (!$current_user) {
+			die();
+		}
+		$school_id = $current_user['school']['id'];
+
+		$class_id = isset($_POST['class_id']) ? sanitize_text_field( $_POST['class_id'] ) : NULL;
+		$data = WLSM_M_Staff_Class::fetch_subject_query_by_class_id($school_id, $class_id);
+
+		echo json_encode($data);
 		die();
 	}
 

@@ -1,6 +1,7 @@
 (function($) {
 	'use strict';
 	$(document).ready(function() {
+
 		// Function: Initialize Datatable.
 		function wlsmInitializeTable(table, data, dataExport = false, disableOrdering = []) {
 			table.DataTable({
@@ -3985,6 +3986,47 @@
 			show_clear_date: true,
 			disable_time_picker: true
 		});
+		
+		$('#wlsm_class').on('change', function(e){   
+			// do your code here
+			let subjectSelect = $('#wlsm_subject');
+			let attendance_by = $('input[name="attendance_by"]:checked').val();
+			if( typeof attendance_by !== 'undefined' ) {
+				if( attendance_by === 'subject') {
+					var nonce = $(subjectSelect).data('nonce');
+					var classId =  $(this).val();
+					var data = {};
+					data['class_id']        = classId;
+					data['nonce']           = nonce;
+					data['action']          = 'wlsm-fetch-class-subjects';
+					if(nonce) { 
+						$.ajax({
+							data: data,
+							url: ajaxurl,
+							type: 'POST',
+							success: function(response) {
+								let sub = JSON.parse(response);
+								let subjectHtml = '';
+								sub.forEach(function(s) {
+									subjectHtml += '<option value="' + s.ID + '">' + s.subject_name + '</option>';
+								});
+								$(subjectSelect).html(subjectHtml);
+								$(subjectSelect).selectpicker('refresh');
+							},
+							error: function(response) {
+								// wlsmDisplayFormError(response, takeAttendanceFormId, manageAttendanceBtn);
+							},
+						});
+					}
+
+				}
+			}
+			// It will filter the element "Input_Id" from the "body" and apply "onChange effect" on it
+		});
+
+		// $('#wlsm_attendance_date').change(function (params) {
+			
+		// })
 
 		// Staff: Manage attendance.
 		var takeAttendanceFormId = '#wlsm-take-attendance-form';
@@ -3995,16 +4037,19 @@
 			var studentsAttendance = $('.wlsm-students-attendance');
 
 			var classId = $('#wlsm_class').val();
+			var subjectId = $('#wlsm_subject').val();
 			var sectionId = $('#wlsm_section').val();
 			var attendanceDate = $('#wlsm_attendance_date').val();
 			var nonce = $(this).data('nonce');
 
 			var data = {};
-			data['class_id'] = classId;
-			data['section_id'] = sectionId;
+			data['class_id']        = classId;
+			data['attendance_by']   = $('input[name="attendance_by"]:checked').val();
+			data['subject_id']      = subjectId;
+			data['section_id']      = sectionId;
 			data['attendance_date'] = attendanceDate;
-			data['nonce'] = nonce;
-			data['action'] = 'wlsm-manage-attendance';
+			data['nonce']           = nonce;
+			data['action']          = 'wlsm-manage-attendance';
 
 			if(nonce) {
 				$.ajax({
@@ -4094,25 +4139,41 @@
 			disable_time_picker: true
 		});
 
+		
+		$('input[name="attendance_by"]').change(function (params) {
+			$(this).val() === 'subject' ? $('.form-subject-select').show() : $('.form-subject-select').hide() ;
+		});
+		// var arr = [
+		// 	'input[name="attendance_by"]',
+		// 	''
+		// ];
+
 		// Staff: View attendance.
 		var viewAttendanceFormId = '#wlsm-view-attendance-form';
 		var viewAttendanceForm = $(viewAttendanceFormId);
 		var viewAttendanceBtn = $('#wlsm-view-attendance-btn');
 
 		$(document).on('click', '#wlsm-view-attendance-btn', function(e) {
-			var studentsAttendance = $('.wlsm-students-attendance');
 
+			var studentsAttendance = $('.wlsm-students-attendance');
+			
 			var classId = $('#wlsm_class').val();
 			var sectionId = $('#wlsm_section').val();
+			var subjectId = $('#wlsm_subject').val();
+			var attendance_by = $("input[name='attendance_by']:checked").val();
 			var yearMonth = $('#wlsm_attendance_year_month').val();
 			var nonce = $(this).data('nonce');
 
 			var data = {};
 			data['class_id'] = classId;
 			data['section_id'] = sectionId;
+			data['attendance_by'] = attendance_by;
 			data['year_month'] = yearMonth;
 			data['nonce'] = nonce;
 			data['action'] = 'wlsm-view-attendance';
+			if( attendance_by == 'subject') {
+				data['subject_id'] = subjectId;
+			}
 
 			if(nonce) {
 				$.ajax({
@@ -5730,7 +5791,6 @@
 
 						res.forEach(function(item) {
 							if (item.subject) {
-								console.log(item.subject);
 								var optstudy = '<option value="' + item.subject.ID + '">' + item.subject.subject_name + '</option>';
 								option_study.push(optstudy);
 							}

@@ -9,6 +9,20 @@ $gender = 'male';
 
 $routes = array();
 
+$school_registration_form_title    = '';
+$school_registration_dob           = '';
+$school_registration_religion      = '';
+$school_registration_caste         = '';
+$school_registration_blood_group   = '';
+$school_registration_phone         = '';
+$school_registration_city          = '';
+$school_registration_state         = '';
+$school_registration_country       = '';
+$school_registration_transport     = '';
+$school_registration_parent_detail = '';
+$school_registration_parent_login  = '';
+$school_registration_id_number     = '';
+
 if ( isset( $attr['school_id'] ) ) {
 	$school_id = absint( $attr['school_id'] );
 

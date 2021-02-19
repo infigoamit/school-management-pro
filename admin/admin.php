@@ -155,6 +155,8 @@ add_action( 'wp_ajax_wlsm-fetch-event-participants', array( 'WLSM_Staff_Class', 
 add_action( 'wp_ajax_wlsm-delete-event-participant', array( 'WLSM_Staff_Class', 'delete_event_participant' ) );
 
 // Staff: Subjects.
+
+add_action( 'wp_ajax_wlsm-fetch-class-subjects', array( 'WLSM_Staff_Class', 'fetch_subjects_by_class' ) );
 add_action( 'wp_ajax_wlsm-fetch-subjects', array( 'WLSM_Staff_Class', 'fetch_subjects' ) );
 add_action( 'wp_ajax_wlsm-save-subject', array( 'WLSM_Staff_Class', 'save_subject' ) );
 add_action( 'wp_ajax_wlsm-delete-subject', array( 'WLSM_Staff_Class', 'delete_subject' ) );

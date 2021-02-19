@@ -163,10 +163,13 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 						<label for="wlsm_student" class="wlsm-font-bold">
 							<?php esc_html_e( 'Students', 'school-management' ); ?>:
 						</label>
-						<select name="student[]" class="form-control selectpicker" id="wlsm_student" multiple data-live-search="true" data-actions-box="true" data-none-selected-text="<?php esc_attr_e( 'Select Students', 'school-management' ); ?>">
+						<select name="student[]" class="form-control selectpicker" id="wlsm_student" data-live-search="true" data-actions-box="true" data-none-selected-text="<?php esc_attr_e( 'Select Students', 'school-management' ); ?>">
 						</select>
 					</div>
 				</div>
+
+				<P class="text-danger"><?php esc_html_e( 'Note: To select all students only select class', 'school-management' ); ?> </P>
+				<P class="text-danger"><?php esc_html_e( 'To Select all class dont select anything ', 'school-management' ); ?></P>
 			</div>
 			
 

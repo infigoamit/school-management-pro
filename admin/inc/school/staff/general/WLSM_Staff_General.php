@@ -586,11 +586,11 @@ class WLSM_Staff_General
 			}
 
 			// Checks if section exists.
-			$section = WLSM_M_Staff_Class::get_section($school_id, $section_id, $class_school_id);
-			if (!$section) {
-				$errors['section_id'] = esc_html__('Section not found.', 'school-management');
-				wp_send_json_error($errors);
-			}
+			// $section = WLSM_M_Staff_Class::get_section($school_id, $section_id, $class_school_id);
+			// if (!$section) {
+			// 	$errors['section_id'] = esc_html__('Section not found.', 'school-management');
+			// 	wp_send_json_error($errors);
+			// }
 
 			if (!$auto_admission_number) {
 				// Checks if admission number already exists for this session.
