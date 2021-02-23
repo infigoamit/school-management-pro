@@ -5794,6 +5794,22 @@
 						});
 						subjects.html(subjts);
 						$('.wlsm-exam-papers-box').selectpicker();
+						// Exam paper date.
+						$('.wlsm_paper_date').Zebra_DatePicker({
+							format: wlsmdateformat,
+							readonly_element: false,
+							show_clear_date: true,
+							disable_time_picker: true
+						});
+
+						// Exam paper time.
+						$('.wlsm_paper_time').Zebra_DatePicker({
+							format: 'h:i a',
+							readonly_element: false,
+							show_clear_date: true,
+							disable_time_picker: false,
+							view: 'time'
+						});
 					}
 				});
 			} 

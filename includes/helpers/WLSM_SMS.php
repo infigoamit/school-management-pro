@@ -130,18 +130,20 @@ class WLSM_SMS {
 				return false;
 			}
 
-			$data = array(
-				"username"  => $username,
-				"password"  => $password,
-				"to"        => $number,
-				"from"      => $sender_id,
-				"msg"       => $message,
-				"type"      => 1,
-				"dnd_check" => 0,
-			);
+			// $data = array(
+			// 	"username"  => $username,
+			// 	"password"  => $password,
+			// 	"to"        => $number,
+			// 	"from"      => $sender_id,
+			// 	"msg"       => $message,
+			// 	"type"      => 1,
+			// 	"dnd_check" => 0,
+			// );
 
-			$response = wp_remote_post('https://www.smsstriker.com/API/sms.php', $data);
+			$response = wp_remote_post("https://www.smsstriker.com/API/sms.php?username=$username&password=$password&from=$sender_id&to=$number&msg=$message&type=1");
 			$result   = wp_remote_retrieve_body($response);
+
+			var_dump($response);die;
 
 			if ($result) {
 				return true;
