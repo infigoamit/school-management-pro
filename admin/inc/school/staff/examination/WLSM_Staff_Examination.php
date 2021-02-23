@@ -715,6 +715,8 @@ class WLSM_Staff_Examination {
 				$errors['classes[]'] = esc_html__( 'Please select at least one class.', 'school-management' );
 			}
 
+			// var_dump($subject_type); die;
+
 			if ( count( $errors ) < 1 ) {
 				// Exam papers.
 				if ( ! count( $paper_code ) ) {

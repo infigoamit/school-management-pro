@@ -5701,6 +5701,104 @@
 			}
 		});
 
+		$(document).on('change', '#wlsm_class_exam', function() {
+			var classId = $('#wlsm_class_exam').val();
+			// var nonce = $(this).data('nonce');
+			var subjects = $('.wlsm-exam-papers-box');
+			$('div.text-danger').remove();
+		
+			if(classId) {
+				var data = 'action=wlsm-get-class-exam-subjects&nonce='+'&class_id=' + classId;
+				
+				$.ajax({
+					type: 'POST',
+					url: ajaxurl,
+					data: data,
+					
+					success: function(res) {
+						var subjts  = [];
+						
+						res.forEach(function(item) {
+							
+							if (item) {
+								// console.log(item.subject);
+								var subj =
+								
+								
+								
+								'<div class="wlsm-exam-papers-box" data-subject-name="Subject Name" data-subject-name-placeholder="Enter subject name" data-room-number="Room Number" data-room-number-placeholder="Enter room number" data-subject-type="Subject Type" data-maximum-marks="Maximum Marks" data-maximum-marks-placeholder="Enter maximum marks" data-paper-code="Paper Code / Subject Code" data-paper-code-placeholder="Exam paper code" data-paper-date="Paper Date" data-paper-date-placeholder="Exam paper date" data-start-time="Start Time" data-start-time-placeholder="Exam paper start time" data-end-time="End Time" data-end-time-placeholder="Exam paper end time" data-subject-types="subject type">'+
+					
+								'<div class="wlsm-exam-paper-box card col" data-exam-paper="">'+
+									'<button type="button" class="btn btn-sm btn-danger wlsm-remove-exam-paper-btn"><i class="fas fa-times"></i></button>'+
+									
+									'<input type="hidden" name="paper_id[]" value="">'+
+			
+									'<div class="form-row">'+
+										'<div class="form-group col-sm-6 col-md-4">'+
+											'<label for="wlsm_subject_label_" class="wlsm-font-bold">'+
+												'Subject Name:'+
+											'</label>'+
+											'<input type="text" name="subject_label[]" class="form-control" id="wlsm_subject_label_" placeholder="Enter subject name" value='+ item.label+'>'+
+										'</div>'+
+										'<div class="form-group col-sm-6 col-md-3">'+
+											'<label for="wlsm_subject_type_" class="wlsm-font-bold">'+
+												'Subject Type:'+
+											'</label>'+
+											'<input type="text" name="subject_type[]" class="form-control" id="wlsm_subject_type_" placeholder="Enter subject name"  value='+ item.type+'>'+
+										'</div>'+
+										'<div class="form-group col-sm-6 col-md-2">'+
+											'<label for="wlsm_maximum_marks_" class="wlsm-font-bold">'+
+												'Maximum Marks:'+
+										'	</label>'+
+											'<input type="number" step="1" min="1" name="maximum_marks[]" class="form-control" id="wlsm_maximum_marks_" placeholder="Enter maximum marks" value="">'+
+										'</div>'+
+									'	<div class="form-group col-sm-6 col-md-3">'+
+										'	<label for="wlsm_paper_code_" class="wlsm-font-bold">'+
+												'Paper Code / Subject Code:'+
+										'	</label>'+
+										'	<input type="text" name="paper_code[]" class="form-control" id="wlsm_paper_code_" placeholder="Exam paper code" value='+ item.code+'>'+
+									'</div>'+
+									'<div class="form-group col-sm-6 col-md-3">'+
+											'<label for="wlsm_paper_date_" class="wlsm-font-bold">'+
+												'Paper Date:'+
+										'</label>'+
+										'<input type="text" name="paper_date[]" class="form-control wlsm_paper_date" id="wlsm_paper_date_" placeholder="Exam paper date" value="">'+
+										'</div>'+
+										'<div class="form-group col-sm-6 col-md-3">'+
+											'<label for="wlsm_start_time_" class="wlsm-font-bold">'+
+												'Start Time:'+
+										'	</label>'+
+										'	<input type="text" name="start_time[]" class="form-control wlsm_paper_time" id="wlsm_start_time_" placeholder="Exam paper start time" value="">'+
+										'</div>'+
+										'<div class="form-group col-sm-6 col-md-3">'+
+										'	<label for="wlsm_end_time_" class="wlsm-font-bold">'+
+											'	End Time:'+
+										'	</label>'+
+										'	<input type="text" name="end_time[]" class="form-control wlsm_paper_time" id="wlsm_end_time_" placeholder="Exam paper end time" value="">'+
+									'	</div>'+
+										'<div class="form-group col-sm-6 col-md-3">'+
+											'<label for="wlsm_room_number_" class="wlsm-font-bold">'+
+												'Room Number:'+
+										'	</label>'+
+											'<input type="text" name="room_number[]" class="form-control" id="wlsm_room_number_" placeholder="Exam room number" value="">'+
+										'</div>'+
+								'	</div>'+
+							'	</div>'+
+						'</div>';
+
+
+
+
+								subjts.push(subj);
+							}
+						});
+						subjects.html(subjts);
+						$('.wlsm-exam-papers-box').selectpicker();
+					}
+				});
+			} 
+			});
+
 		// Staff: General Actions.
 		$(document).on('change', '#wlsm_class', function() {
 			var classId = this.value;

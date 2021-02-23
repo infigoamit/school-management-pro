@@ -153,7 +153,7 @@ $subject_types = WLSM_Helper::subject_type_list();
 						<label for="wlsm_classes" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e( 'Class', 'school-management' ); ?>:
 						</label>
-						<select multiple name="classes[]" class="form-control selectpicker" id="wlsm_classes" data-actions-box="true" data-none-selected-text="<?php esc_attr_e( 'Select', 'school-management' ); ?>">
+						<select  name="classes[]" class="form-control selectpicker" id="wlsm_class_exam" data-actions-box="true" data-none-selected-text="<?php esc_attr_e( 'Select', 'school-management' ); ?>">
 							<?php foreach ( $classes as $class ) { ?>
 							<option <?php selected( in_array( $class->ID, $exam_classes ), true, true ); ?> value="<?php echo esc_attr( $class->ID ); ?>">
 								<?php echo esc_html( WLSM_M_Class::get_label_text( $class->label ) ); ?>

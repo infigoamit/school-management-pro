@@ -389,7 +389,7 @@ foreach ($routes_vehicles as $route_vehicle) {
 							<?php esc_html_e('Admission Detail', 'school-management'); ?>
 						</div>
 						<?php if ($student) { ?>
-							<h6 class="text-center text-danger"> <strong> <?php esc_html_e('Note: Make sure to menually genrate invoice according to that class as well ', 'school-management'); ?></strong></h6>
+							<h6 class="text-center text-danger"> <strong> <?php esc_html_e('Note: Make sure to manually generate invoice according to that class as well.', 'school-management'); ?></strong></h6>
 						<?php } ?>
 					</div>
 				</div>

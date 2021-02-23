@@ -180,6 +180,51 @@ class WLSM_Staff_General
 		}
 	}
 
+	public static function get_class_subjects_exam() {
+		$current_user = WLSM_M_Role::can(array('manage_exams'));
+
+		if (!$current_user) {
+			die();
+		}
+		$school_id = $current_user['school']['id'];
+		
+		try {
+			ob_start();
+			global $wpdb;
+
+			// if (!wp_verify_nonce($_POST['nonce'], 'get-class-exam-subjects')) {
+			// 	die();
+			// }
+
+			$class_id = isset($_POST['class_id']) ? absint($_POST['class_id']) : 0;
+
+			$subjects = WLSM_M_Staff_Class::get_class_subjects($school_id, $class_id);
+			$subjects = array_map(function ($subject) {
+				$subject->label = sprintf(
+					wp_kses(
+						/* translators: 1: subject label, 2: subject code */
+						_x('%1$s (%2$s)', 'Subject', 'school-management'),
+						array('span' => array('class' => array()))
+					),
+					esc_html(WLSM_M_Staff_Class::get_subject_label_text($subject->label)),
+					esc_html($subject->code)
+				);
+
+				return $subject;
+			}, $subjects);
+
+			wp_send_json($subjects);
+		} catch (Exception $exception) {
+			$buffer = ob_get_clean();
+			if (!empty($buffer)) {
+				$response = $buffer;
+			} else {
+				$response = $exception->getMessage();
+			}
+			wp_send_json(array());
+		}
+	}
+
 	public static function get_subject_teachers()
 	{
 		$current_user = WLSM_M_Role::can(array('manage_timetable', 'view_timetable', 'manage_live_classes'));

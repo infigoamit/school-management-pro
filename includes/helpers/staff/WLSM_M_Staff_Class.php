@@ -540,7 +540,7 @@ class WLSM_M_Staff_Class
 	public static function get_class_subjects($school_id, $class_id)
 	{
 		global $wpdb;
-		$subjects = $wpdb->get_results($wpdb->prepare('SELECT sj.ID, sj.label, sj.code FROM ' . WLSM_SUBJECTS . ' as sj
+		$subjects = $wpdb->get_results($wpdb->prepare('SELECT sj.ID, sj.label, sj.code, sj.type FROM ' . WLSM_SUBJECTS . ' as sj
 		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = sj.class_school_id
 		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
 		JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = cs.school_id

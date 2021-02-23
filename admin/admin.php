@@ -352,6 +352,9 @@ add_action( 'wp_ajax_wlsm-get-subject-teachers', array( 'WLSM_Staff_General', 'g
 // Bulk Action.
 add_action( 'wp_ajax_wlsm-bulk-action', array( 'WLSM_Bulk_Action', 'bulk_action' ) );
 
+// Examination class subjects fetch Action.
+add_action( 'wp_ajax_wlsm-get-class-exam-subjects', array( 'WLSM_Staff_General', 'get_class_subjects_exam' ) );
+
 // zoom api settings 
 
 add_action( 'show_user_profile', 'extra_user_profile_fields' );
