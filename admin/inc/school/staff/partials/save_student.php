@@ -125,6 +125,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 		}
 
 		$fees = WLSM_M_Staff_Accountant::fetch_student_fees($school_id, $id);
+		
 	}
 } else {
 	$current_user = WLSM_M_Role::can('manage_admissions');
@@ -765,7 +766,7 @@ foreach ($routes_vehicles as $route_vehicle) {
 				<div id="fees-box" class="wlsm-fees-box" data-fees-type-list="<?php echo !empty($fees) ? esc_attr(json_encode((array)$fees)) : ''; ?>" data-fee-type="<?php esc_attr_e('Fee Type', 'school-management'); ?>" data-fee-type-placeholder="<?php esc_attr_e('Enter fee type', 'school-management'); ?>" data-fee-period="<?php esc_attr_e('Period', 'school-management'); ?>" data-fee-amount="<?php esc_attr_e('Amount', 'school-management'); ?>" data-fee-amount-placeholder="<?php esc_attr_e('Enter amount', 'school-management'); ?>" data-fee-periods="<?php echo esc_attr(json_encode($fee_periods)); ?>">
 
 					<?php
-					if (count($fees)) {
+					if (count($fees) ) {
 						foreach ($fees as $key => $fee) {
 							$index = $key + 1;
 					?>

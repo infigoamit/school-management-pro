@@ -124,7 +124,7 @@ $fee_periods = WLSM_Helper::fee_period_list();
 					<div class="form-group col-md-6">
 						<input <?php checked($active_on_admission, 1, true); ?> class="form-check-input mt-1" type="checkbox" name="active_on_admission" id="wlsm_active_on_admission" value="1">
 						<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_active_on_admission">
-							<?php esc_html_e('Active On Admission Form?', 'school-management'); ?>
+							<?php esc_html_e('Active On Admission Form And Auto Generate Invoice On Admission', 'school-management'); ?>
 						</label>
 					</div>
 				</div>

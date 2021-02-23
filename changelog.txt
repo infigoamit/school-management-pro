@@ -1,4 +1,4 @@
-Version 7.7 [19-02-2021]
+Version 7.7 [23-02-2021]
 ========
 * Added  : Subject wise attendance
 * Fixed  : Multi school students registration shortcode notices.

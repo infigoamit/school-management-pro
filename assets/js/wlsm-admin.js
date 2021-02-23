@@ -5869,6 +5869,7 @@
 			var nonce = $(this).data('nonce');
 			var sections = $('#wlsm_section');
 			var subjects = $('#wlsm_subject_table');
+			var fee_box = $('#fees-box');
 			var subjects_study = $('#wlsm_subjects');
 			var fetchStudents = sections.data('fetch-students');
 			$('div.text-danger').remove();
@@ -5904,6 +5905,30 @@
 						});
 
 						res.forEach(function(item) {
+							console.log(item);
+							if (item.fees) {
+								var fee_type = '<div class="wlsm-fee-box card col " data-fee="' + item.fees.ID + '">' +
+								'<button type="button" class="btn btn-sm btn-danger wlsm-remove-fee-btn"><i class="fas fa-times"></i></button>' +
+								'<input type="hidden" name="fee_id[]" value="'+ item.fees.ID+'">' +
+								'<div class="form-row">' +
+									'<div class="form-group col-md-4">' +
+										'<label for="wlsm_fee_label_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Fee Type:' + '</label>' +
+										'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.fees.ID + '" placeholder="" value="'+ item.fees.label +'">' +
+									'</div>' +
+									'<div class="form-group col-md-4">' +
+										'<label for="wlsm_fee_period_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Period :' + '</label>'+
+										 '<input type="text" step="1" min="1" name="fee_period[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.period+'">' +
+									'</div>' +
+									'<div class="form-group col-md-4">' +
+										'<label for="wlsm_fee_amount_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span>Amont:' + '</label>' +
+										'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.amount+'">' +
+									'</div>' +
+								'</div>' +
+							'</div>';
+								option_study.push(fee_type);
+							}
+						});
+						res.forEach(function(item) {
 							if (item.subject) {
 								var optstudy = '<option value="' + item.subject.ID + '">' + item.subject.subject_name + '</option>';
 								option_study.push(optstudy);
@@ -5912,10 +5937,12 @@
 						
 						sections.html(options);
 						subjects.html(subjts);
+						fee_box.html(option_study);
 						subjects_study.html(option_study);
 						$('#wlsm_subject_table').selectpicker();
 						$('#wlsm_subject').selectpicker();
 						sections.selectpicker('refresh');
+						fee_box.selectpicker('refresh');
 						subjects_study.selectpicker('refresh');
 						if(fetchStudents) {
 							sections.trigger('change');

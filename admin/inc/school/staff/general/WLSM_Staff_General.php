@@ -47,6 +47,7 @@ class WLSM_Staff_General
 
 			$sections = WLSM_M_Staff_General::fetch_class_sections($class_school_id);
 			$subject = WLSM_M_Staff_Class::fetch_subject_query_by_class_id($school_id, $class_id);
+			$fees = WLSM_M_Staff_Accountant::fetch_fees_by_class($school_id, $class_id);
 			// var_dump($subject); die;
 			
 			
@@ -54,10 +55,10 @@ class WLSM_Staff_General
 				$all_sections = (object) array('ID' => '', 'label' => esc_html__('All Sections', 'school-management'));
 				array_unshift($sections, $all_sections);
 			}
-			$sections = array_map(function ($section, $subject) {
+			$sections = array_map(function ($section, $subject, $fees) {
 				$section->label = WLSM_M_Staff_Class::get_section_label_text($section->label);
-				return ['section'=> $section, 'subject'=> $subject];
-			}, $sections, $subject);
+				return ['section'=> $section, 'subject'=> $subject, 'fees' => $fees];
+			}, $sections, $subject, $fees);
 
 
 			wp_send_json($sections);
