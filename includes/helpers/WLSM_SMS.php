@@ -18,7 +18,7 @@ class WLSM_SMS {
 			'pob'             => esc_html__('Pob Talk ( Nigeria )', 'school-management'),
 			'vinuthan'        => esc_html__('vinuthan', 'school-management'),
 			'indiatext'       => esc_html__('India Text ( India )', 'school-management'),
-			'kivalosolutions' => esc_html__('kivalosolutions SMS ( Franse)', 'school-management'),
+			'kivalosolutions' => esc_html__('kivalosolutions SMS ( Ghana)', 'school-management'),
 			'gatewaysms'      => esc_html__('gatewaysms ( India )', 'school-management'),
 		);
 	}
