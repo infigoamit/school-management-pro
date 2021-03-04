@@ -9295,25 +9295,26 @@ class WLSM_Staff_General
 			$redirect_url          = isset($_POST['redirect_url']) ? esc_url_raw($_POST['redirect_url']) : '';
 			$create_invoice        = isset($_POST['registration_create_invoice']) ? (bool) ($_POST['registration_create_invoice']) : '';
 			$auto_admission_number = isset($_POST['registration_auto_admission_number']) ? (bool) ($_POST['registration_auto_admission_number']) : '';
-			$auto_roll_number = isset($_POST['registration_auto_roll_number']) ? (bool) ($_POST['registration_auto_roll_number']) : '';
+			$auto_roll_number      = isset($_POST['registration_auto_roll_number']) ? (bool) ($_POST['registration_auto_roll_number']) : '';
 			$success_message       = isset($_POST['registration_success_message']) ? sanitize_text_field($_POST['registration_success_message']) : '';
 			$admin_phone           = isset($_POST['registration_admin_phone']) ? sanitize_text_field($_POST['registration_admin_phone']) : '';
 			$admin_email           = isset($_POST['registration_admin_email']) ? sanitize_text_field($_POST['registration_admin_email']) : '';
 
 			// Registraistion form options
 
-			$dob           = isset($_POST['registration_dob']) ? (bool) ($_POST['registration_dob']) : '';
-			$religion      = isset($_POST['registration_religion']) ? (bool) ($_POST['registration_religion']) : '';
-			$caste         = isset($_POST['registration_caste']) ? (bool) ($_POST['registration_caste']) : '';
-			$blood_group   = isset($_POST['registration_blood_group']) ? (bool) ($_POST['registration_blood_group']) : '';
-			$phone         = isset($_POST['registration_phone']) ? (bool) ($_POST['registration_phone']) : '';
-			$city          = isset($_POST['registration_city']) ? (bool) ($_POST['registration_city']) : '';
-			$state         = isset($_POST['registration_state']) ? (bool) ($_POST['registration_state']) : '';
-			$country       = isset($_POST['registration_country']) ? (bool) ($_POST['registration_country']) : '';
-			$transport     = isset($_POST['registration_transport']) ? (bool) ($_POST['registration_transport']) : '';
-			$parent_detail = isset($_POST['registration_parent_detail']) ? (bool) ($_POST['registration_parent_detail']) : '';
-			$parent_login  = isset($_POST['registration_parent_login']) ? (bool) ($_POST['registration_parent_login']) : '';
-			$id_number     = isset($_POST['registration_id_number']) ? (bool) ($_POST['registration_id_number']) : '';
+			$dob            = isset($_POST['registration_dob']) ? (bool) ($_POST['registration_dob']) : '';
+			$religion       = isset($_POST['registration_religion']) ? (bool) ($_POST['registration_religion']) : '';
+			$caste          = isset($_POST['registration_caste']) ? (bool) ($_POST['registration_caste']) : '';
+			$blood_group    = isset($_POST['registration_blood_group']) ? (bool) ($_POST['registration_blood_group']) : '';
+			$phone          = isset($_POST['registration_phone']) ? (bool) ($_POST['registration_phone']) : '';
+			$city           = isset($_POST['registration_city']) ? (bool) ($_POST['registration_city']) : '';
+			$state          = isset($_POST['registration_state']) ? (bool) ($_POST['registration_state']) : '';
+			$country        = isset($_POST['registration_country']) ? (bool) ($_POST['registration_country']) : '';
+			$transport      = isset($_POST['registration_transport']) ? (bool) ($_POST['registration_transport']) : '';
+			$parent_detail  = isset($_POST['registration_parent_detail']) ? (bool) ($_POST['registration_parent_detail']) : '';
+			$parent_login   = isset($_POST['registration_parent_login']) ? (bool) ($_POST['registration_parent_login']) : '';
+			$id_number      = isset($_POST['registration_id_number']) ? (bool) ($_POST['registration_id_number']) : '';
+			$student_aprove = isset($_POST['student_aprove']) ? (bool) ($_POST['student_aprove']) : '';
 
 			// Settings Registration.
 			$settings_registration = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "registration"', $school_id));
@@ -9328,6 +9329,7 @@ class WLSM_Staff_General
 				'success_message'       => $success_message,
 				'admin_phone'           => $admin_phone,
 				'admin_email'           => $admin_email,
+				'student_aprove'        => $student_aprove,
 				'dob'           => $dob,
 				'religion'      => $religion,
 				'caste'         => $caste,

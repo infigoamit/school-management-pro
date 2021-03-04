@@ -287,6 +287,18 @@ class WLSM_P_Registration {
 					throw new Exception( $user_id->get_error_message() );
 				}
 
+				$settings_registration          = WLSM_M_Setting::get_settings_registration( $school_id );
+				$school_student_active           = $settings_registration['student_aprove'];
+				
+
+				if($school_student_active === true){
+
+					$is_active = 0;
+
+				}else {
+					$is_active = 1;
+				}
+
 				// Student record data.
 				$student_record_data = array(
 					'name'              => $name,
@@ -313,7 +325,7 @@ class WLSM_P_Registration {
 					'route_vehicle_id'  => $route_vehicle_id,
 					'user_id'           => $user_id,
 					'parent_user_id'    => $parent_user_id,
-					'is_active'         => 1,
+					'is_active'         => $is_active,
 					'from_front'        => 1,
 				);
 

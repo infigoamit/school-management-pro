@@ -731,19 +731,20 @@ class WLSM_M_Setting {
 		$admin_phone           = '';
 		$success_message       = '';
 
-			$dob           = 1;
-			$gender        = 1;
-			$religion      = 1;
-			$caste         = 1;
-			$blood_group   = 1;
-			$phone         = 1;
-			$city          = 1;
-			$state         = 1;
-			$country       = 1;
-			$transport     = 1;
-			$parent_detail = 1;
-			$parent_login  = 1;
-			$id_number     = 1;
+			$dob            = 1;
+			$student_aprove = 0;
+			$gender         = 1;
+			$religion       = 1;
+			$caste          = 1;
+			$blood_group    = 1;
+			$phone          = 1;
+			$city           = 1;
+			$state          = 1;
+			$country        = 1;
+			$transport      = 1;
+			$parent_detail  = 1;
+			$parent_login   = 1;
+			$id_number      = 1;
 
 		$default_success_message = esc_html__( 'Your registration has been submitted. Please check your email.', 'school-management' );
 
@@ -760,19 +761,20 @@ class WLSM_M_Setting {
 			$admin_phone           = isset( $settings['admin_phone'] ) ? $settings['admin_phone'] : '';
 			$success_message       = isset( $settings['success_message'] ) ? $settings['success_message'] : '';
 
-			$dob           = isset( $settings['dob'] ) ? $settings['dob'] : '';
-			$gender        = isset( $settings['gender'] ) ? $settings['gender'] : '';
-			$religion      = isset( $settings['religion'] ) ? $settings['religion'] : '';
-			$caste         = isset( $settings['caste'] ) ? $settings['caste'] : '';
-			$blood_group   = isset( $settings['blood_group'] ) ? $settings['blood_group'] : '';
-			$phone         = isset( $settings['phone'] ) ? $settings['phone'] : '';
-			$city          = isset( $settings['city'] ) ? $settings['city'] : '';
-			$state         = isset( $settings['state'] ) ? $settings['state'] : '';
-			$country       = isset( $settings['country'] ) ? $settings['country'] : '';
-			$transport     = isset( $settings['transport'] ) ? $settings['transport'] : '';
-			$parent_detail = isset( $settings['parent_detail'] ) ? $settings['parent_detail'] : '';
-			$parent_login  = isset( $settings['parent_login'] ) ? $settings['parent_login'] : '';
-			$id_number     = isset( $settings['id_number'] ) ? $settings['id_number'] : '';
+			$dob            = isset( $settings['dob'] ) ? $settings['dob'] : '';
+			$student_aprove = isset( $settings['student_aprove'] ) ? $settings['student_aprove'] : '';
+			$gender         = isset( $settings['gender'] ) ? $settings['gender'] : '';
+			$religion       = isset( $settings['religion'] ) ? $settings['religion'] : '';
+			$caste          = isset( $settings['caste'] ) ? $settings['caste'] : '';
+			$blood_group    = isset( $settings['blood_group'] ) ? $settings['blood_group'] : '';
+			$phone          = isset( $settings['phone'] ) ? $settings['phone'] : '';
+			$city           = isset( $settings['city'] ) ? $settings['city'] : '';
+			$state          = isset( $settings['state'] ) ? $settings['state'] : '';
+			$country        = isset( $settings['country'] ) ? $settings['country'] : '';
+			$transport      = isset( $settings['transport'] ) ? $settings['transport'] : '';
+			$parent_detail  = isset( $settings['parent_detail'] ) ? $settings['parent_detail'] : '';
+			$parent_login   = isset( $settings['parent_login'] ) ? $settings['parent_login'] : '';
+			$id_number      = isset( $settings['id_number'] ) ? $settings['id_number'] : '';
 
 		}
 
@@ -790,19 +792,20 @@ class WLSM_M_Setting {
 			'admin_email'           => $admin_email,
 			'admin_phone'           => $admin_phone,
 			'success_message'       => $success_message,
-			'dob'           => (bool)$dob,
-			'gender'        => (bool)$gender,
-			'religion'      => (bool)$religion,
-			'caste'         => (bool)$caste,
-			'blood_group'   => (bool)$blood_group,
-			'phone'         => (bool)$phone,
-			'city'          => (bool)$city,
-			'state'         => (bool)$state,
-			'country'       => (bool)$country,
-			'transport'     => (bool)$transport,
-			'parent_detail' => (bool)$parent_detail,
-			'id_number'     => (bool)$id_number,
-			'parent_login'  => (bool)$parent_login
+			'dob'            => (bool)$dob,
+			'student_aprove' => (bool)$student_aprove,
+			'gender'         => (bool)$gender,
+			'religion'       => (bool)$religion,
+			'caste'          => (bool)$caste,
+			'blood_group'    => (bool)$blood_group,
+			'phone'          => (bool)$phone,
+			'city'           => (bool)$city,
+			'state'          => (bool)$state,
+			'country'        => (bool)$country,
+			'transport'      => (bool)$transport,
+			'parent_detail'  => (bool)$parent_detail,
+			'id_number'      => (bool)$id_number,
+			'parent_login'   => (bool)$parent_login
 
 		);
 	}

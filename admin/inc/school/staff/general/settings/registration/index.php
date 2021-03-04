@@ -12,6 +12,8 @@ $school_registration_auto_roll_number      = $settings_registration['auto_roll_n
 $school_registration_admin_phone           = $settings_registration['admin_phone'];
 $school_registration_admin_email           = $settings_registration['admin_email'];
 $school_registration_success_message       = $settings_registration['success_message'];
+$school_student_aprove                     = $settings_registration['student_aprove'];
+
 
 $school_registration_dob           = $settings_registration['dob'];
 $school_gender                     = $settings_registration['gender'];
@@ -183,6 +185,21 @@ $school_registration_success_placeholders = WLSM_Helper::registration_success_me
 						</div>
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<label for="wlsm_registration_student_aprove" class="wlsm-font-bold"><?php esc_html_e('Student Approval', 'school-management'); ?>:</label>
+					</div>
+					<div class="col-md-9">
+						<div class="form-group">
+						<input <?php checked($school_student_aprove, true, true); ?> class="form-check-input mt-1" type="checkbox" name="student_aprove" id="wlsm_student_aprove" value="1">
+							<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_student_aprove">
+								<?php esc_html_e('If Checked Student Will Be Inactive After Registeration From Front End.  ( It Will Require Admin or Staff Aprovel )', 'school-management'); ?>
+							</label>
+						</div>
+					</div>
+				</div>
+				
 				<!-- Addmission form options -->
 				<div class="row">
 					<div class="col-md-3">

@@ -122,6 +122,12 @@ if ( ! $invoice ) {
 								<?php esc_html_e( 'Create Bulk Invoice', 'school-management' ); ?>
 							</label>
 						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" name="invoice_type" id="wlsm_bulk_invoice_fee_type" value="bulk_invoice_fee_type">
+							<label class="ml-1 form-check-label wlsm-font-bold" for="wlsm_bulk_invoice_fee_type">
+								<?php esc_html_e( 'Create single sudent Invoices (With fee type)', 'school-management' ); ?>
+							</label>
+						</div>
 					</div>
 				</div>
 
