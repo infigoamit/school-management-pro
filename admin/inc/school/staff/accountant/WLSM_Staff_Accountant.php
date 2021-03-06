@@ -375,6 +375,13 @@ class WLSM_Staff_Accountant {
 			$invoice_due_date    = isset($_POST['invoice_due_date']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['invoice_due_date'])) : NULL;
 			$partial_payment     = isset($_POST['partial_payment']) ? (bool) $_POST['partial_payment'] : 0;
 
+
+			// Fees.
+			$fee_id     = (isset($_POST['fee_id']) && is_array($_POST['fee_id'])) ? $_POST['fee_id'] : array();
+			$fee_label  = (isset($_POST['fee_label']) && is_array($_POST['fee_label'])) ? $_POST['fee_label'] : array();
+			$fee_period = (isset($_POST['fee_period']) && is_array($_POST['fee_period'])) ? $_POST['fee_period'] : array();
+			$fee_amount = (isset($_POST['fee_amount']) && is_array($_POST['fee_amount'])) ? $_POST['fee_amount'] : array();
+
 			if (!$invoice_id) {
 				$invoice_type = isset($_POST['invoice_type']) ? sanitize_text_field($_POST['invoice_type']) : '';
 			}
@@ -415,7 +422,7 @@ class WLSM_Staff_Accountant {
 			}
 
 			if (!$invoice_id) {
-				if (!in_array($invoice_type, array('single_invoice', 'bulk_invoice'))) {
+				if (!in_array($invoice_type, array('single_invoice', 'bulk_invoice', 'single_invoice_fee_type'))) {
 					throw new Exception(esc_html__('Please select either single invoice or bulk invoice option.', 'school-management'));
 				}
 
@@ -434,6 +441,67 @@ class WLSM_Staff_Accountant {
 
 					if (!$student) {
 						throw new Exception(esc_html__('Student not found.', 'school-management'));
+					}
+
+					if ($collect_invoice_payment) {
+						$payment_amount = isset($_POST['payment_amount']) ? WLSM_Config::sanitize_money($_POST['payment_amount']) : 0;
+						$payment_method = isset($_POST['payment_method']) ? sanitize_text_field($_POST['payment_method']) : '';
+						$transaction_id = isset($_POST['transaction_id']) ? sanitize_text_field($_POST['transaction_id']) : '';
+						$payment_note   = isset($_POST['payment_note']) ? sanitize_text_field($_POST['payment_note']) : '';
+
+						$due = WLSM_M_Invoice::get_due_amount(
+							array(
+								'total'    => $invoice_amount,
+								'discount' => $invoice_discount,
+							)
+						);
+
+						$errors = self::validate_invoice_payment($errors, $partial_payment, $due, $payment_amount, $payment_method);
+					}
+				} else if ('single_invoice_fee_type' === $invoice_type) {
+					$student_id = isset($_POST['student']) ? absint($_POST['student']) : 0;
+
+					$collect_invoice_payment = isset($_POST['collect_invoice_payment']) ? (bool) $_POST['collect_invoice_payment'] : 0;
+
+					if (empty($student_id)) {
+						$errors['student'] = esc_html__('Please select a student.', 'school-management');
+						wp_send_json_error($errors);
+					}
+
+					// Checks if student exists.
+					$student = WLSM_M_Staff_General::get_student($school_id, $session_id, $student_id, true, true);
+					
+					if (!$student) {
+						throw new Exception(esc_html__('Student not found.', 'school-management'));
+					}
+
+					// Student fees.
+					if (count($fee_label)) {
+						if (1 !== count(array_unique(array(count($fee_label), count($fee_period), count($fee_amount))))) {
+							wp_send_json_error(esc_html__('Invalid fees.', 'school-management'));
+						} elseif (count($fee_label) !== count(array_unique($fee_label))) {
+							wp_send_json_error(esc_html__('Fee type must be different.', 'school-management'));
+						} else {
+							foreach ($fee_label as $key => $value) {
+								$fee_label[$key] = sanitize_text_field($fee_label[$key]);
+								$fee_period[$key]  = sanitize_text_field($fee_period[$key]);
+								$fee_amount[$key] = WLSM_Config::sanitize_money($fee_amount[$key]);
+
+								if (empty($fee_label[$key])) {
+									wp_send_json_error(esc_html__('Please specify fee type.', 'school-management'));
+								} elseif (strlen($fee_label[$key]) > 100) {
+									wp_send_json_error(esc_html__('Maximum length cannot exceed 100 characters.', 'school-management'));
+								}
+
+								if (!in_array($fee_period[$key], array_keys(WLSM_Helper::fee_period_list()))) {
+									wp_send_json_error(esc_html__('Please specify fee period.', 'school-management'));
+								}
+
+								if ($fee_amount[$key] < 0) {
+									$fee_amount[$key] = 0;
+								}
+							}
+						}
 					}
 
 					if ($collect_invoice_payment) {
@@ -580,6 +648,34 @@ class WLSM_Staff_Accountant {
 
 							WLSM_M_Staff_Accountant::refresh_invoice_status($invoice_id);
 						}
+					} else if (('single_invoice_fee_type' === $invoice_type)) {
+						$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
+
+						$invoice_data['invoice_number']    = $invoice_number;
+						$invoice_data['student_record_id'] = $student_id;
+
+						$invoice_data['added_by'] = get_current_user_id();
+
+						$invoice_data['created_at'] = current_time('Y-m-d H:i:s');
+
+						// Invoice data.
+						$fee_list = array(
+							'label'           => $student_fee_data['label'],
+							'amount'          => $student_fee_data['amount'],
+							'date_issued'     => $student_fee_data['created_at'],
+							'due_date'        => $student_fee_data['created_at'],
+							'partial_payment' => 0,
+						);
+						$invoice_data['fee_list'] = $fee_list;
+						?><pre>
+						<?php var_dump($invoice_data);?>
+						</pre><?php die; 
+
+						$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
+
+						$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
+
+						$single_invoice_id = $wpdb->insert_id;
 					}
 				}
 

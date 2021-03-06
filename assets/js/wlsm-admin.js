@@ -3323,6 +3323,7 @@
 		var invoicePayments = $('.wlsm-invoice-payments');
 		var invoiceStudent = $('#wlsm_student');
 		var invoiceStudentLabel = $('label[for="wlsm_student"]');
+		var fee_box = $('#fee-section');
 
 		$(document).on('change', 'input[name="invoice_type"]', function(event) {
 			var invoiceType = this.value;
@@ -3330,11 +3331,19 @@
 			invoiceStudent.selectpicker('destroy');
 			if('bulk_invoice' === invoiceType) {
 				invoicePayments.hide();
+				fee_box.hide();
 				invoiceStudent.attr('name', 'student[]');
 				invoiceStudent.attr('multiple', 'multiple');
 				invoiceStudentLabel.html(invoiceStudentLabel.data('bulk-label'));
+			} else if('single_invoice_fee_type' === invoiceType) {
+				fee_box.fadeIn();
+				invoicePayments.hide();
+				invoiceStudent.attr('name', 'student');
+				invoiceStudent.removeAttr('multiple');
+				invoiceStudentLabel.html(invoiceStudentLabel.data('single-label'));
 			} else {
 				invoicePayments.fadeIn();
+				fee_box.hide();
 				invoiceStudent.attr('name', 'student');
 				invoiceStudent.removeAttr('multiple');
 				invoiceStudentLabel.html(invoiceStudentLabel.data('single-label'));
@@ -5928,12 +5937,12 @@
 								option_study.push(fee_type);
 							}
 						});
-						res.forEach(function(item) {
-							if (item.subject) {
-								var optstudy = '<option value="' + item.subject.ID + '">' + item.subject.subject_name + '</option>';
-								option_study.push(optstudy);
-							}
-						});
+						// res.forEach(function(item) {
+						// 	if (item.subject) {
+						// 		var optstudy = '<option value="' + item.subject.ID + ' id="sub_hide"">' + item.subject.subject_name + '</option>';
+						// 		option_study.push(optstudy);
+						// 	}
+						// });
 						
 						sections.html(options);
 						subjects.html(subjts);
