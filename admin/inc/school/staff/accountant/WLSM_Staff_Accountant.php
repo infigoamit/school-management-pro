@@ -649,6 +649,35 @@ class WLSM_Staff_Accountant {
 							WLSM_M_Staff_Accountant::refresh_invoice_status($invoice_id);
 						}
 					} else if (('single_invoice_fee_type' === $invoice_type)) {
+						// Fees.
+					$place_holders_fee_labels = array();
+
+					$fee_order = 10;
+					foreach ($fee_label as $key => $value) {
+						array_push($place_holders_fee_labels, '%s');
+						$fee_order++;
+
+						// Student fee data.
+						$student_fee_data = array(
+							'amount'    => $fee_amount[$key],
+							'period'    => $fee_period[$key],
+							'label'     => $fee_label[$key],
+							'fee_order' => $fee_order,
+						);
+							// Invoice data.
+							$invoice_data = array(
+								'label'           => $student_fee_data['label'],
+								'period'          => $student_fee_data['period'],
+								'amount'          => $student_fee_data['amount'],
+								'partial_payment' => 0,
+							);
+						}
+
+						?><pre>
+						<?php var_dump($invoice_data);?>
+						</pre><?php die; 
+
+
 						$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
 
 						$invoice_data['invoice_number']    = $invoice_number;
@@ -667,9 +696,7 @@ class WLSM_Staff_Accountant {
 							'partial_payment' => 0,
 						);
 						$invoice_data['fee_list'] = $fee_list;
-						?><pre>
-						<?php var_dump($invoice_data);?>
-						</pre><?php die; 
+						
 
 						$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
 
