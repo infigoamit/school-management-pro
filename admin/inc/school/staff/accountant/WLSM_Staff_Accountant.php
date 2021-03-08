@@ -651,7 +651,7 @@ class WLSM_Staff_Accountant {
 					} else if (('single_invoice_fee_type' === $invoice_type)) {
 						// Fees.
 					$place_holders_fee_labels = array();
-
+					$list_data = array();
 					$fee_order = 10;
 					foreach ($fee_label as $key => $value) {
 						array_push($place_holders_fee_labels, '%s');
@@ -665,44 +665,37 @@ class WLSM_Staff_Accountant {
 							'fee_order' => $fee_order,
 						);
 							// Invoice data.
-							$invoice_data = array(
+							$fee_data = array(
 								'label'           => $student_fee_data['label'],
 								'period'          => $student_fee_data['period'],
 								'amount'          => $student_fee_data['amount'],
 								'partial_payment' => 0,
 							);
+
+							array_push($list_data, $fee_data );
 						}
 
-						?><pre>
-						<?php var_dump($invoice_data);?>
-						</pre><?php die; 
-
-
+						$list_data_fee = serialize($list_data);
+					
+						$invoice_data['fee_list'] = $list_data_fee;
 						$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
 
 						$invoice_data['invoice_number']    = $invoice_number;
 						$invoice_data['student_record_id'] = $student_id;
+						
 
 						$invoice_data['added_by'] = get_current_user_id();
 
 						$invoice_data['created_at'] = current_time('Y-m-d H:i:s');
 
-						// Invoice data.
-						$fee_list = array(
-							'label'           => $student_fee_data['label'],
-							'amount'          => $student_fee_data['amount'],
-							'date_issued'     => $student_fee_data['created_at'],
-							'due_date'        => $student_fee_data['created_at'],
-							'partial_payment' => 0,
-						);
-						$invoice_data['fee_list'] = $fee_list;
 						
-
+					
+						// Invoice data.
 						$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
-
 						$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
-
 						$single_invoice_id = $wpdb->insert_id;
+
+						
 					}
 				}
 

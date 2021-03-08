@@ -3324,6 +3324,7 @@
 		var invoiceStudent = $('#wlsm_student');
 		var invoiceStudentLabel = $('label[for="wlsm_student"]');
 		var fee_box = $('#fee-section');
+		fee_box.hide();
 
 		$(document).on('change', 'input[name="invoice_type"]', function(event) {
 			var invoiceType = this.value;

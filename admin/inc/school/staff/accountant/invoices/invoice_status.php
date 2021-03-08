@@ -113,5 +113,30 @@ $due = $invoice->payable - $invoice->paid;
 				</ul>
 			</div>
 		</div>
+		<?php 
+		$fee_list = unserialize($invoice->fee_list);
+		?>
+		<?php if ($fee_list): ?>
+		<div class="table-responsive w-100">
+			<table class="table table-bordered wlsm-view-fee-structure">
+				<thead>
+					<tr>
+						<th class="text-nowrap"><?php esc_html_e( 'Fee Type', 'school-management' ); ?></th>
+						<th class="text-nowrap"><?php esc_html_e( 'Period', 'school-management' ); ?></th>
+						<th class="text-nowrap"><?php esc_html_e( 'Amount', 'school-management' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $fee_list as $fee ) { ?>
+					<tr>
+						<td><?php echo esc_html( ( $fee['label'] ) ); ?></td>
+						<td><?php echo esc_html( ( $fee['period'] ) ); ?></td>
+						<td><?php echo esc_html( ( $fee['amount']) ); ?></td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+		<?php endif ?>
 	</div>
 </div>

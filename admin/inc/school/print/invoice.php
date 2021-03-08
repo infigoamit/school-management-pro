@@ -105,11 +105,37 @@ $due = $invoice->payable - $invoice->paid;
          <!-- begin invoice-content -->
          <div class="invoice-content">
             <!-- begin table-responsive -->
+
+		<?php 
+		$fee_list = unserialize($invoice->fee_list);
+		?>
+		<?php if ($fee_list): ?>
+		<div class="table-responsive w-100">
+			<table class="table table-bordered wlsm-view-fee-structure">
+				<thead>
+					<tr>
+						<th class="text-nowrap"><?php esc_html_e( 'Fee Type', 'school-management' ); ?></th>
+						<!-- <th class="text-nowrap"><?php esc_html_e( 'Period', 'school-management' ); ?></th> -->
+						<th class="text-nowrap"><?php esc_html_e( 'Amount', 'school-management' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $fee_list as $fee ) { ?>
+					<tr>
+						<td><?php echo esc_html( ( $fee['label'] ) ); ?></td>
+						<!-- <td><?php echo esc_html( ( $fee['period'] ) ); ?></td> -->
+						<td><?php echo esc_html( ( $fee['amount']) ); ?></td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+		<?php endif ?>
             <div class="table-responsive">
                <table class="table table-invoice">
                   <thead>
                      <tr>
-                        <th><?php esc_html_e( 'Amount', 'school-management' ); ?></th>
+                        <th class="text-center"><?php esc_html_e( 'Total Amount', 'school-management' ); ?></th>
                         <th class="text-center" ><?php esc_html_e( 'Discount', 'school-management' ); ?></th>
                         <th class="text-center" ><?php esc_html_e( 'Payable', 'school-management' ); ?></th>
 						<th class="text-center" ><?php esc_html_e( 'Due', 'school-management' ); ?></th>
@@ -118,6 +144,7 @@ $due = $invoice->payable - $invoice->paid;
                      </tr>
                   </thead>
                   <tbody>
+				 
                      <tr>
                         <td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
 						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->discount ) ); ?></td>
