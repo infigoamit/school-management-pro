@@ -749,7 +749,7 @@ class WLSM_M_Staff_General {
 			$roll_number = $wpdb->get_var( $wpdb->prepare( 'SELECT sr.roll_number FROM ' . WLSM_STUDENT_RECORDS . ' as sr
 				JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
 				JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = se.class_school_id
-				WHERE cs.school_id = %d AND sr.session_id = %d AND cs.class_id = %d AND sr.roll_number IS NOT NULL AND sr.roll_number != "" AND sr.roll_number REGEXP "^[0-9]+$" GROUP BY sr.ID ORDER BY sr.roll_number DESC LIMIT 1', $school_id, $session_id, $class_id ) );
+				WHERE cs.school_id = %d AND sr.session_id = %d AND cs.class_id = %d AND sr.roll_number IS NOT NULL AND sr.roll_number != "" AND sr.roll_number REGEXP "^[0-9]+$" GROUP BY sr.ID ORDER BY sr.ID DESC LIMIT 1', $school_id, $session_id, $class_id ) );
 
 			// If roll number is not found in database, set it to 0.
 			if ( ! $roll_number ) {

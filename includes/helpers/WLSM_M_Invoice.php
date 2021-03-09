@@ -162,6 +162,7 @@ class WLSM_M_Invoice {
 			'sslcommerz'    => esc_html__( 'SSLCOMMERZ', 'school-management' ),
 			'paystack'      => esc_html__( 'Paystack', 'school-management' ),
 			'paytm'         => esc_html__( 'Paytm', 'school-management' ),
+			'authorize'     => esc_html__( 'Authorize', 'school-management' ),
 		);
 
 		if ( array_key_exists( $key, $all_payment_methods ) ) {
