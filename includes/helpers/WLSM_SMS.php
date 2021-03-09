@@ -652,11 +652,7 @@ class WLSM_SMS {
 
 			$response = wp_remote_post('https://api.textlocal.in/send/', $data);
 			$result   = wp_remote_retrieve_body($response);
-			?><pre>
-			<?php var_dump($response);?>
-			</pre><?php die; 
-			
-
+	
 			if ($result) {
 				return true;
 			}

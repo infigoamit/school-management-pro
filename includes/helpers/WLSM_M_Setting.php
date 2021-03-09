@@ -1358,6 +1358,29 @@ class WLSM_M_Setting {
 		);
 	}
 
+	public static function get_settings_authorize( $school_id ) {
+		global $wpdb;
+
+		$enable              = 0;
+		$authorize_public_key = NULL;
+		$authorize_secret_key = NULL;
+
+		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "authorize"', $school_id ) );
+
+		if ( $settings ) {
+			$settings            = unserialize( $settings->setting_value );
+			$enable              = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
+			$authorize_public_key = isset( $settings['authorize_public_key'] ) ? $settings['authorize_public_key'] : '';
+			$authorize_secret_key = isset( $settings['authorize_secret_key'] ) ? $settings['authorize_secret_key'] : '';
+		}
+
+		return array(
+			'enable'              => $enable,
+			'authorize_public_key' => $authorize_public_key,
+			'authorize_secret_key' => $authorize_secret_key,
+		);
+	}
+
 	public static function get_settings_bank_transfer( $school_id ) {
 		global $wpdb;
 

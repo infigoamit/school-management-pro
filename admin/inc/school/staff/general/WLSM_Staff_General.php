@@ -8932,6 +8932,10 @@ class WLSM_Staff_General
 			$paystack_public_key = isset($_POST['paystack_public_key']) ? sanitize_text_field($_POST['paystack_public_key']) : '';
 			$paystack_secret_key = isset($_POST['paystack_secret_key']) ? sanitize_text_field($_POST['paystack_secret_key']) : '';
 
+			$authorize_enable     = isset($_POST['authorize_enable']) ? (bool) ($_POST['authorize_enable']) : 0;
+			$authorize_public_key = isset($_POST['authorize_public_key']) ? sanitize_text_field($_POST['authorize_public_key']) : '';
+			$authorize_secret_key = isset($_POST['authorize_secret_key']) ? sanitize_text_field($_POST['authorize_secret_key']) : '';
+
 			$paytm_enable           = isset($_POST['paytm_enable']) ? (bool) ($_POST['paytm_enable']) : 0;
 			$paytm_merchant_id      = isset($_POST['paytm_merchant_id']) ? sanitize_text_field($_POST['paytm_merchant_id']) : '';
 			$paytm_merchant_key     = isset($_POST['paytm_merchant_key']) ? sanitize_text_field($_POST['paytm_merchant_key']) : '';
@@ -9126,6 +9130,32 @@ class WLSM_Staff_General
 					array('ID'            => $paystack->ID)
 				);
 			}
+
+				// authorize.
+				$authorize = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "authorize"', $school_id));
+
+				$authorize_data = array(
+					'enable'              => $authorize_enable,
+					'authorize_public_key' => $authorize_public_key,
+					'authorize_secret_key' => $authorize_secret_key,
+				);
+	
+				if (!$authorize) {
+					$wpdb->insert(
+						WLSM_SETTINGS,
+						array(
+							'setting_key'   => 'authorize',
+							'setting_value' => serialize($authorize_data),
+							'school_id'     => $school_id,
+						)
+					);
+				} else {
+					$wpdb->update(
+						WLSM_SETTINGS,
+						array('setting_value' => serialize($authorize_data)),
+						array('ID'            => $authorize->ID)
+					);
+				}
 
 			// Paytm.
 			$paytm = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "paytm"', $school_id));
