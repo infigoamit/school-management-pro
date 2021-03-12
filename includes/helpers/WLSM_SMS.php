@@ -490,7 +490,6 @@ class WLSM_SMS {
 
 	public static function nexmo($school_id, $message, $numbers) {
 		require_once WLSM_PLUGIN_DIR_PATH . 'includes/vendor/autoload.php';
-
 		try {
 			$nexmo      = WLSM_M_Setting::get_settings_nexmo($school_id);
 			$api_key    = $nexmo['api_key'];

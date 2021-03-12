@@ -214,6 +214,24 @@
 				}
 				formData.append('bank_transfer_receipt', $('#wlsm_bank_transfer_receipt')[0].files[0]);
 			}
+			if('authorize' === paymentMethod) {
+				
+				var authorizeCardNumber = $('#wlsm_authorize_card_number');
+				if(authorizeCardNumber) {
+					data['authorize_card_number'] = authorizeCardNumber.val();
+					formData.append('authorize_card_number', data['authorize_card_number']);
+				}
+				var authorizeExpDdate = $('#wlsm_authorize_exp_date');
+				if(authorizeExpDdate) {
+					data['authorize_exp_date'] = authorizeExpDdate.val();
+					formData.append('authorize_exp_date', data['authorize_exp_date']);
+				}
+				var authorizeCVC = $('#wlsm_authorize_cvc');
+				if(authorizeCVC) {
+					data['authorize_cvc'] = authorizeCVC.val();
+					formData.append('authorize_cvc', data['authorize_cvc']);
+				}
+			}
 
 			if(nonce) {
 				$.ajax({
@@ -433,6 +451,68 @@
 			}
 		});
 
+		$(document).on('click', '#wlsm-authorize-btn', function(e) {
+			var payInvoiceAmountSectionId = '#wlsm-pay-invoice-amount-section';
+			var payInvoiceAmountBtn = $(this);
+		
+			var payInvoiceAmount = $('.wlsm-pay-invoice-amount');
+		
+			var invoiceId     = $('#wlsm_invoice_id').val();
+			var paymentAmount = $('#wlsm_payment_amount').val();
+			var cardNumber    = $('#wlsm_authorize_card_number').val();
+			var cardExp       = $('#wlsm_authorize_exp_date').val();
+			var cardCvc       = $('#wlsm_authorize_cvc').val();
+			var paymentMethod = $('input[name="payment_method"]:checked').val();
+		 
+		
+			var data = {};
+			data['invoice_id']            = invoiceId;
+			data['payment_amount']        = paymentAmount;
+			data['authorize_card_number'] = cardNumber;
+			data['authorize_exp_date']    = cardExp;
+			data['authorize_cvc']         = cardCvc;
+			data['payment_method']        = paymentMethod;
+			data['current_page_url']      = window.location.href;
+			
+			data['action'] = 'wlsm-p-pay-with-authorize';
+		
+			var formData = new FormData();
+			formData.append('invoice_id', data['invoice_id']);
+			formData.append('payment_amount', data['payment_amount']);
+			formData.append('authorize_card_number', data['authorize_card_number']);
+			formData.append('authorize_exp_date', data['authorize_exp_date']);
+			formData.append('authorize_cvc', data['authorize_cvc']);
+			formData.append('payment_method', data['payment_method']);
+			formData.append('current_page_url', data['current_page_url']);
+			formData.append('nonce', data['nonce']);
+			formData.append('action', data['action']);
+		
+			$.ajax({
+				data: formData,
+				url: wlsmajaxurl,
+				type: 'POST',
+				beforeSend: function() {
+					return wlsmBeforeSubmit(payInvoiceAmountBtn);
+				},
+				success: function(response) {
+					if(response.success) {
+						toastr.success(response.data.message);
+						window.location.reload();
+					} else {
+						wlsmDisplayFormErrors(response, payInvoiceAmountSectionId);
+					}
+				},
+				error: function(response) {
+					wlsmDisplayFormError(response, payInvoiceAmountSectionId, payInvoiceAmountBtn);
+				},
+				complete: function(event, xhr, settings) {
+					wlsmComplete(payInvoiceAmountBtn);
+				},
+					contentType: false,
+					processData: false
+			});
+		});
+
 		// On change payment method.
 		$(document).on('change', '#wlsm-pay-invoice-amount-section input[name="payment_method"]', function(e) {
 			var paymentMethod = this.value;
@@ -443,6 +523,18 @@
 				bankTransferDetail.hide();
 			}
 		});
+
+			// On change payment method.
+			$(document).on('change', '#wlsm-pay-invoice-amount-section input[name="payment_method"]', function(e) {
+				var paymentMethod = this.value;
+				var authorizeDetail = $('.wlsm-authorize-detail');
+				
+				if('authorize' === paymentMethod) {
+					authorizeDetail.show();
+				} else {
+					authorizeDetail.hide();
+				}
+			});
 
 		// Save account settings.
 		var saveAccountSettingsFormId = '#wlsm-save-settings-form';

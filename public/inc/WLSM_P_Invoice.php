@@ -13,8 +13,16 @@ require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_General
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_Class.php';
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_Accountant.php';
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/libs/sslcommerz/SslCommerzNotification.php';
-use SslCommerz\SslCommerzNotification;
+// require WLSM_PLUGIN_DIR_PATH . 'includes/libs/authorize/vendor/autoload.php';
 
+require WLSM_PLUGIN_DIR_PATH . 'includes/libs/authorize/vendor/autoload.php'; 
+use net\authorize\api\contract\v1 as AnetAPI;
+use net\authorize\api\controller as AnetController;
+
+define("AUTHORIZENET_LOG_FILE","phplog");
+
+
+use SslCommerz\SslCommerzNotification; 
 class WLSM_P_Invoice
 {
 	public static function get_students_with_pending_invoices()
@@ -483,15 +491,6 @@ class WLSM_P_Invoice
 					<?php
 						$payment_methods_count++;
 					}
-					if ($school_authorize_enable && WLSM_Payment::currency_supports_authorize($currency)) { ?>
-						<br>
-						<label class="radio-inline wlsm-mr-3">
-							<input type="radio" name="payment_method" class="wlsm-mr-2" value="authorize" id="wlsm-payment-authorize">
-							<?php echo esc_html(WLSM_M_Invoice::get_payment_method_text('authorize')); ?>
-						</label>
-					<?php
-						$payment_methods_count++;
-					}
 					if ($school_paytm_enable && WLSM_Payment::currency_supports_paytm($currency)) { ?>
 						<br>
 						<label class="radio-inline wlsm-mr-3">
@@ -543,6 +542,42 @@ class WLSM_P_Invoice
 						</div>
 					<?php
 					}
+					
+					if ($school_authorize_enable) { ?>
+						<br>
+						<label class="radio-inline wlsm-mr-3">
+							<input type="radio" name="payment_method" class="wlsm-mr-2" value="authorize" id="wlsm-payment-authorize">
+							<?php echo esc_html(WLSM_M_Invoice::get_payment_method_text('authorize')); ?>
+						</label>
+						<?php
+						$payment_methods_count++;
+						?>
+						<div class="wlsm-authorize-detail " style="display:none">
+							<?php if (!empty($school_authorize_message)) { ?>
+								<p>
+									<?php echo esc_html($school_authorize_message); ?>
+								</p>
+							<?php } ?>
+							<form id="wlsm-authorize-form">
+								<div class="wlsm-form-group">
+									<label class="wlsm-font-bold"><?php esc_html_e('Card Number'); ?>:</label>
+									<br>
+									<input type="text" name="authorize_card_number" class="wlsm-form-control" id="wlsm_authorize_card_number" >
+								</div>
+								<div class="wlsm-form-group">
+									<label class="wlsm-font-bold"><?php esc_html_e('Expiry (MM/YY) '); ?>:</label>
+									<br>
+									<input type="text" name="authorize_exp_date" class="wlsm-form-control" id="wlsm_authorize_exp_date" >
+								</div>
+								<div class="wlsm-form-group">
+									<label class="wlsm-font-bold"><?php esc_html_e('CVC'); ?>:</label>
+									<br>
+									<input type="text" name="authorize_cvc" class="wlsm-form-control" id="wlsm_authorize_cvc" >
+								</div>
+							</form>
+						</div>
+					<?php
+					}
 					?>
 				</div>
 				<?php if ($payment_methods_count > 0) { ?>
@@ -587,7 +622,6 @@ class WLSM_P_Invoice
 
 			$payment_amount = isset($_POST['payment_amount']) ? WLSM_Config::sanitize_money($_POST['payment_amount']) : 0;
 			$payment_method = isset($_POST['payment_method']) ? sanitize_text_field($_POST['payment_method']) : '';
-
 			$current_page_url = isset($_POST['current_page_url']) ? esc_url($_POST['current_page_url']) : '';
 
 			// Start validation.
@@ -1117,6 +1151,72 @@ EOT;
 							'description'         => esc_attr($description),
 						)
 					);
+				} elseif ('authorize' === $payment_method) {
+					$settings_authorize          = WLSM_M_Setting::get_settings_authorize($school_id);
+					$school_authorize_enable     = $settings_authorize['enable'];
+					$school_authorize_public_key = $settings_authorize['authorize_public_key'];
+
+					if (!$school_authorize_enable || !WLSM_Payment::currency_supports_authorize($currency)) {
+						wp_send_json_error(esc_html__('authorize payment method is currently unavailable.', 'school-management'));
+					}
+
+					$authorize_card_number = isset($_POST['authorize_card_number']) ? sanitize_text_field($_POST['authorize_card_number']) : '';
+					$authorize_exp_date    = isset($_POST['authorize_exp_date']) ? sanitize_text_field($_POST['authorize_exp_date']) : '';
+					$authorize_cvc         = isset($_POST['authorize_cvc']) ? sanitize_text_field($_POST['authorize_cvc']) : '';
+					
+					if (!$authorize_card_number) {
+						$errors['authorize_card_number'] = esc_html__('Please Enter Card Number.', 'school-management');
+						wp_send_json_error($errors);
+					}
+
+					if (!$authorize_exp_date) {
+						$errors['authorize_exp_date'] = esc_html__('Enter Expiry Date', 'school-management');
+						wp_send_json_error($errors);
+					}
+
+					if (!$authorize_cvc) {
+						$errors['authorize_cvc'] = esc_html__('Enter CVC', 'school-management');
+						wp_send_json_error($errors);
+					}
+					
+					$amount_x_100         = $payment_amount;
+					$security             = wp_create_nonce('pay-with-authorize');
+					$authorize_public_key = $school_authorize_public_key;
+
+					$pay_with_authorize_text = sprintf(
+						/* translators: %s: amount to pay */
+						__('Pay Amount %s using authorize', 'school-management'),
+						esc_html(WLSM_Config::get_money_text($payment_amount))
+					);
+
+					$html = "<button class='wlsm-mt-2 float-md-right button btn btn-success' id='wlsm-authorize-btn'>$pay_with_authorize_text";
+					$html .= "<input type='hidden' name='authorize_card_number' id='authorize_card_number' value='$authorize_card_number'>";
+					
+					
+
+					$json = json_encode(
+						array(
+							'action'                => 'wlsm-p-pay-with-authorize',
+							'payment_method'        => esc_attr($payment_method),
+							'authorize_public_key'  => esc_attr($authorize_public_key),
+							'amount_x_100'          => esc_attr($amount_x_100),
+							'currency'              => esc_attr($currency),
+							'school_name'           => esc_attr($school_name),
+							'school_logo_url'       => esc_attr($school_logo_url),
+							'security'              => esc_attr($security),
+							'name'                  => esc_attr($name),
+							'email'                 => esc_attr($email),
+							'phone'                 => esc_attr($phone),
+							'address'               => esc_attr($address),
+							'invoice_id'            => esc_attr($invoice_id),
+							'invoice_number'        => esc_attr($invoice_number),
+							'payment_amount'        => esc_attr($payment_amount),
+							'description'           => esc_attr($description),
+							'authorize_card_number' => esc_attr($authorize_card_number),
+							'authorize_exp_date'    => esc_attr($authorize_exp_date),
+							'authorize_cvc'         => esc_attr($authorize_cvc),
+						)
+					);
 				} elseif ('bank-transfer' === $payment_method) {
 					$settings_bank_transfer      = WLSM_M_Setting::get_settings_bank_transfer($school_id);
 					$school_bank_transfer_enable = $settings_bank_transfer['enable'];
@@ -1126,6 +1226,7 @@ EOT;
 					}
 
 					$bank_transfer_transaction_id = isset($_POST['bank_transfer_transaction_id']) ? sanitize_text_field($_POST['bank_transfer_transaction_id']) : '';
+					
 					$bank_transfer_receipt        = (isset($_FILES['bank_transfer_receipt']) && is_array($_FILES['bank_transfer_receipt'])) ? $_FILES['bank_transfer_receipt'] : NULL;
 
 					if (isset($bank_transfer_receipt['tmp_name']) && !empty($bank_transfer_receipt['tmp_name'])) {
@@ -1327,10 +1428,8 @@ EOT;
 		}
 	}
 
-	public static function process_stripe()
-	{
-		// var_dump($_POST); die;
-
+	public static function process_stripe() {
+		
 		if (!wp_verify_nonce($_POST['security'], 'pay-with-stripe')) {
 			die();
 		}
@@ -1483,8 +1582,7 @@ EOT;
 		}
 	}
 
-	public static function process_paystack()
-	{
+	public static function process_paystack() {
 		if (!wp_verify_nonce($_POST['security'], 'pay-with-paystack')) {
 			die();
 		}
@@ -1558,6 +1656,128 @@ EOT;
 				'amount'            => $payment_amount,
 				'transaction_id'    => $transaction_id,
 				'payment_method'    => 'paystack',
+				'invoice_label'     => $invoice->invoice_title,
+				'invoice_payable'   => $invoice->payable,
+				'student_record_id' => $invoice->student_id,
+				'invoice_id'        => $invoice_id,
+				'school_id'         => $school_id,
+			);
+
+			$payment_data['created_at'] = current_time('Y-m-d H:i:s');
+
+			$success = $wpdb->insert(WLSM_PAYMENTS, $payment_data);
+
+			$new_payment_id = $wpdb->insert_id;
+
+			$buffer = ob_get_clean();
+			if (!empty($buffer)) {
+				throw new Exception($buffer);
+			}
+
+			if (false === $success) {
+				throw new Exception($wpdb->last_error);
+			}
+
+			$invoice_status = WLSM_M_Staff_Accountant::refresh_invoice_status($invoice_id);
+
+			$wpdb->query('COMMIT;');
+
+			if (isset($new_payment_id)) {
+				// Notify for online fee submission.
+				$data = array(
+					'school_id'  => $school_id,
+					'session_id' => $session_id,
+					'payment_id' => $new_payment_id,
+				);
+
+				wp_schedule_single_event(time() + 30, 'wlsm_notify_for_online_fee_submission', $data);
+				wp_schedule_single_event(time() + 30, 'wlsm_notify_for_online_fee_submission_to_parent', $data);
+			}
+
+			wp_send_json_success(array('message' => esc_html__('Payment made successfully.', 'school-management')));
+		} catch (Exception $exception) {
+			$wpdb->query('ROLLBACK;');
+			wp_send_json_error($unexpected_error_message);
+		}
+	}
+
+	public static function process_authorize() {
+		
+		// if (!isset($_POST['amount'])) {
+		// 	wp_send_json_error($unexpected_error_message);
+		// }
+		$authorize_card_number = isset($_POST['authorize_card_number']) ? sanitize_text_field($_POST['authorize_card_number']) : '';
+		$authorize_exp_date    = isset($_POST['authorize_exp_date']) ? sanitize_text_field($_POST['authorize_exp_date']) : '';
+		$authorize_cvc         = isset($_POST['authorize_cvc']) ? sanitize_text_field($_POST['authorize_cvc']) : '';
+		
+		$invoice_id = absint($_POST['invoice_id']);
+		$payment_amount = absint($_POST['payment_amount']);
+
+		// Checks if pending invoice exists.
+		$invoice = WLSM_M_Staff_Accountant::get_student_pending_invoice($invoice_id);
+
+		if (!$invoice) {
+			wp_send_json_error(esc_html__('Invoice not found or already paid.', 'school-management'));
+		}
+
+		$school_id  = $invoice->school_id;
+		$session_id = $invoice->session_id;
+
+		$settings_authorize          = WLSM_M_Setting::get_settings_authorize($school_id);
+		$school_authorize_public_key = $settings_authorize['authorize_public_key'];
+		$school_authorize_secret_key = $settings_authorize['authorize_secret_key'];
+
+	
+		// Common setup for API credentials  
+		$merchantAuthentication = new AnetAPI\MerchantAuthenticationType();   
+		$merchantAuthentication->setName($school_authorize_public_key);   
+		$merchantAuthentication->setTransactionKey($school_authorize_secret_key);   
+		$refId = 'ref' . time();
+
+		// Create the payment data for a credit card
+		$creditCard = new AnetAPI\CreditCardType();
+		$creditCard->setCardNumber($authorize_card_number );  
+		$creditCard->setExpirationDate( $authorize_exp_date);
+		$paymentOne = new AnetAPI\PaymentType();
+		$paymentOne->setCreditCard($creditCard);
+	  
+	  // Create a transaction
+		$transactionRequestType = new AnetAPI\TransactionRequestType();
+		$transactionRequestType->setTransactionType("authCaptureTransaction");   
+		$transactionRequestType->setAmount($payment_amount);
+		$transactionRequestType->setPayment($paymentOne);
+		$request = new AnetAPI\CreateTransactionRequest();
+		$request->setMerchantAuthentication($merchantAuthentication);
+		$request->setRefId( $refId);
+		$request->setTransactionRequest($transactionRequestType);
+		$controller = new AnetController\CreateTransactionController($request);
+		$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);   
+
+		global $wpdb;
+
+		// $payment_amount = ($data->data->amount);
+
+		$partial_payment = $invoice->partial_payment;
+
+		$due = $invoice->payable - $invoice->paid;
+
+		if (($payment_amount <= 0) || ($payment_amount > $due) || (!$partial_payment && ($payment_amount != $due))) {
+			wp_send_json_error($unexpected_error_message);
+		}
+
+		$transaction_id = $payment_id;
+
+		try {
+			$wpdb->query('BEGIN;');
+
+			$receipt_number = WLSM_M_Invoice::get_receipt_number($school_id);
+
+			// Payment data.
+			$payment_data = array(
+				'receipt_number'    => $receipt_number,
+				'amount'            => $payment_amount,
+				'transaction_id'    => $transaction_id,
+				'payment_method'    => 'authorize',
 				'invoice_label'     => $invoice->invoice_title,
 				'invoice_payable'   => $invoice->payable,
 				'student_record_id' => $invoice->student_id,

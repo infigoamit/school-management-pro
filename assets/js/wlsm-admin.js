@@ -5938,12 +5938,12 @@
 								option_study.push(fee_type);
 							}
 						});
-						// res.forEach(function(item) {
-						// 	if (item.subject) {
-						// 		var optstudy = '<option value="' + item.subject.ID + ' id="sub_hide"">' + item.subject.subject_name + '</option>';
-						// 		option_study.push(optstudy);
-						// 	}
-						// });
+						res.forEach(function(item) {
+							if (item.subject) {
+								var optstudy = '<option value="' + item.subject.ID + ' id="sub_hide"">' + item.subject.subject_name + '</option>';
+								option_study.push(optstudy);
+							}
+						});
 						
 						sections.html(options);
 						subjects.html(subjts);

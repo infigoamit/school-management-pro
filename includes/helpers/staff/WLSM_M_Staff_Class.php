@@ -421,8 +421,7 @@ class WLSM_M_Staff_Class
 		return admin_url('admin.php?page=' . WLSM_MENU_STAFF_SUBJECTS);
 	}
 
-	public static function fetch_subject_query($school_id)
-	{
+	public static function fetch_subject_query($school_id) {
 		$query = 'SELECT sj.ID, sj.label as subject_name, sj.code, sj.type, c.label as class_label, COUNT(DISTINCT asj.ID) as admins_count FROM ' . WLSM_SUBJECTS . ' as sj
 		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = sj.class_school_id
 		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
@@ -433,7 +432,7 @@ class WLSM_M_Staff_Class
 	
 	public static function fetch_subject_query_by_class_id($school_id, $class_id) {
 		global $wpdb;
-		$query = 'SELECT sj.ID, sj.label as subject_name FROM ' . WLSM_SUBJECTS . ' as sj
+		$query = 'SELECT DISTINCT sj.ID, sj.label as subject_name FROM ' . WLSM_SUBJECTS . ' as sj
 		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = sj.class_school_id
 		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
 		LEFT OUTER JOIN ' . WLSM_ADMIN_SUBJECT . ' as asj ON asj.subject_id = sj.ID
@@ -442,14 +441,12 @@ class WLSM_M_Staff_Class
 		return $subjects;
 	}
 
-	public static function fetch_subject_query_group_by()
-	{
+	public static function fetch_subject_query_group_by() {
 		$group_by = 'GROUP BY sj.ID';
 		return $group_by;
 	}
 
-	public static function fetch_subject_query_count($school_id)
-	{
+	public static function fetch_subject_query_count($school_id) {
 		$query = 'SELECT COUNT(DISTINCT sj.ID) FROM ' . WLSM_SUBJECTS . ' as sj
 		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = sj.class_school_id
 		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id

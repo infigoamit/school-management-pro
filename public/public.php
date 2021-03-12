@@ -112,11 +112,17 @@ add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-pesapal', array( 'WLSM_P_Invoice', '
 add_action( 'wp_ajax_wlsm-p-pay-with-paystack', array( 'WLSM_P_Invoice', 'process_paystack' ) );
 add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-paystack', array( 'WLSM_P_Invoice', 'process_paystack' ) );
 
+// Process authorize.
+add_action( 'wp_ajax_wlsm-p-pay-with-authorize', array( 'WLSM_P_Invoice', 'process_authorize' ) );
+add_action( 'wp_ajax_nopriv_wlsm-p-pay-with-authorize', array( 'WLSM_P_Invoice', 'process_authorize' ) );
+
 // Process SSLCommerz.
 add_action( 'init', array( 'WLSM_P_Invoice', 'process_sslcommerz' ), 20000 );
 
 // Process Paytm.
 add_action( 'init', array( 'WLSM_P_Invoice', 'process_paytm' ) );
+// add_action( 'init', array( 'WLSM_P_Invoice', 'process_authorize' ) );
+
 
 // Get exam time table.
 add_action( 'wp_ajax_wlsm-p-get-exam-time-table', array( 'WLSM_P_Exam', 'get_exam_time_table' ) );
