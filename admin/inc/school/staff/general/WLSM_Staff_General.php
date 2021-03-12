@@ -952,8 +952,6 @@ class WLSM_Staff_General
 					}
 				}
 
-				
-
 				if ($student_id) {
 					$student_record_data['photo_id']        = $student->photo_id;
 					$student_record_data['id_proof']        = $student->id_proof;

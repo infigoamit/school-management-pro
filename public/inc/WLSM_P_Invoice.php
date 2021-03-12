@@ -333,10 +333,6 @@ class WLSM_P_Invoice
 		$settings_paystack      = WLSM_M_Setting::get_settings_paystack($school_id);
 		$school_paystack_enable = $settings_paystack['enable'];
 
-		// authorize settings.
-		$settings_authorize      = WLSM_M_Setting::get_settings_authorize($school_id);
-		$school_authorize_enable = $settings_authorize['enable'];
-
 		// Paytm settings.
 		$settings_paytm      = WLSM_M_Setting::get_settings_paytm($school_id);
 		$school_paytm_enable = $settings_paytm['enable'];
@@ -479,15 +475,6 @@ class WLSM_P_Invoice
 						<label class="radio-inline wlsm-mr-3">
 							<input type="radio" name="payment_method" class="wlsm-mr-2" value="paystack" id="wlsm-payment-paystack">
 							<?php echo esc_html(WLSM_M_Invoice::get_payment_method_text('paystack')); ?>
-						</label>
-					<?php
-						$payment_methods_count++;
-					}
-					if ($school_authorize_enable && WLSM_Payment::currency_supports_authorize($currency)) { ?>
-						<br>
-						<label class="radio-inline wlsm-mr-3">
-							<input type="radio" name="payment_method" class="wlsm-mr-2" value="authorize" id="wlsm-payment-authorize">
-							<?php echo esc_html(WLSM_M_Invoice::get_payment_method_text('authorize')); ?>
 						</label>
 					<?php
 						$payment_methods_count++;
