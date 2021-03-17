@@ -10,6 +10,8 @@ if ( isset( $from_front ) ) {
 }
 
 $class_label = WLSM_M_Class::get_label_text( $student->class_label );
+$fees_list = unserialize($student->fees_type_list);
+
 ?>
 
 <!-- Print fee structure. -->
@@ -77,12 +79,12 @@ $class_label = WLSM_M_Class::get_label_text( $student->class_label );
 				</thead>
 				<tbody>
 					<?php
-					foreach ( $fees as $key => $fee ) {
+					foreach ( $fees_list as  $fee ) {
 					?>
 					<tr>
-						<td><?php echo esc_html( WLSM_M_Staff_Accountant::get_label_text( $fee->label ) ); ?></td>
-						<td><?php echo esc_html( WLSM_Config::get_money_text( $fee->amount ) ); ?></td>
-						<td><?php echo esc_html( WLSM_M_Staff_Accountant::get_fee_period_text( $fee->period ) ); ?></td>
+						<td><?php echo esc_html( WLSM_M_Staff_Accountant::get_label_text( $fee['label'] ) ); ?></td>
+						<td><?php echo esc_html( WLSM_Config::get_money_text( $fee['amount'] ) ); ?></td>
+						<td><?php echo esc_html( WLSM_M_Staff_Accountant::get_fee_period_text( $fee['period'] ) ); ?></td>
 					</tr>
 					<?php
 					}

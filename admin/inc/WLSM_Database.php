@@ -332,6 +332,12 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_STUDENT_RECORDS . " ADD from_front tinyint(1) NOT NULL DEFAULT '0'");
 		}
 
+		/* Add feet_type_list columns if not exists to student_records table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_STUDENT_RECORDS . "' AND COLUMN_NAME = 'fees_type_list'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_STUDENT_RECORDS . " ADD fees_type_list text DEFAULT NULL");
+		}
+
 		/* Create promotions table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_PROMOTIONS . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -577,11 +583,11 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " ADD subject_id bigint(20) UNSIGNED DEFAULT NULL");
 		}
 
-		// /* Remove UNIQUE attendance_date column if exists to attendance table */
-		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ATTENDANCE . "' AND COLUMN_NAME = 'attendance_date'");
-		if (!empty($row)) {
-			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " DROP INDEX attendance_date");
-		}
+		// // /* Remove UNIQUE attendance_date column if exists to attendance table */
+		// $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ATTENDANCE . "' AND COLUMN_NAME = 'attendance_date'");
+		// if (!empty($row)) {
+		// 	$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " DROP INDEX attendance_date");
+		// }
 		
 		/* Create staff_attendance table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STAFF_ATTENDANCE . " (
@@ -935,6 +941,16 @@ class WLSM_Database
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_FEES . " ADD active_on_dashboard tinyint(1) NOT NULL DEFAULT '0'");
 		}
+
+		/* Create WLSM_STUDENT_ASSIGNED_FEES table */
+		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STUDENT_ASSIGNED_FEES . " (
+			ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			student_record_id bigint(20) UNSIGNED DEFAULT NULL,
+			fee_type_id bigint(20) UNSIGNED DEFAULT NULL,	
+			PRIMARY KEY (ID),
+			FOREIGN KEY (student_record_id) REFERENCES " . WLSM_STUDENT_RECORDS . " (ID) ON DELETE CASCADE
+			) ENGINE=InnoDB " . $charset_collate;
+	dbDelta($sql);
 
 		/* Create student_fees table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STUDENT_FEES . " (

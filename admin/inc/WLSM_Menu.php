@@ -42,7 +42,9 @@ class WLSM_Menu {
 			}
 
 			if ( $current_school = $user_info['current_school'] ) {
+				if ( $current_school['is_active'] === '1'){
 				$role = $current_school['role'];
+				
 				if ( in_array( $role, array_keys( WLSM_M_Role::get_roles() ) ) ) {
 
 					$permissions = $current_school['permissions'];
@@ -351,7 +353,7 @@ class WLSM_Menu {
 						add_action( 'admin_print_styles-' . $school_staff_transport_report_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
 					}
 				}
-			}
+			}}
 		} else {
 			$school_management_menu = add_menu_page( esc_html__( 'School Management', 'school-management' ), esc_html__( 'School Management', 'school-management' ), WLSM_ADMIN_CAPABILITY, 'school-management-license', array( 'WLSM_Menu', 'admin_menu' ), 'dashicons-welcome-learn-more', 27 );
 			add_action( 'admin_print_styles-' . $school_management_menu, array( 'WLSM_Menu', 'admin_menu_assets' ) );

@@ -25,7 +25,7 @@ class WLSM_M_Role {
 		$staff_in_school = false;
 
 		$staff = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT sf.role, sf.permissions, sf.school_id, s.label as school_name, a.section_id FROM ' . WLSM_STAFF . ' as sf 
+			$wpdb->prepare( 'SELECT sf.role, sf.permissions, sf.school_id, s.label as school_name, a.section_id, s.is_active FROM ' . WLSM_STAFF . ' as sf 
 			JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = sf.school_id 
 			LEFT OUTER JOIN ' . WLSM_ADMINS . ' as a ON a.staff_id = sf.ID 
 			WHERE sf.user_id = %d', $user_id )
@@ -41,6 +41,7 @@ class WLSM_M_Role {
 					$permissions = $user->permissions ? unserialize( $user->permissions ) : array();
 					$school_name = $user->school_name;
 					$section_id  = $user->section_id;
+					$is_active  = $user->is_active;
 				}
 
 				array_push( $schools, array( 'id' => $user->school_id, 'name' => $user->school_name ) );
@@ -61,6 +62,7 @@ class WLSM_M_Role {
 				'role'        => $role,
 				'permissions' => $permissions,
 				'name'        => $school_name,
+				'is_active'   => $is_active,
 				'section_id'  => $section_id
 			);
 		} else {

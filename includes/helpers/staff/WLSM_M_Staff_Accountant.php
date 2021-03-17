@@ -642,6 +642,15 @@ class WLSM_M_Staff_Accountant {
 		WHERE cs.school_id = %d AND sft.student_record_id = %d ORDER BY sft.fee_order ASC', $school_id, $student_id ) );
 		return $fees;
 	}
+	public static function fetch_student_fees_invoices( $school_id, $student_id ) {
+		global $wpdb;
+		$fees = $wpdb->get_results( $wpdb->prepare( 'SELECT i.ID, i.label, i.amount, i.student_record_id FROM ' . WLSM_INVOICES . ' as i
+		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
+		
+		WHERE  sr.ID = ' . absint( $student_id )));
+		
+		return $fees;
+	}
 
 	public static function get_invoice_title_text( $invoice_title ) {
 		if ( $invoice_title ) {

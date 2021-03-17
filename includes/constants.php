@@ -46,6 +46,7 @@ define( 'WLSM_HOMEWORK_SECTION', $wpdb->prefix . 'wlsm_homework_section' );
 define( 'WLSM_ADMIN_SUBJECT', $wpdb->prefix . 'wlsm_admin_subject' );
 define( 'WLSM_FEES', $wpdb->prefix . 'wlsm_fees' );
 define( 'WLSM_STUDENT_FEES', $wpdb->prefix . 'wlsm_student_fees' );
+define( 'WLSM_STUDENT_ASSIGNED_FEES', $wpdb->prefix . 'wlsm_student_assigned_fees' );
 define( 'WLSM_ROUTINES', $wpdb->prefix . 'wlsm_routines' );
 define( 'WLSM_BOOKS', $wpdb->prefix . 'wlsm_books' );
 define( 'WLSM_BOOKS_ISSUED', $wpdb->prefix . 'wlsm_books_issued' );

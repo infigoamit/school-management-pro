@@ -1381,6 +1381,10 @@ EOT;
 					'source'      => $stripe_token
 				)
 			);
+		$customer = \Stripe\Customer::create([
+			'name' => $name,
+			'address'=> ["city"=>"","country"=>"","line1"=>"","line2"=>"","postal_code"=>"","state"=>""],
+			]);
 		} catch (Exception $exception) {
 			$wpdb->query('ROLLBACK;');
 			wp_send_json_error($exception->getMessage());

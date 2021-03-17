@@ -14,8 +14,7 @@ require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_General
 
 class WLSM_Staff_General
 {
-	public static function get_class_sections()
-	{
+	public static function get_class_sections() {
 		$current_user = WLSM_M_Role::can(array('manage_admissions', 'manage_students', 'manage_invoices', 'manage_transfer_student', 'manage_certificates', 'manage_library', 'manage_transport', 'manage_homework', 'manage_exams', 'manage_admins', 'manage_employees', 'manage_student_leaves'));
 
 		if (!$current_user) {
@@ -62,6 +61,40 @@ class WLSM_Staff_General
 
 
 			wp_send_json($sections);
+		} catch (Exception $exception) {
+			$buffer = ob_get_clean();
+			if (!empty($buffer)) {
+				$response = $buffer;
+			} else {
+				$response = $exception->getMessage();
+			}
+			wp_send_json(array());
+		}
+	}
+
+	public static function get_fee_type(){ 
+
+		$current_user = WLSM_M_Role::can(array('manage_invoices'));
+
+		if (!$current_user) {
+			die();
+		}
+		
+		$school_id  = $current_user['school']['id'];
+		$session_id = $current_user['session']['ID'];
+		
+		try {
+			ob_start();
+			global $wpdb;
+			$student_id = isset($_POST['student_id']) ? absint($_POST['student_id']) : 0;
+	
+			$class_school_id = $class_school->ID;
+			$student = WLSM_M_Staff_General::fetch_student($school_id, $session_id, $student_id);
+			$fees_type = WLSM_M_Staff_Accountant::fetch_student_fees_invoices($school_id, $student_id);
+			
+			
+			$fees = unserialize($student->fees_type_list);
+			wp_send_json($fees);
 		} catch (Exception $exception) {
 			$buffer = ob_get_clean();
 			if (!empty($buffer)) {
@@ -724,6 +757,7 @@ class WLSM_Staff_General
 					wp_send_json_error(esc_html__('Fee type must be different.', 'school-management'));
 				} else {
 					foreach ($fee_label as $key => $value) {
+						$fee_id[$id] = sanitize_text_field($fee_id[$id]);
 						$fee_label[$key] = sanitize_text_field($fee_label[$key]);
 						$fee_period[$key]  = sanitize_text_field($fee_period[$key]);
 						$fee_amount[$key] = WLSM_Config::sanitize_money($fee_amount[$key]);
@@ -999,6 +1033,36 @@ class WLSM_Staff_General
 
 					$student_record_data['created_at'] = current_time('Y-m-d H:i:s');
 
+					
+					// //Add fee_type_list to student table_heading
+					// $place_holders_fee_label = array();
+					// 	$list_data = array();
+					// 	$fee_order = 10;
+					// 	foreach ($fee_label as $key => $value) {
+					// 		array_push($place_holders_fee_label, '%s');
+					// 		$fee_order++;
+
+					// 		// Student fee data.
+					// 		$student_fee_data = array(
+					// 			'id'        => $fee_id[$key],
+					// 			'amount'    => $fee_amount[$key],
+					// 			'period'    => $fee_period[$key],
+					// 			'label'     => $fee_label[$key],
+					// 			'fee_order' => $fee_order,
+					// 		);
+					// 			// Invoice data.
+					// 			$fee_data = array(
+					// 				'id'              => $student_fee_data['id'],
+					// 				'label'           => $student_fee_data['label'],
+					// 				'period'          => $student_fee_data['period'],
+					// 				'amount'          => $student_fee_data['amount'],
+					// 				'partial_payment' => 0,
+					// 			);
+					// 			array_push($list_data, $fee_data );
+					// 		}
+					// $list_data_fee = serialize($list_data);
+					// $student_record_data['feet_type_list'] = $list_data_fee;
+
 					$success = $wpdb->insert(WLSM_STUDENT_RECORDS, $student_record_data);
 
 					$new_student_id = $wpdb->insert_id;
@@ -1015,17 +1079,15 @@ class WLSM_Staff_General
 							'updated_at' => current_time('Y-m-d H:i:s')
 						);
 
-						$wpdb->update(
-							WLSM_INQUIRIES,
-							$inquiry_data,
-							array('ID' => $inquiry_id, 'school_id' => $school_id)
+						$wpdb->update( WLSM_INQUIRIES, $inquiry_data, array('ID' => $inquiry_id, 'school_id' => $school_id)
 						);
 					}
 				}
 
 				// Fees.
 				$place_holders_fee_labels = array();
-
+				
+				
 				$fee_order = 10;
 				if (count($fee_label)) {
 					foreach ($fee_label as $key => $value) {

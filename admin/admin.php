@@ -349,6 +349,9 @@ add_action( 'wp_ajax_wlsm-get-school-class-sections', array( 'WLSM_Staff_General
 add_action( 'wp_ajax_wlsm-get-class-subjects', array( 'WLSM_Staff_General', 'get_class_subjects' ) );
 add_action( 'wp_ajax_wlsm-get-subject-teachers', array( 'WLSM_Staff_General', 'get_subject_teachers' ) );
 
+// Fee type get for students_page_url
+add_action( 'wp_ajax_wlsm-get-fee-type', array( 'WLSM_Staff_General', 'get_fee_type' ) );
+
 // Bulk Action.
 add_action( 'wp_ajax_wlsm-bulk-action', array( 'WLSM_Bulk_Action', 'bulk_action' ) );
 
