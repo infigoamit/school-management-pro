@@ -772,8 +772,10 @@ foreach ($routes_vehicles as $route_vehicle) {
 					?>
 							<div class="wlsm-fee-box card col" data-fee="<?php echo esc_attr($index); ?>">
 								<button type="button" class="btn btn-sm btn-danger wlsm-remove-fee-btn"><i class="fas fa-times"></i></button>
-
 								<input type="hidden" name="fee_id[]" value="<?php echo esc_attr($fee->ID); ?>">
+								<input type="hidden" name="active_on_admission[]" value="<?php echo esc_attr($fee->active_on_admission); ?>">
+								<input type="hidden" name="active_on_dashboard[]" value="<?php echo esc_attr($fee->active_on_dashboard); ?>">
+								<input type="hidden" name="assign_on_addmission[]" value="<?php echo esc_attr($fee->assign_on_addmission); ?>">
 
 								<div class="form-row">
 									<div class="form-group col-md-4">

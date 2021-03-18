@@ -5920,6 +5920,9 @@
 								var fee_type = '<div class="wlsm-fee-box card col " data-fee="' + item.fees.ID + '">' +
 								'<button type="button" class="btn btn-sm btn-danger wlsm-remove-fee-btn"><i class="fas fa-times"></i></button>' +
 								'<input type="hidden" name="fee_id[]" value="'+ item.fees.ID+'">' +
+								'<input type="hidden" name="active_on_dashboard[]" value="'+ item.fees.active_on_dashboard+'">' +
+								'<input type="hidden" name="active_on_admission[]" value="'+ item.fees.active_on_admission+'">' +
+								'<input type="hidden" name="assign_on_addmission[]" value="'+ item.fees.assign_on_addmission+'">' +
 								'<div class="form-row">' +
 									'<div class="form-group col-md-4">' +
 										'<label for="wlsm_fee_label_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Fee Type:' + '</label>' +

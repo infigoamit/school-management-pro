@@ -529,6 +529,9 @@ class WLSM_Staff_General
 			$fee_label  = (isset($_POST['fee_label']) && is_array($_POST['fee_label'])) ? $_POST['fee_label'] : array();
 			$fee_period = (isset($_POST['fee_period']) && is_array($_POST['fee_period'])) ? $_POST['fee_period'] : array();
 			$fee_amount = (isset($_POST['fee_amount']) && is_array($_POST['fee_amount'])) ? $_POST['fee_amount'] : array();
+			$active_on_admission = (isset($_POST['active_on_admission']) && is_array($_POST['active_on_admission'])) ? $_POST['active_on_admission'] : array();
+			$active_on_dashboard = (isset($_POST['active_on_dashboard']) && is_array($_POST['active_on_dashboard'])) ? $_POST['active_on_dashboard'] : array();
+			$assign_on_addmission = (isset($_POST['assign_on_addmission']) && is_array($_POST['assign_on_addmission'])) ? $_POST['assign_on_addmission'] : array();
 
 			// Transport Detail.
 			$route_vehicle_id = isset($_POST['route_vehicle_id']) ? absint($_POST['route_vehicle_id']) : 0;
@@ -761,6 +764,7 @@ class WLSM_Staff_General
 						$fee_label[$key] = sanitize_text_field($fee_label[$key]);
 						$fee_period[$key]  = sanitize_text_field($fee_period[$key]);
 						$fee_amount[$key] = WLSM_Config::sanitize_money($fee_amount[$key]);
+						$assign_on_addmission[$key]  = sanitize_text_field($assign_on_addmission[$key]);
 
 						if (empty($fee_label[$key])) {
 							wp_send_json_error(esc_html__('Please specify fee type.', 'school-management'));
@@ -1103,8 +1107,10 @@ class WLSM_Staff_General
 
 						if ($is_insert) {
 							// Student fee does not exist, insert student fee.
+							$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
+
 							$student_fee_data['label']             = $value;
-							$student_fee_data['student_record_id'] = $student_id;
+							$student_fee_data['student_record_id'] = $student_id;					
 
 							$student_fee_data['created_at'] = current_time('Y-m-d H:i:s');
 
@@ -1117,18 +1123,18 @@ class WLSM_Staff_General
 								'date_issued'     => $student_fee_data['created_at'],
 								'due_date'        => $student_fee_data['created_at'],
 								'partial_payment' => 0,
-							);
-
-							$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
+							);							
 
 							$invoice_data['invoice_number']    = $invoice_number;
 							$invoice_data['student_record_id'] = $new_student_id;
 
 							$invoice_data['added_by'] = $user_id;
 
-							$invoice_data['created_at'] = $student_fee_data['created_at'];
+							$invoice_data['created_at'] = $student_fee_data['created_at'];							
 
-							$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
+							if($assign_on_addmission[$key] === '0'){
+								$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
+							}
 
 							if (false === $success) {
 								throw new Exception($wpdb->last_error);

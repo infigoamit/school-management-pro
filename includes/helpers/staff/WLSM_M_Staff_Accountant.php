@@ -54,7 +54,7 @@ class WLSM_M_Staff_Accountant {
 
 	public static function fetch_invoice( $school_id, $session_id, $id ) {
 		global $wpdb;
-		$invoice = $wpdb->get_row( $wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.description as invoice_description, i.date_issued, i.due_date, i.amount, i.discount, (i.amount - i.discount) as payable, i.fee_list, COALESCE(SUM(p.amount), 0) as paid, i.partial_payment, i.status, sr.ID as student_id, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, sr.father_name, sr.father_phone, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+		$invoice = $wpdb->get_row( $wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.description as invoice_description, i.date_issued, i.due_date, i.amount, i.discount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, i.partial_payment, i.status, sr.ID as student_id, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, sr.father_name, sr.father_phone, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
 		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
@@ -588,7 +588,7 @@ class WLSM_M_Staff_Accountant {
 
 	public static function fetch_fee( $school_id, $id ) {
 		global $wpdb;
-		$fee = $wpdb->get_row( $wpdb->prepare( 'SELECT ft.ID, ft.label, ft.amount, ft.period, ft.active_on_admission, ft.active_on_dashboard,  ft.class_id FROM ' . WLSM_FEES . ' as ft
+		$fee = $wpdb->get_row( $wpdb->prepare( 'SELECT ft.ID, ft.label, ft.amount, ft.period, ft.active_on_admission, ft.assign_on_addmission, ft.active_on_dashboard,  ft.class_id FROM ' . WLSM_FEES . ' as ft
 		WHERE ft.school_id = %d AND ft.ID = %d', $school_id, $id ) );
 		return $fee;
 	}
@@ -601,7 +601,7 @@ class WLSM_M_Staff_Accountant {
 			$where .= ' AND ft.active_on_admission = 1';
 		}
 
-		$fees = $wpdb->get_results( $wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, ft.period, ft.period, ft.active_on_dashboard,  ft.class_id  FROM ' . WLSM_FEES . ' as ft
+		$fees = $wpdb->get_results( $wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, ft.period, ft.period, ft.active_on_dashboard, ft.active_on_admission, ft.assign_on_addmission, ft.class_id  FROM ' . WLSM_FEES . ' as ft
 		WHERE ft.school_id = %d' . $where, $school_id ) );
 		return $fees;
 	}
@@ -614,7 +614,7 @@ class WLSM_M_Staff_Accountant {
 			$where .= ' AND ft.active_on_admission = 1';
 		}
 
-		$fees = $wpdb->get_results( $wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, ft.period, ft.period, ft.active_on_dashboard,  ft.class_id  FROM ' . WLSM_FEES . ' as ft
+		$fees = $wpdb->get_results( $wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, ft.period, ft.period, ft.active_on_dashboard, ft.active_on_admission, ft.assign_on_addmission,  ft.class_id  FROM ' . WLSM_FEES . ' as ft
 		WHERE ft.school_id = %d AND ft.class_id = %d' . $where, $school_id, $class_id ) );
 		return $fees;
 	}
@@ -630,6 +630,16 @@ class WLSM_M_Staff_Accountant {
 
 		$fees = $wpdb->get_results($wpdb->prepare('SELECT ft.ID, ft.label, ft.amount, , ft.period FROM ' . WLSM_FEES . ' as ft
 		WHERE ft.school_id = %d' . $where, $school_id));
+		return $fees;
+	}
+
+	public static function fetch_student_assigned_fees( $school_id, $student_id ) {
+		global $wpdb;
+		$fees = $wpdb->get_results( $wpdb->prepare( 'SELECT sft.ID, sft.label, sft.amount, sft.period, sft.fee_order, sft.student_record_id FROM ' . WLSM_STUDENT_FEES . ' as sft
+			JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = sft.student_record_id
+			JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
+			JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = se.class_school_id
+		WHERE cs.school_id = %d AND sft.student_record_id = %d ORDER BY sft.fee_order ASC', $school_id, $student_id ) );
 		return $fees;
 	}
 

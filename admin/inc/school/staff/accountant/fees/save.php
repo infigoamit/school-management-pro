@@ -14,8 +14,9 @@ $class_id            = '';
 $label               = '';
 $amount              = '';
 $period              = '';
-$active_on_admission = 1;
-$active_on_dashboard = 0;
+$active_on_admission  = 1;
+$active_on_dashboard  = 0;
+$assign_on_addmission = 0;
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
 	$id  = absint($_GET['id']);
@@ -30,6 +31,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 		$class_id 			 = $fee->class_id;
 		$active_on_admission = $fee->active_on_admission;
 		$active_on_dashboard = $fee->active_on_dashboard;
+		$assign_on_addmission = $fee->assign_on_addmission;
 	}
 }
 $classes = WLSM_M_Staff_Class::fetch_classes($school_id);
@@ -125,6 +127,14 @@ $fee_periods = WLSM_Helper::fee_period_list();
 						<input <?php checked($active_on_admission, 1, true); ?> class="form-check-input mt-1" type="checkbox" name="active_on_admission" id="wlsm_active_on_admission" value="1">
 						<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_active_on_admission">
 							<?php esc_html_e('Active On Admission Form And Auto Generate Invoice On Admission', 'school-management'); ?>
+						</label>
+					</div>
+				</div>
+				<div class="form-row mt-1">
+					<div class="form-group col-md-6">
+						<input <?php checked($assign_on_addmission, 1, true); ?> class="form-check-input mt-1" type="checkbox" name="assign_on_addmission" id="wlsm_assign_on_addmission" value="1">
+						<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_assign_on_addmission">
+							<?php esc_html_e('Only Assign Fee Type to student On Admission (Currently Only works with back-end)', 'school-management'); ?>
 						</label>
 					</div>
 				</div>

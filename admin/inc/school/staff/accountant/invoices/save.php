@@ -34,7 +34,6 @@ $invoice_status          = '';
 if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 	$id      = absint( $_GET['id'] );
 	$invoice = WLSM_M_Staff_Accountant::fetch_invoice( $school_id, $session_id, $id );
-
 	if ( $invoice ) {
 		$nonce_action = 'edit-invoice-' . $invoice->ID;
 
