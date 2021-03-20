@@ -168,96 +168,7 @@ if ( ! $invoice ) {
 			</div>
 			<?php } ?>
 
-			<!-- Invoice Detail -->
-			<div class="wlsm-form-section">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="wlsm-form-sub-heading wlsm-font-bold">
-							<?php esc_html_e( 'Invoice Detail', 'school-management' ); ?>
-						</div>
-					</div>
-				</div>
-
-				<div class="form-row">
-					<div class="col-md-6">
-						<div class="form-group">
-							<label for="wlsm_invoice_label" class="wlsm-font-bold">
-								<?php esc_html_e( 'Invoice Title', 'school-management' ); ?>:
-							</label>
-							<input type="text" name="invoice_label" class="form-control" id="wlsm_invoice_label" placeholder="<?php esc_attr_e( 'Enter invoice title', 'school-management' ); ?>" value="<?php echo esc_attr( $invoice_title ); ?>">
-						</div>
-						<div class="form-group">
-							<input <?php checked( $invoice_partial_payment, true, true ); ?> class="form-check-input mt-1" type="checkbox" name="partial_payment" id="wlsm_invoice_partial_payment" value="1">
-							<label class="ml-4 mb-1 form-check-label wlsm-font-bold" for="wlsm_invoice_partial_payment">
-								<?php esc_html_e( 'Allow Partial Payments?', 'school-management' ); ?>
-							</label>
-						</div>
-					</div>
-					<div class="form-group col-md-6">
-						<label for="wlsm_invoice_description" class="wlsm-font-bold">
-							<?php esc_html_e( 'Description', 'school-management' ); ?>:
-						</label>
-						<textarea name="invoice_description" class="form-control" id="wlsm_invoice_description" cols="30" rows="2" placeholder="<?php esc_attr_e( 'Enter description', 'school-management' ); ?>"><?php echo esc_html( stripslashes( $invoice_description ) ); ?></textarea>
-					</div>
-				</div>
-
-				<div class="form-row">
-					<div class="form-group col-md-6">
-						<label for="wlsm_invoice_amount" class="wlsm-font-bold">
-							<?php esc_html_e( 'Amount', 'school-management' ); ?>:
-						</label>
-						<input type="number" step="any" min="0" name="invoice_amount" class="form-control" id="wlsm_invoice_amount" placeholder="<?php esc_attr_e( 'Enter invoice amount', 'school-management' ); ?>" value="<?php echo esc_attr( $invoice_amount ? WLSM_Config::sanitize_money( $invoice_amount ) : '' ); ?>">
-					</div>
-					<div class="form-group col-md-6">
-						<label for="wlsm_invoice_discount" class="wlsm-font-bold">
-							<?php esc_html_e( 'Discount', 'school-management' ); ?>:
-						</label>
-						<input type="number" step="any" min="0" name="invoice_discount" class="form-control" id="wlsm_invoice_discount" placeholder="<?php esc_attr_e( 'Enter discount amount', 'school-management' ); ?>" value="<?php echo esc_attr( $invoice_discount ? WLSM_Config::sanitize_money( $invoice_discount ) : '' ); ?>">
-					</div>
-				</div>
-
-				<div class="form-row">
-					<div class="form-group col-md-6">
-						<label for="wlsm_invoice_date_issued" class="wlsm-font-bold">
-							<?php esc_html_e( 'Date Issued', 'school-management' ); ?>:
-						</label>
-						<input type="text" name="invoice_date_issued" class="form-control wlsm-date" id="wlsm_invoice_date_issued" placeholder="<?php esc_attr_e( 'Enter date issued', 'school-management' ); ?>" value="<?php echo esc_attr( WLSM_Config::get_date_text( $invoice_date_issued ) ); ?>">
-					</div>
-					<div class="form-group col-md-6">
-						<label for="wlsm_invoice_due_date" class="wlsm-font-bold">
-							<?php esc_html_e( 'Due Date', 'school-management' ); ?>:
-						</label>
-						<input type="text" name="invoice_due_date" class="form-control wlsm-date" id="wlsm_invoice_due_date" placeholder="<?php esc_attr_e( 'Enter due date', 'school-management' ); ?>" value="<?php echo esc_attr( WLSM_Config::get_date_text( $invoice_due_date ) ); ?>">
-					</div>
-				</div>
-			</div>
-
-			<!-- <div class="wlsm-form-section">
-				<div class="row">
-					<div class="col-md-4">
-						<div class="wlsm-form-sub-heading wlsm-font-bold">
-							<?php esc_html_e( 'Fee Type List', 'school-management' ); ?>
-						</div>
-					</div>
-				</div>
-
-				<div class="form-row">
-									<div class="form-group col-md-4">
-										<label for="wlsm_fee_label" class="wlsm-font-bold">
-											<span class="wlsm-important">*</span> <?php esc_html_e('Fee Type', 'school-management'); ?>:
-										</label>
-										<input type="text" name="fee_label[]" class="form-control" placeholder="<?php esc_attr_e('Enter fee type', 'school-management'); ?>">
-									</div>
-									<div class="form-group col-md-4">
-										<label for="wlsm_fee_amount" class="wlsm-font-bold">
-											<span class="wlsm-important">*</span> <?php esc_html_e('Amount', 'school-management'); ?>:
-										</label>
-										<input type="number" step="any" min="0" name="fee_amount[]" class="form-control" placeholder="<?php esc_attr_e('Enter amount', 'school-management'); ?>">
-									</div>
-								</div>
-			
-			</div> -->
-<?php 
+			<?php 
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_Helper.php';
 $fees = WLSM_M_Staff_Accountant::fetch_fees($school_id); 
 $fee_periods = WLSM_Helper::fee_period_list();
@@ -363,6 +274,97 @@ $fee_periods = WLSM_Helper::fee_period_list();
 					</div>
 				</div>
 			</div>
+
+			<!-- Invoice Detail -->
+			<div class="wlsm-form-section">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="wlsm-form-sub-heading wlsm-font-bold">
+							<?php esc_html_e( 'Invoice Detail', 'school-management' ); ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label for="wlsm_invoice_label" class="wlsm-font-bold">
+								<?php esc_html_e( 'Invoice Title', 'school-management' ); ?>:
+							</label>
+							<input type="text" name="invoice_label" class="form-control" id="wlsm_invoice_label" placeholder="<?php esc_attr_e( 'Enter invoice title', 'school-management' ); ?>" value="<?php echo esc_attr( $invoice_title ); ?>">
+						</div>
+						<div class="form-group">
+							<input <?php checked( $invoice_partial_payment, true, true ); ?> class="form-check-input mt-1" type="checkbox" name="partial_payment" id="wlsm_invoice_partial_payment" value="1">
+							<label class="ml-4 mb-1 form-check-label wlsm-font-bold" for="wlsm_invoice_partial_payment">
+								<?php esc_html_e( 'Allow Partial Payments?', 'school-management' ); ?>
+							</label>
+						</div>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="wlsm_invoice_description" class="wlsm-font-bold">
+							<?php esc_html_e( 'Description', 'school-management' ); ?>:
+						</label>
+						<textarea name="invoice_description" class="form-control" id="wlsm_invoice_description" cols="30" rows="2" placeholder="<?php esc_attr_e( 'Enter description', 'school-management' ); ?>"><?php echo esc_html( stripslashes( $invoice_description ) ); ?></textarea>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="wlsm_invoice_amount" class="wlsm-font-bold">
+							<?php esc_html_e( 'Amount', 'school-management' ); ?>:
+						</label>
+						<input type="number" step="any" min="0" name="invoice_amount" class="form-control" id="wlsm_invoice_amount" placeholder="<?php esc_attr_e( 'Enter invoice amount', 'school-management' ); ?>" value="<?php echo esc_attr( $invoice_amount ? WLSM_Config::sanitize_money( $invoice_amount ) : '' ); ?>">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="wlsm_invoice_discount" class="wlsm-font-bold">
+							<?php esc_html_e( 'Discount', 'school-management' ); ?>:
+						</label>
+						<input type="number" step="any" min="0" name="invoice_discount" class="form-control" id="wlsm_invoice_discount" placeholder="<?php esc_attr_e( 'Enter discount amount', 'school-management' ); ?>" value="<?php echo esc_attr( $invoice_discount ? WLSM_Config::sanitize_money( $invoice_discount ) : '' ); ?>">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="wlsm_invoice_date_issued" class="wlsm-font-bold">
+							<?php esc_html_e( 'Date Issued', 'school-management' ); ?>:
+						</label>
+						<input type="text" name="invoice_date_issued" class="form-control wlsm-date" id="wlsm_invoice_date_issued" placeholder="<?php esc_attr_e( 'Enter date issued', 'school-management' ); ?>" value="<?php echo esc_attr( WLSM_Config::get_date_text( $invoice_date_issued ) ); ?>">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="wlsm_invoice_due_date" class="wlsm-font-bold">
+							<?php esc_html_e( 'Due Date', 'school-management' ); ?>:
+						</label>
+						<input type="text" name="invoice_due_date" class="form-control wlsm-date" id="wlsm_invoice_due_date" placeholder="<?php esc_attr_e( 'Enter due date', 'school-management' ); ?>" value="<?php echo esc_attr( WLSM_Config::get_date_text( $invoice_due_date ) ); ?>">
+					</div>
+				</div>
+			</div>
+
+			<!-- <div class="wlsm-form-section">
+				<div class="row">
+					<div class="col-md-4">
+						<div class="wlsm-form-sub-heading wlsm-font-bold">
+							<?php esc_html_e( 'Fee Type List', 'school-management' ); ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-row">
+									<div class="form-group col-md-4">
+										<label for="wlsm_fee_label" class="wlsm-font-bold">
+											<span class="wlsm-important">*</span> <?php esc_html_e('Fee Type', 'school-management'); ?>:
+										</label>
+										<input type="text" name="fee_label[]" class="form-control" placeholder="<?php esc_attr_e('Enter fee type', 'school-management'); ?>">
+									</div>
+									<div class="form-group col-md-4">
+										<label for="wlsm_fee_amount" class="wlsm-font-bold">
+											<span class="wlsm-important">*</span> <?php esc_html_e('Amount', 'school-management'); ?>:
+										</label>
+										<input type="number" step="any" min="0" name="fee_amount[]" class="form-control" placeholder="<?php esc_attr_e('Enter amount', 'school-management'); ?>">
+									</div>
+								</div>
+			
+			</div> -->
+
 
 			
 

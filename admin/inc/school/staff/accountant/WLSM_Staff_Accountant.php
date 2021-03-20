@@ -483,8 +483,9 @@ class WLSM_Staff_Accountant {
 							wp_send_json_error(esc_html__('Fee type must be different.', 'school-management'));
 						} else {
 							foreach ($fee_label as $key => $value) {
-								$fee_label[$key] = sanitize_text_field($fee_label[$key]);
-								$fee_period[$key]  = sanitize_text_field($fee_period[$key]);
+								$fee_id    [$id]  = sanitize_text_field($fee_id[$id]);
+								$fee_label [$key] = sanitize_text_field($fee_label[$key]);
+								$fee_period[$key] = sanitize_text_field($fee_period[$key]);
 								$fee_amount[$key] = WLSM_Config::sanitize_money($fee_amount[$key]);
 
 								if (empty($fee_label[$key])) {
@@ -659,6 +660,7 @@ class WLSM_Staff_Accountant {
 
 						// Student fee data.
 						$student_fee_data = array(
+							'id'        => $fee_id[$key],
 							'amount'    => $fee_amount[$key],
 							'period'    => $fee_period[$key],
 							'label'     => $fee_label[$key],
@@ -681,8 +683,7 @@ class WLSM_Staff_Accountant {
 						$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
 
 						$invoice_data['invoice_number']    = $invoice_number;
-						$invoice_data['student_record_id'] = $student_id;
-						
+						$invoice_data['student_record_id'] = $student_id;						
 
 						$invoice_data['added_by'] = get_current_user_id();
 

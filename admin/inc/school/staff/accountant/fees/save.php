@@ -106,7 +106,7 @@ $fee_periods = WLSM_Helper::fee_period_list();
 						<label for="wlsm_period" class="wlsm-font-bold">
 							<span class="wlsm-important">*</span> <?php esc_html_e('Period', 'school-management'); ?>:
 						</label>
-						<select name="period" class="form-control selectpicker" multiple id="wlsm_period" data-live-search="true">
+						<select name="period" class="form-control selectpicker" id="wlsm_period" data-live-search="true">
 							<?php foreach ($fee_periods as $key => $value) { ?>
 								<option value="<?php echo esc_attr($key); ?>" <?php selected($key, $period, true); ?>>
 									<?php echo esc_html($value); ?>
@@ -126,18 +126,18 @@ $fee_periods = WLSM_Helper::fee_period_list();
 					<div class="form-group col-md-6">
 						<input <?php checked($active_on_admission, 1, true); ?> class="form-check-input mt-1" type="checkbox" name="active_on_admission" id="wlsm_active_on_admission" value="1">
 						<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_active_on_admission">
-							<?php esc_html_e('Active On Admission Form And Auto Generate Invoice On Admission', 'school-management'); ?>
+							<?php esc_html_e('Auto Generate Invoice On Admission', 'school-management'); ?>
 						</label>
 					</div>
 				</div>
-				<div class="form-row mt-1">
+				<!-- <div class="form-row mt-1">
 					<div class="form-group col-md-6">
 						<input <?php checked($assign_on_addmission, 1, true); ?> class="form-check-input mt-1" type="checkbox" name="assign_on_addmission" id="wlsm_assign_on_addmission" value="1">
 						<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_assign_on_addmission">
 							<?php esc_html_e('Only Assign Fee Type to student On Admission (Currently Only works with back-end)', 'school-management'); ?>
 						</label>
 					</div>
-				</div>
+				</div> -->
 				<div class="form-row mt-1">
 					<div class="form-group col-md-6">
 						<input <?php checked($active_on_dashboard, 1, true); ?> class="form-check-input mt-1" type="checkbox" name="active_on_dashboard" id="wlsm_active_on_dashboard" value="1">

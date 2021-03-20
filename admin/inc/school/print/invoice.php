@@ -108,6 +108,7 @@ $due = $invoice->payable - $invoice->paid;
 
 		<?php 
 		$fee_list = unserialize($invoice->fee_list);
+	
 		?>
 		<?php if ($fee_list): ?>
 		<div class="table-responsive w-100">

@@ -330,13 +330,7 @@ class WLSM_Database
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_STUDENT_RECORDS . " ADD gdpr_agreed tinyint(1) NOT NULL DEFAULT '0'");
 			$wpdb->query("ALTER TABLE " . WLSM_STUDENT_RECORDS . " ADD from_front tinyint(1) NOT NULL DEFAULT '0'");
-		}
-
-		// /* Add feet_type_list columns if not exists to student_records table */
-		// $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_STUDENT_RECORDS . "' AND COLUMN_NAME = 'fees_type_list'");
-		// if (empty($row)) {
-		// 	$wpdb->query("ALTER TABLE " . WLSM_STUDENT_RECORDS . " ADD fees_type_list text DEFAULT NULL");
-		// }
+		}		
 
 		/* Create promotions table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_PROMOTIONS . " (
@@ -435,6 +429,12 @@ class WLSM_Database
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INVOICES . "' AND COLUMN_NAME = 'show_on_dashboard'");
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_INVOICES . " ADD show_on_dashboard tinyint(1) NOT NULL DEFAULT '0'");
+		}
+
+		/* Add fees_type_list columns if not exists to WLSM_INVOICES table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INVOICES . "' AND COLUMN_NAME = 'fees_type_list'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_INVOICES . " ADD fees_type_list text DEFAULT NULL");
 		}
 
 		/* Create payments table */

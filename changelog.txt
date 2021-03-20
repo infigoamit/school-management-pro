@@ -3,6 +3,8 @@ Version 7.8 [04-03-2021]
 * Added  : Registration setting for student approval.
 * Updated: Zabra datepicker library.
 * Updated: Now if school is inactive school admin can not access the school.
+* Updated: Fee Type minor bug fixed.
+* Updated: Fee invoice new feature added for fee type list in one invoice.
 
 Version 7.7 [23-02-2021]
 ========

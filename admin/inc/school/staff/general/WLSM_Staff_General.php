@@ -87,13 +87,13 @@ class WLSM_Staff_General
 			ob_start();
 			global $wpdb;
 			$student_id = isset($_POST['student_id']) ? absint($_POST['student_id']) : 0;
-	
-			$class_school_id = $class_school->ID;
-			$student = WLSM_M_Staff_General::fetch_student($school_id, $session_id, $student_id);
-			$fees_type = WLSM_M_Staff_Accountant::fetch_student_fees_invoices($school_id, $student_id);
 			
+			$fees = WLSM_M_Staff_Accountant::fetch_student_fees($school_id, $student_id);
 			
-			$fees = unserialize($student->fees_type_list);
+			$fees = array_map(function ($fees) {			
+				return ['fees' => $fees];
+			},$fees);
+
 			wp_send_json($fees);
 		} catch (Exception $exception) {
 			$buffer = ob_get_clean();
@@ -765,6 +765,7 @@ class WLSM_Staff_General
 						$fee_period[$key]  = sanitize_text_field($fee_period[$key]);
 						$fee_amount[$key] = WLSM_Config::sanitize_money($fee_amount[$key]);
 						$assign_on_addmission[$key]  = sanitize_text_field($assign_on_addmission[$key]);
+						$active_on_dashboard[$key]  = sanitize_text_field($active_on_dashboard[$key]);
 
 						if (empty($fee_label[$key])) {
 							wp_send_json_error(esc_html__('Please specify fee type.', 'school-management'));
@@ -1132,7 +1133,7 @@ class WLSM_Staff_General
 
 							$invoice_data['created_at'] = $student_fee_data['created_at'];							
 
-							if($assign_on_addmission[$key] === '0'){
+							if($active_on_dashboard[$key] === '1'){
 								$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
 							}
 

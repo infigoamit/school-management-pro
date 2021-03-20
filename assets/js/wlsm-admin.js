@@ -5926,15 +5926,15 @@
 								'<div class="form-row">' +
 									'<div class="form-group col-md-4">' +
 										'<label for="wlsm_fee_label_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Fee Type:' + '</label>' +
-										'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.fees.ID + '" placeholder="" value="'+ item.fees.label +'">' +
+										'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.fees.ID + '" placeholder="" value="'+ item.fees.label +'" readonly>' +
 									'</div>' +
 									'<div class="form-group col-md-4">' +
 										'<label for="wlsm_fee_period_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Period :' + '</label>'+
-										 '<input type="text" step="1" min="1" name="fee_period[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.period+'">' +
+										 '<input type="text" step="1" min="1" name="fee_period[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.period+'" readonly>' +
 									'</div>' +
 									'<div class="form-group col-md-4">' +
 										'<label for="wlsm_fee_amount_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span>Amont:' + '</label>' +
-										'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.amount+'">' +
+										'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.amount+'" readonly>' +
 									'</div>' +
 								'</div>' +
 							'</div>';
@@ -5990,24 +5990,23 @@
 					success: function(res) {
 						var option_study    = [];
 						if (res) {
-							res.forEach(function(item) {
-								console.log(item.id);
+							res.forEach(function(item) {								
 								if (item) {
-									var fee_type = '<div class="wlsm-fee-box card col " data-fee="' + item.ID + '">' +
+									var fee_type = '<div class="wlsm-fee-box card col " data-fee="' + item.fees.ID + '">' +
 									'<button type="button" class="btn btn-sm btn-danger wlsm-remove-fee-btn"><i class="fas fa-times"></i></button>' +
-									'<input type="hidden" name="fee_id[]" value="'+ item.ID+'">' +
+									'<input type="hidden" name="fee_id[]" value="'+ item.fees.ID+'">' +
 									'<div class="form-row">' +
 										'<div class="form-group col-md-4">' +
-											'<label for="wlsm_fee_label_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Fee Type:' + '</label>' +
-											'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.ID + '" placeholder="" value="'+ item.label +'">' +
+											'<label for="wlsm_fee_label_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Fee Type:' + '</label>' +
+											'<input type="text" name="fee_label[]" class="form-control" id="wlsm_fee_label_' + item.fees.ID + '" placeholder="" value="'+ item.fees.label +'">' +
+										'</div>' +
+										'<div class="form-group col-md-4" >' +
+											'<label for="wlsm_fee_period_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Period :' + '</label>'+
+											 '<input type="text" step="1" min="1" name="fee_period[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.period+'" disabled>' +
 										'</div>' +
 										'<div class="form-group col-md-4">' +
-											'<label for="wlsm_fee_period_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span> Period :' + '</label>'+
-											 '<input type="text" step="1" min="1" name="fee_period[]" class="form-control" id="wlsm_fee_amount_' + item.ID + '" placeholder="" value="'+ item.period+'">' +
-										'</div>' +
-										'<div class="form-group col-md-4">' +
-											'<label for="wlsm_fee_amount_' + item.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span>Amont:' + '</label>' +
-											'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.ID + '" placeholder="" value="'+ item.amount+'">' +
+											'<label for="wlsm_fee_amount_' + item.fees.ID + '" class="wlsm-font-bold"><span class="wlsm-important">*</span>Amont:' + '</label>' +
+											'<input type="number" step="1" min="1" name="fee_amount[]" class="form-control" id="wlsm_fee_amount_' + item.fees.ID + '" placeholder="" value="'+ item.fees.amount+'">' +
 										'</div>' +
 									'</div>' +
 								'</div>';
