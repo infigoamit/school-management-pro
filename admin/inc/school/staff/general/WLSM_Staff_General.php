@@ -89,6 +89,9 @@ class WLSM_Staff_General
 			$student_id = isset($_POST['student_id']) ? absint($_POST['student_id']) : 0;
 			
 			$fees = WLSM_M_Staff_Accountant::fetch_student_fees($school_id, $student_id);
+			$query = WLSM_M_Staff_Accountant::fetch_invoices($school_id, $session_id);
+			$invoices =($query);
+			
 			
 			$fees = array_map(function ($fees) {			
 				return ['fees' => $fees];

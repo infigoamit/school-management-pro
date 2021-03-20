@@ -571,7 +571,7 @@ class WLSM_Database
 				created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 				updated_at timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (ID),
-				UNIQUE (attendance_date, student_record_id),
+				UNIQUE (student_record_id),
 				INDEX (student_record_id),
 				FOREIGN KEY (student_record_id) REFERENCES " . WLSM_STUDENT_RECORDS . " (ID) ON DELETE CASCADE
 				) ENGINE=InnoDB " . $charset_collate;
@@ -583,11 +583,11 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " ADD subject_id bigint(20) UNSIGNED DEFAULT NULL");
 		}
 
-		// // /* Remove UNIQUE attendance_date column if exists to attendance table */
-		// $row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ATTENDANCE . "' AND COLUMN_NAME = 'attendance_date'");
-		// if (!empty($row)) {
-		// 	$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " DROP INDEX attendance_date");
-		// }
+		// /* Remove UNIQUE attendance_date column if exists to attendance table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ATTENDANCE . "' AND COLUMN_NAME = 'attendance_date'");
+		if (!empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " DROP INDEX attendance_date");
+		}
 		
 		/* Create staff_attendance table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STAFF_ATTENDANCE . " (

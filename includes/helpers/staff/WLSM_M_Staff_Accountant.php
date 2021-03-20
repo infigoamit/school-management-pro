@@ -23,6 +23,20 @@ class WLSM_M_Staff_Accountant {
 		return $query;
 	}
 
+	public static function fetch_invoices( $school_id, $session_id ) {
+		require WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/partials/fetch_invoices_query.php';
+
+		$query = 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.phone, sr.admission_number, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
+		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
+		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
+		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = se.class_school_id
+		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id
+		LEFT OUTER JOIN ' . WLSM_PAYMENTS . ' as p ON p.invoice_id = i.ID
+		WHERE cs.school_id = ' . absint( $school_id ) . ' AND ss.ID = ' . absint( $session_id );
+		return $query;
+	}
+
 	public static function fetch_invoices_query_group_by() {
 		$group_by = 'GROUP BY i.ID';
 		return $group_by;
