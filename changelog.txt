@@ -5,6 +5,8 @@ Version 7.8 [04-03-2021]
 * Updated: Now if school is inactive school admin can not access the school.
 * Updated: Fee Type minor bug fixed.
 * Updated: Fee invoice new feature added for fee type list in one invoice.
+* Updated: On student adminssion auto fee generate feature is changed now it creates combine fee invoices if (student dashboard is not checked).
+* Added: Now if school is inactive students also can not login in that school. 
 
 Version 7.7 [23-02-2021]
 ========

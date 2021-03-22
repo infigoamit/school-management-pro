@@ -37,7 +37,12 @@ $check_dashboard_display = WLSM_M_Setting::get_dash($invoices);
 // School Information 
 $schools = $wpdb->get_results('SELECT s.ID, s.label, s.phone, s.email, s.address, s.is_active, s.is_active FROM ' . WLSM_SCHOOLS . ' as s WHERE s.ID = ' . $school_id . '');
 ?>
-
+<?php 
+	if(	$schools[0]->{'is_active'} === '0'){
+		echo '<span style="color: red;"> This School is not active </span>';
+		die;
+	}
+?>
 <?php if ($invoices and 'paid' !== $check_dashboard_display) {
 	require_once WLSM_PLUGIN_DIR_PATH . 'includes/partials/pending_fee_invoices.php';
 } else {
