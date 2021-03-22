@@ -1097,6 +1097,7 @@ class WLSM_Staff_General
 				
 				
 				$fee_order = 10;
+				$list_data = array();
 				if (count($fee_label)) {
 					foreach ($fee_label as $key => $value) {
 						array_push($place_holders_fee_labels, '%s');
@@ -1109,6 +1110,8 @@ class WLSM_Staff_General
 							'fee_order' => $fee_order,
 						);
 
+					
+						
 						if ($is_insert) {
 							// Student fee does not exist, insert student fee.
 							$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
@@ -1127,7 +1130,20 @@ class WLSM_Staff_General
 								'date_issued'     => $student_fee_data['created_at'],
 								'due_date'        => $student_fee_data['created_at'],
 								'partial_payment' => 0,
-							);							
+							);	
+							$fee_data = array(
+								'label'           => $student_fee_data['label'],
+								'period'          => $student_fee_data['period'],
+								'amount'          => $student_fee_data['amount'],
+								'partial_payment' => 0,
+							);
+
+							if($active_on_dashboard[$key] === '0'){
+								$label          .= $student_fee_data['label'].', ';
+							    $amount         += $student_fee_data['amount'];
+								
+								array_push($list_data, $fee_data );		
+							}							
 
 							$invoice_data['invoice_number']    = $invoice_number;
 							$invoice_data['student_record_id'] = $new_student_id;
@@ -1139,6 +1155,8 @@ class WLSM_Staff_General
 							if($active_on_dashboard[$key] === '1'){
 								$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
 							}
+
+							
 
 							if (false === $success) {
 								throw new Exception($wpdb->last_error);
@@ -1163,7 +1181,14 @@ class WLSM_Staff_General
 							}
 						}
 					}
-
+					// Create group invoice with fee type list
+					if($active_on_dashboard[$key] === '0'){
+						$invoice_data['label']        = $label;
+						$invoice_data['amount']       = $amount;
+						$list_data_type = serialize($list_data);
+						$invoice_data['fee_list']     = $list_data_type;
+						$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
+					}
 					if (!$is_insert) {
 						// Delete student fees not in fee_label array.
 						$student_id_fee_labels = array_merge(array($student_id), array_values($fee_label));
