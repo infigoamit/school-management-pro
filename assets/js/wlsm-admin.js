@@ -5978,6 +5978,7 @@
 			var studentId = studentsSelected.val();
 			
 			var fee_box = $('#fees-box_list');
+			var fee_a = $('#fee-amount');
 			
 			$('div.text-danger').remove();
 			if(studentId ) {
@@ -5989,6 +5990,7 @@
 					type: 'POST',
 					success: function(res) {
 						var option_study    = [];
+						var total_amount = 0;
 						if (res) {
 							res.forEach(function(item) {								
 								if (item) {
@@ -6010,12 +6012,18 @@
 										'</div>' +
 									'</div>' +
 								'</div>';
+								
 									option_study.push(fee_type);
+									total_amount += Number(item.fees.amount);
 								}
+
 							});
 						}
+						
 						fee_box.html(option_study);
+						fee_a.html(total_amount);
 						fee_box.selectpicker('refresh');
+						fee_a.selectpicker('refresh');
 					}
 				});
 			} 

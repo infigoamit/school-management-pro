@@ -169,10 +169,10 @@ if ( ! $invoice ) {
 			<?php } ?>
 
 			<?php 
-require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_Helper.php';
-$fees = WLSM_M_Staff_Accountant::fetch_fees($school_id); 
-$fee_periods = WLSM_Helper::fee_period_list();
-?>
+				require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_Helper.php';
+				$fees = WLSM_M_Staff_Accountant::fetch_fees($school_id); 
+				$fee_periods = WLSM_Helper::fee_period_list();
+				?>
 			<!-- Fees Structure -->
 			<div class="wlsm-form-section" id="fee-section">
 				<div class="row">
@@ -182,8 +182,6 @@ $fee_periods = WLSM_Helper::fee_period_list();
 						</div>
 					</div>
 				</div>
-				
-				
 
 				<div id="fees-box_list" class="wlsm-fees-box" data-fees-type-list="<?php echo !empty($fees) ? esc_attr(json_encode((array)$fees)) : ''; ?>" data-fee-type="<?php esc_attr_e('Fee Type', 'school-management'); ?>" data-fee-type-placeholder="<?php esc_attr_e('Enter fee type', 'school-management'); ?>" data-fee-period="<?php esc_attr_e('Period', 'school-management'); ?>" data-fee-amount="<?php esc_attr_e('Amount', 'school-management'); ?>" data-fee-amount-placeholder="<?php esc_attr_e('Enter amount', 'school-management'); ?>" data-fee-periods="<?php echo esc_attr(json_encode($fee_periods)); ?>">
 
@@ -271,6 +269,14 @@ $fee_periods = WLSM_Helper::fee_period_list();
 							<i class="fas fa-plus-square"></i>&nbsp;
 							<?php esc_html_e('Add Fee', 'school-management'); ?>
 						</button>
+					</div>
+				</div>
+				<div class="form-row mt-3">
+					<div class="col-md-0" >
+						<label  for="total_amount"><strong> <?php esc_html_e('Total Amount :', 'school-management'); ?></strong></label>
+					</div>
+					<div class="col-md-3" id="fee-amount">
+						
 					</div>
 				</div>
 			</div>
