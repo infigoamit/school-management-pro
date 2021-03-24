@@ -160,4 +160,18 @@ defined('ABSPATH') || die();
 			</ul>
 		</div>
 	</div>
+	
+	<div class="row mt-3">
+	<div class="col-9 mx-auto">
+	</div>
+		<div class="col-3 wlsm-student-detail-left">
+		<span class="wlsm-font-bold"><?php esc_html_e('Authorized By', 'school-management'); ?>:</span>
+		<br><br>
+			<div class="wlsm-student-detail-photo-box">
+				<?php if (!empty($school_signature)) { ?>
+					<img src="<?php echo esc_url(wp_get_attachment_url($school_signature)); ?>" class="wlsm-student-detail-photo">
+				<?php } ?>
+			</div>
+		</div>
+	</div>
 </div>

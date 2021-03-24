@@ -111,7 +111,21 @@ $photo_id = $admit_card->photo_id;
 				<?php } ?>
 				</div>
 			</div>
-		</div>
+			
+			
+			<div class="col-9 mx-auto">
+			</div>
+				<div class="col-3 wlsm-student-detail-left text-right">
+				<span class="wlsm-font-bold text-right"><?php esc_html_e('Authorized By', 'school-management'); ?>:</span>
+					<div class="wlsm-student-detail-photo-box float-right" >
+						<?php if (!empty($school_signature)) { ?>
+							<img width="50%" src="<?php echo esc_url(wp_get_attachment_url($school_signature)); ?>" class="wlsm-student-detail-photo">
+						<?php } ?>
+					</div>
+				</div>
+
+				</div>
+			</div>
 
 		<div class="row">
 			<div class="col-12">
