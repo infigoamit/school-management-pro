@@ -16,12 +16,11 @@ $amount              = '';
 $period              = '';
 $active_on_admission  = 1;
 $active_on_dashboard  = 0;
-$assign_on_addmission = 0;
+// $assign_on_addmission = 0;
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
 	$id  = absint($_GET['id']);
 	$fee = WLSM_M_Staff_Accountant::fetch_fee($school_id, $id);
-
 	if ($fee) {
 		$nonce_action = 'edit-fee-' . $fee->ID;
 
@@ -31,7 +30,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 		$class_id 			 = $fee->class_id;
 		$active_on_admission = $fee->active_on_admission;
 		$active_on_dashboard = $fee->active_on_dashboard;
-		$assign_on_addmission = $fee->assign_on_addmission;
+		// $assign_on_addmission = $fee->assign_on_addmission;
 	}
 }
 $classes = WLSM_M_Staff_Class::fetch_classes($school_id);

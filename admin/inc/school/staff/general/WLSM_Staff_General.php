@@ -534,7 +534,7 @@ class WLSM_Staff_General
 			$fee_amount = (isset($_POST['fee_amount']) && is_array($_POST['fee_amount'])) ? $_POST['fee_amount'] : array();
 			$active_on_admission = (isset($_POST['active_on_admission']) && is_array($_POST['active_on_admission'])) ? $_POST['active_on_admission'] : array();
 			$active_on_dashboard = (isset($_POST['active_on_dashboard']) && is_array($_POST['active_on_dashboard'])) ? $_POST['active_on_dashboard'] : array();
-			$assign_on_addmission = (isset($_POST['assign_on_addmission']) && is_array($_POST['assign_on_addmission'])) ? $_POST['assign_on_addmission'] : array();
+			// $assign_on_addmission = (isset($_POST['assign_on_addmission']) && is_array($_POST['assign_on_addmission'])) ? $_POST['assign_on_addmission'] : array();
 
 			// Transport Detail.
 			$route_vehicle_id = isset($_POST['route_vehicle_id']) ? absint($_POST['route_vehicle_id']) : 0;
@@ -767,7 +767,7 @@ class WLSM_Staff_General
 						$fee_label[$key] = sanitize_text_field($fee_label[$key]);
 						$fee_period[$key]  = sanitize_text_field($fee_period[$key]);
 						$fee_amount[$key] = WLSM_Config::sanitize_money($fee_amount[$key]);
-						$assign_on_addmission[$key]  = sanitize_text_field($assign_on_addmission[$key]);
+						// $assign_on_addmission[$key]  = sanitize_text_field($assign_on_addmission[$key]);
 						$active_on_dashboard[$key]  = sanitize_text_field($active_on_dashboard[$key]);
 
 						if (empty($fee_label[$key])) {

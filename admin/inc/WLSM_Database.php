@@ -431,10 +431,10 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_INVOICES . " ADD show_on_dashboard tinyint(1) NOT NULL DEFAULT '0'");
 		}
 
-		/* Add fees_type_list columns if not exists to WLSM_INVOICES table */
-		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INVOICES . "' AND COLUMN_NAME = 'fees_type_list'");
+		/* Add fee_list columns if not exists to WLSM_INVOICES table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INVOICES . "' AND COLUMN_NAME = 'fee_list'");
 		if (empty($row)) {
-			$wpdb->query("ALTER TABLE " . WLSM_INVOICES . " ADD fees_type_list text DEFAULT NULL");
+			$wpdb->query("ALTER TABLE " . WLSM_INVOICES . " ADD fee_list text DEFAULT NULL");
 		}
 
 		/* Create payments table */

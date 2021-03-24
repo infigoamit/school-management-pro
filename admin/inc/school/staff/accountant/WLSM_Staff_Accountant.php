@@ -3524,7 +3524,7 @@ class WLSM_Staff_Accountant {
 			$class_id            = (isset($_POST['class_id']) && is_array($_POST['class_id'])) ? $_POST['class_id'] : array();
 			$active_on_admission = isset($_POST['active_on_admission']) ? (bool) ($_POST['active_on_admission']) : 0;
 			$active_on_dashboard = isset($_POST['active_on_dashboard']) ? (bool) ($_POST['active_on_dashboard']) : 0;
-			$assign_on_addmission = isset($_POST['assign_on_addmission']) ? (bool) ($_POST['assign_on_addmission']) : 0;
+		
 			// Start validation.
 			$errors = array();
 
@@ -3571,7 +3571,6 @@ class WLSM_Staff_Accountant {
 					'period'               => $period,
 					'active_on_admission'  => $active_on_admission,
 					'active_on_dashboard'  => $active_on_dashboard,
-					'assign_on_addmission' => $assign_on_addmission,
 				);
 
 				if ($fee_id) {
