@@ -1182,7 +1182,7 @@ class WLSM_Staff_General
 						}
 					}
 					// Create group invoice with fee type list
-					if($active_on_dashboard[$key] === '0'){
+					if($active_on_dashboard[$key] !== 1){
 						$invoice_data['label']        = $label;
 						$invoice_data['amount']       = $amount;
 						$list_data_type = serialize($list_data);
