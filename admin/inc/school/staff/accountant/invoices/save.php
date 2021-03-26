@@ -271,14 +271,14 @@ if ( ! $invoice ) {
 						</button>
 					</div>
 				</div>
-				<div class="form-row mt-3">
+				<!-- <div class="form-row mt-3">
 					<div class="col-md-0" >
 						<label  for="total_amount"><strong> <?php esc_html_e('Total Amount :', 'school-management'); ?></strong></label>
 					</div>
 					<div class="col-md-3" id="fee-amount">
 						
 					</div>
-				</div>
+				</div> -->
 			</div>
 
 			<!-- Invoice Detail -->
@@ -315,7 +315,13 @@ if ( ! $invoice ) {
 				</div>
 
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-3" id="wlsm_invoice_fee_type_amount">
+						<label for="wlsm_invoice_fee_type_amount" class="wlsm-font-bold">
+							<?php esc_html_e( 'Total Fee Type Amount', 'school-management' ); ?>:
+						</label>
+						<input id="fee-amount" type="number" step="any" min="0" name="fee_type_amount" class="form-control" placeholder="<?php esc_attr_e( 'Enter amount', 'school-management' ); ?>" value="">
+					</div>
+					<div class="form-group col-md-3">
 						<label for="wlsm_invoice_amount" class="wlsm-font-bold">
 							<?php esc_html_e( 'Amount', 'school-management' ); ?>:
 						</label>

@@ -82,14 +82,12 @@ class WLSM_Email {
 			$port       = $smtp['port'];
 
 
-			require 'PHPMailerAutoload.php';
-			require 'vendor/autoload.php';
-			require 'src/PHPMailer.php';
-			require 'src/SMTP.php';
-			require 'src/Exception.php';
-			include_once(ABSPATH . WPINC . '/class-phpmailer.php');
-			include_once(ABSPATH . WPINC . '/PHPMailer/SMTP.php');
-			$mail = new PHPMailer(true);
+			global $wp_version;
+	
+			require_once(ABSPATH . WPINC . '/PHPMailer/PHPMailer.php');
+			require_once(ABSPATH . WPINC . '/PHPMailer/SMTP.php');
+			require_once(ABSPATH . WPINC . '/PHPMailer/Exception.php');
+			$mail = new PHPMailer\PHPMailer\PHPMailer( true );
 
 			try {
 				$mail->CharSet  = 'UTF-8';

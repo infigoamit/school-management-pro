@@ -3324,7 +3324,9 @@
 		var invoiceStudent = $('#wlsm_student');
 		var invoiceStudentLabel = $('label[for="wlsm_student"]');
 		var fee_box = $('#fee-section');
+		var invoice_fee_type_amount = $('#wlsm_invoice_fee_type_amount');
 		fee_box.hide();
+		invoice_fee_type_amount.hide();
 
 		$(document).on('change', 'input[name="invoice_type"]', function(event) {
 			var invoiceType = this.value;
@@ -3333,11 +3335,13 @@
 			if('bulk_invoice' === invoiceType) {
 				invoicePayments.hide();
 				fee_box.hide();
+				invoice_fee_type_amount.hide();
 				invoiceStudent.attr('name', 'student[]');
 				invoiceStudent.attr('multiple', 'multiple');
 				invoiceStudentLabel.html(invoiceStudentLabel.data('bulk-label'));
 			} else if('single_invoice_fee_type' === invoiceType) {
 				fee_box.fadeIn();
+				invoice_fee_type_amount.fadeIn();
 				invoicePayments.hide();
 				invoiceStudent.attr('name', 'student');
 				invoiceStudent.removeAttr('multiple');
@@ -3345,6 +3349,7 @@
 			} else {
 				invoicePayments.fadeIn();
 				fee_box.hide();
+				invoice_fee_type_amount.hide();
 				invoiceStudent.attr('name', 'student');
 				invoiceStudent.removeAttr('multiple');
 				invoiceStudentLabel.html(invoiceStudentLabel.data('single-label'));
@@ -5979,6 +5984,7 @@
 			
 			var fee_box = $('#fees-box_list');
 			var fee_a = $('#fee-amount');
+			var invoice_amount = $('#wlsm_invoice_amount');
 			
 			$('div.text-danger').remove();
 			if(studentId ) {
@@ -6021,12 +6027,29 @@
 						}
 						
 						fee_box.html(option_study);
-						fee_a.html(total_amount);
+						// fee_a.html(total_amount);
+						// fee_a.value(total_amount);
+						// document.getElementById(input_id).setAttribute('value', total_amount);
+						jQuery(fee_a).val(total_amount);
+						jQuery(invoice_amount).val(total_amount);
 						fee_box.selectpicker('refresh');
 						fee_a.selectpicker('refresh');
 					}
 				});
 			} 
+		});
+		$("#wlsm_invoice_discount").keyup(function(){
+		
+			var invoice_amount = $('#wlsm_invoice_amount').val();
+			var discount       = $('#wlsm_invoice_discount').val();
+
+			var percent = discount / 100 * invoice_amount ;
+
+			var t_amount = invoice_amount - percent;
+			
+			console.log(t_amount);
+			jQuery(invoice_amount).val(t_amount);
+			
 		});
 
 		$(document).on('change', '.wlsm_section', function() {
