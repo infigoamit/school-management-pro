@@ -3325,7 +3325,9 @@
 		var invoiceStudentLabel = $('label[for="wlsm_student"]');
 		var fee_box = $('#fee-section');
 		var invoice_fee_type_amount = $('#wlsm_invoice_fee_type_amount');
+		var fee_type_note = $('#fee_type_note');
 		fee_box.hide();
+		fee_type_note.hide();
 		invoice_fee_type_amount.hide();
 
 		$(document).on('change', 'input[name="invoice_type"]', function(event) {
@@ -3342,10 +3344,25 @@
 			} else if('single_invoice_fee_type' === invoiceType) {
 				fee_box.fadeIn();
 				invoice_fee_type_amount.fadeIn();
+				fee_type_note.fadeIn();
 				invoicePayments.hide();
 				invoiceStudent.attr('name', 'student');
 				invoiceStudent.removeAttr('multiple');
 				invoiceStudentLabel.html(invoiceStudentLabel.data('single-label'));
+
+				$("#wlsm_invoice_discount").keyup(function(){
+		
+					var invoice_amount = $('#fee-amount').val();
+					var discount       = $('#wlsm_invoice_discount').val();
+		
+					var percent = discount / 100 * invoice_amount ;
+		
+					var t_amount = invoice_amount - percent;
+					
+					$('#wlsm_invoice_amount').val(t_amount);
+					
+				});
+
 			} else {
 				invoicePayments.fadeIn();
 				fee_box.hide();
@@ -6038,19 +6055,23 @@
 				});
 			} 
 		});
-		$("#wlsm_invoice_discount").keyup(function(){
-		
-			var invoice_amount = $('#wlsm_invoice_amount').val();
-			var discount       = $('#wlsm_invoice_discount').val();
+		$(document).ready(function(){
+			// $('input[name="fee_amount[]"]').keyup(function(){
+			$("#get-invoices-total_amount").click(function(){
+				var arrayAmount = $('input[name="fee_amount[]"]');
+				let sumAmount = 0 ;
+				
+				if (arrayAmount.length > 0) {
+					jQuery.each(arrayAmount, function(index, element) {
+						return sumAmount += parseFloat(jQuery(element).val());
+					  });								
+				}
+				console.log(sumAmount);
+				$('#fee-amount').val(sumAmount);
 
-			var percent = discount / 100 * invoice_amount ;
-
-			var t_amount = invoice_amount - percent;
-			
-			console.log(t_amount);
-			jQuery(invoice_amount).val(t_amount);
-			
+			});
 		});
+	
 
 		$(document).on('change', '.wlsm_section', function() {
 			var classId = $('#wlsm_class').val();

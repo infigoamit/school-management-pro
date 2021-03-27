@@ -138,7 +138,6 @@ $due = $invoice->payable - $invoice->paid;
                      <tr>
                         <th class="text-center"><?php esc_html_e( 'Total Amount', 'school-management' ); ?></th>
                         <th class="text-center" ><?php esc_html_e( 'Discount', 'school-management' ); ?></th>
-                        <th class="text-center" ><?php esc_html_e( 'Payable', 'school-management' ); ?></th>
 						<th class="text-center" ><?php esc_html_e( 'Due', 'school-management' ); ?></th>
 						<th class="text-center" ><?php esc_html_e( 'Status', 'school-management' ); ?></th>
 						
@@ -148,8 +147,7 @@ $due = $invoice->payable - $invoice->paid;
 				 
                      <tr>
                         <td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
-						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->discount ) ); ?></td>
-						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
+						<td class="text-center" ><?php echo esc_html( ( $invoice->discount ) ); ?>%</td>
 						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $due ) ); ?></td>
 						<td class="text-center" >
 							<?php

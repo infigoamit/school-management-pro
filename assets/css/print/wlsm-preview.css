@@ -501,8 +501,8 @@ img.wlsm-print-id-card-signature {
 
 	.invoice-price .invoice-price-right {
 	width: 25%;
-	background: #2d353c;
-	color: #eee;
+	/* background: #2d353c; */
+	color: #000;
 	font-weight: 600;
 	font-size: 28px;
 	text-align: right;
