@@ -315,10 +315,7 @@ if ( ! $invoice ) {
 				</div>
 
 				<div class="form-row">
-				<div class="form-group col-md-1">
-				<br>
-					<a id="get-invoices-total_amount" class="btn btn-secondary text-white"><?php esc_html_e( 'Re Calculate', 'school-management' ); ?></a>
-				</div>
+				
 					<div class="form-group col-md-3" id="wlsm_invoice_fee_type_amount">
 						<label for="wlsm_invoice_fee_type_amount" class="wlsm-font-bold">
 							<?php esc_html_e( 'Total Fee Type Amount', 'school-management' ); ?>:
@@ -338,6 +335,10 @@ if ( ! $invoice ) {
 						<span id="fee_type_note" class="text-danger"><?php esc_html_e( 'Enter the percent of Amount for example : 5%', 'school-management' ); ?></span>
 						<input type="number" step="any" min="0" name="invoice_discount" class="form-control" id="wlsm_invoice_discount" placeholder="<?php esc_attr_e( 'Enter discount in percent', 'school-management' ); ?>" value="<?php echo esc_attr( $invoice_discount ? WLSM_Config::sanitize_money( $invoice_discount ) : '' ); ?>">
 					</div>
+					<div class="form-group col-md-1">
+				<br>
+					<a id="get-invoices-total_amount" class="btn btn-success text-white mt-2"><?php esc_html_e( 'Re Calculate', 'school-management' ); ?></a>
+				</div>
 				</div>
 
 				<div class="form-row">

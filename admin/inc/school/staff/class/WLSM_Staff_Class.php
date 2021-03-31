@@ -1034,8 +1034,8 @@ class WLSM_Staff_Class
 			$attendance_by = isset($_POST['attendance_by']) ? sanitize_text_field($_POST['attendance_by']) : 'all';
 			$subject_id = isset($_POST['subject_id']) ? absint($_POST['subject_id']) : null ;
 
-			$year_month = isset($_POST['year_month']) ? DateTime::createFromFormat('F Y', sanitize_text_field($_POST['year_month'])) : NULL;
-
+			$year_month = isset($_POST['year_month']) ? DateTime::createFromFormat('!F Y', sanitize_text_field($_POST['year_month'])) : NULL;
+			
 			// Start validation.
 			$errors = array();
 
@@ -1072,13 +1072,15 @@ class WLSM_Staff_Class
 
 				$month = $year_month->format('m');
 				$year  = $year_month->format('Y');
-
+				
 				$number_of_days = $year_month->format('t');
-
+				
 				$start_date = new DateTime("{$year}-{$month}-01");
 				$end_date   = new DateTime("{$year}-{$month}-{$number_of_days}");
-
+				
 				$date_range = new DatePeriod($start_date, DateInterval::createFromDateString('1 day'), $end_date->modify('+1 day'));
+				
+			
 			}
 		} catch (Exception $exception) {
 			$buffer = ob_get_clean();

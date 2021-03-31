@@ -1,3 +1,7 @@
+Version 7.9 [30-03-2021]
+========
+* Fixed  : attendance can not see Feburary attendance issue fixed.
+
 Version 7.8 [23-03-2021]
 ========
 * Added  : Registration setting for student approval.

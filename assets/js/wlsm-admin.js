@@ -3326,7 +3326,11 @@
 		var fee_box = $('#fee-section');
 		var invoice_fee_type_amount = $('#wlsm_invoice_fee_type_amount');
 		var fee_type_note = $('#fee_type_note');
+
+		var recalculate = $('#get-invoices-total_amount');
+
 		fee_box.hide();
+		recalculate.hide();
 		fee_type_note.hide();
 		invoice_fee_type_amount.hide();
 
@@ -3337,6 +3341,7 @@
 			if('bulk_invoice' === invoiceType) {
 				invoicePayments.hide();
 				fee_box.hide();
+				recalculate.hide();
 				invoice_fee_type_amount.hide();
 				invoiceStudent.attr('name', 'student[]');
 				invoiceStudent.attr('multiple', 'multiple');
@@ -3345,6 +3350,7 @@
 				fee_box.fadeIn();
 				invoice_fee_type_amount.fadeIn();
 				fee_type_note.fadeIn();
+				recalculate.fadeIn();
 				invoicePayments.hide();
 				invoiceStudent.attr('name', 'student');
 				invoiceStudent.removeAttr('multiple');
@@ -3366,6 +3372,7 @@
 			} else {
 				invoicePayments.fadeIn();
 				fee_box.hide();
+				recalculate.hide();
 				invoice_fee_type_amount.hide();
 				invoiceStudent.attr('name', 'student');
 				invoiceStudent.removeAttr('multiple');
@@ -6060,14 +6067,24 @@
 			$("#get-invoices-total_amount").click(function(){
 				var arrayAmount = $('input[name="fee_amount[]"]');
 				let sumAmount = 0 ;
+				var wlsm_invoice_amount = $('#wlsm_invoice_amount').val();
+				var discount = $('#wlsm_invoice_discount').val();
+
 				
 				if (arrayAmount.length > 0) {
 					jQuery.each(arrayAmount, function(index, element) {
 						return sumAmount += parseFloat(jQuery(element).val());
 					  });								
 				}
-				console.log(sumAmount);
+				console.log(wlsm_invoice_amount, discount );
 				$('#fee-amount').val(sumAmount);
+
+
+				if ($(discount).length) {
+					var percent = discount / 100 * sumAmount ;
+					console.log(sumAmount, discount );
+					$('#wlsm_invoice_amount').val(sumAmount);
+				}
 
 			});
 		});
