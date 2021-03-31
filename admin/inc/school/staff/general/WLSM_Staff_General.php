@@ -528,6 +528,7 @@ class WLSM_Staff_General
 			$parent_password          = isset($_POST['parent_password']) ? $_POST['parent_password'] : '';
 
 			// Fees.
+			$invoice_discount    = isset($_POST['invoice_discount']) ? WLSM_Config::sanitize_money($_POST['invoice_discount']) : 0;
 			$fee_id     = (isset($_POST['fee_id']) && is_array($_POST['fee_id'])) ? $_POST['fee_id'] : array();
 			$fee_label  = (isset($_POST['fee_label']) && is_array($_POST['fee_label'])) ? $_POST['fee_label'] : array();
 			$fee_period = (isset($_POST['fee_period']) && is_array($_POST['fee_period'])) ? $_POST['fee_period'] : array();
@@ -1123,10 +1124,16 @@ class WLSM_Staff_General
 
 							$success = $wpdb->insert(WLSM_STUDENT_FEES, $student_fee_data);
 
+							// Get the percent of amount if discount is given
+							$invoice_amount = $student_fee_data['amount'];
+							$invoice_amount_discounted = $invoice_discount/100 * $invoice_amount;
+							$invoice_amount = $invoice_amount - $invoice_amount_discounted;
+
 							// Invoice data.
 							$invoice_data = array(
 								'label'           => $student_fee_data['label'],
-								'amount'          => $student_fee_data['amount'],
+								'amount'          => $invoice_amount,
+								'discount'        => $invoice_discount,
 								'date_issued'     => $student_fee_data['created_at'],
 								'due_date'        => $student_fee_data['created_at'],
 								'partial_payment' => 0,
@@ -1184,10 +1191,12 @@ class WLSM_Staff_General
 					// Create group invoice with fee type list
 					if($active_on_dashboard[$key] !== 1){
 						$invoice_data['label']        = $label;
-						$invoice_data['amount']       = $amount;
-						$list_data_type = serialize($list_data);
+						$discounted       = $invoice_discount/100 * $amount;
+						$invoice_data['amount']       = $amount - $discounted;
+						$invoice_data['discount']     = $invoice_discount;
+						              $list_data_type = serialize($list_data);
 						$invoice_data['fee_list']     = $list_data_type;
-						$success = $wpdb->insert(WLSM_INVOICES, $invoice_data);
+						              $success        = $wpdb->insert(WLSM_INVOICES, $invoice_data);
 					}
 					if (!$is_insert) {
 						// Delete student fees not in fee_label array.

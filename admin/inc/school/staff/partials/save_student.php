@@ -852,6 +852,12 @@ foreach ($routes_vehicles as $route_vehicle) {
 							<?php esc_html_e('Add Fee', 'school-management'); ?>
 						</button>
 					</div>
+					<div class="form-group col-md-4">
+						<label for="wlsm_discount" class="wlsm-font-bold">
+							<?php esc_html_e('Discount', 'school-management'); ?>:
+						</label>
+						<input type="number" step="any" min="0" name="invoice_discount" class="form-control" id="wlsm_invoice_discount" placeholder="<?php esc_attr_e( 'Enter discount in percent', 'school-management' ); ?>" >
+					</div>
 				</div>
 			</div>
 
