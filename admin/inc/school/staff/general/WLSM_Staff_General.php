@@ -8037,6 +8037,11 @@ class WLSM_Staff_General
 			$gatewaysms_password  = isset($_POST['gatewaysms_password']) ? $_POST['gatewaysms_password'] : '';
 			$gatewaysms_gwid  = isset($_POST['gatewaysms_gwid']) ? $_POST['gatewaysms_gwid'] : '';
 
+			$bulksmsgateway_sender_id = isset($_POST['bulksmsgateway_sender_id']) ? sanitize_text_field($_POST['bulksmsgateway_sender_id']) : '';
+			$bulksmsgateway_username  = isset($_POST['bulksmsgateway_username']) ? sanitize_text_field($_POST['bulksmsgateway_username']) : '';
+			$bulksmsgateway_password  = isset($_POST['bulksmsgateway_password']) ? $_POST['bulksmsgateway_password'] : '';
+			$bulksmsgateway_template_id  = isset($_POST['bulksmsgateway_template_id']) ? $_POST['bulksmsgateway_template_id'] : '';
+
 			$msgclub_auth_key         = isset($_POST['msgclub_auth_key']) ? sanitize_text_field($_POST['msgclub_auth_key']) : '';
 			$msgclub_sender_id        = isset($_POST['msgclub_sender_id']) ? sanitize_text_field($_POST['msgclub_sender_id']) : '';
 			$msgclub_route_id         = isset($_POST['msgclub_route_id']) ? sanitize_text_field($_POST['msgclub_route_id']) : '';
@@ -8194,6 +8199,39 @@ class WLSM_Staff_General
 						WLSM_SETTINGS,
 						array('setting_value' => serialize($gatewaysms_data)),
 						array('ID'            => $gatewaysms->ID)
+					);
+				}
+
+				// SMS bulksmsgateway.
+				$bulksmsgateway = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "bulksmsgateway"', $school_id));
+
+				$bulksmsgateway_data = array(
+					'sender_id' => $bulksmsgateway_sender_id,
+					'template_id' => $bulksmsgateway_template_id,
+					'username'  => $bulksmsgateway_username,
+					'password'  => $bulksmsgateway_password,
+				);
+
+				if (!$bulksmsgateway) {
+					$wpdb->insert(
+						WLSM_SETTINGS,
+						array(
+							'setting_key'   => 'bulksmsgateway',
+							'setting_value' => serialize($bulksmsgateway_data),
+							'school_id'     => $school_id,
+						)
+					);
+				} else {
+					$bulksmsgateway_saved_data = unserialize($bulksmsgateway->setting_value);
+
+					if (empty($bulksmsgateway_data['password'])) {
+						$bulksmsgateway_data['password'] = $bulksmsgateway_saved_data['password'];
+					}
+
+					$wpdb->update(
+						WLSM_SETTINGS,
+						array('setting_value' => serialize($bulksmsgateway_data)),
+						array('ID'            => $bulksmsgateway->ID)
 					);
 				}
 

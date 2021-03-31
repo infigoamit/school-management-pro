@@ -21,6 +21,14 @@ $school_gatewaysms_password  = $settings_gatewaysms['password'];
 $school_gatewaysms_sender_id = $settings_gatewaysms['sender_id'];
 $school_gatewaysms_gwid = $settings_gatewaysms['gwid'];
 
+
+// bulksmsgateway sms settings.
+$settings_bulksmsgateway         = WLSM_M_Setting::get_settings_bulksmsgateway($school_id);
+$school_bulksmsgateway_username  = $settings_bulksmsgateway['username'];
+$school_bulksmsgateway_password  = $settings_bulksmsgateway['password'];
+$school_bulksmsgateway_sender_id = $settings_bulksmsgateway['sender_id'];
+$school_bulksmsgateway_template_id = $settings_bulksmsgateway['template_id'];
+
 // MsgClub settings.
 $settings_msgclub                = WLSM_M_Setting::get_settings_msgclub($school_id);
 $school_msgclub_auth_key         = $settings_msgclub['auth_key'];
@@ -239,6 +247,58 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						<div class="col-md-9">
 							<div class="form-group">
 								<input name="gatewaysms_password" type="password" id="wlsm_gatewaysms_password" class="form-control" placeholder="<?php esc_attr_e('gatewaysms Password', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_bulksmsgateway">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_bulksmsgateway_sender_id" class="wlsm-font-bold"><?php esc_html_e('Sender ID', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="bulksmsgateway_sender_id" type="text" id="wlsm_bulksmsgateway_sender_id" value="<?php echo esc_attr($school_bulksmsgateway_sender_id); ?>" class="form-control" placeholder="<?php esc_attr_e('bulksmsgateway Sender ID', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+                <div class="wlsm_sms_carrier wlsm_bulksmsgateway">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_bulksmsgateway_template_id" class="wlsm-font-bold"><?php esc_html_e('Template ID', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="bulksmsgateway_template_id" type="text" id="wlsm_bulksmsgateway_template_id" value="<?php echo esc_attr($school_bulksmsgateway_template_id); ?>" class="form-control" placeholder="<?php esc_attr_e('bulksmsgateway template id', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_bulksmsgateway">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_bulksmsgateway_username" class="wlsm-font-bold"><?php esc_html_e('Username', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="bulksmsgateway_username" type="text" id="wlsm_bulksmsgateway_username" value="<?php echo esc_attr($school_bulksmsgateway_username); ?>" class="form-control" placeholder="<?php esc_attr_e('bulksmsgateway Username', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_bulksmsgateway">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_bulksmsgateway_password" class="wlsm-font-bold"><?php esc_html_e('Password', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="bulksmsgateway_password" type="password" id="wlsm_bulksmsgateway_password" class="form-control" placeholder="<?php esc_attr_e('bulksmsgateway Password', 'school-management'); ?>">
 							</div>
 						</div>
 					</div>

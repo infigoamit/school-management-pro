@@ -16,10 +16,11 @@ class WLSM_SMS {
 			'textlocal'       => esc_html__('Textlocal ( International )', 'school-management'),
 			'ebulksms'        => esc_html__('EBulkSMS ( Nigeria )', 'school-management'),
 			'pob'             => esc_html__('Pob Talk ( Nigeria )', 'school-management'),
-			'vinuthan'        => esc_html__('vinuthan', 'school-management'),
+			'vinuthan'        => esc_html__('Vinuthan', 'school-management'),
 			'indiatext'       => esc_html__('India Text ( India )', 'school-management'),
-			'kivalosolutions' => esc_html__('kivalosolutions SMS ( Ghana)', 'school-management'),
-			'gatewaysms'      => esc_html__('gatewaysms ( India )', 'school-management'),
+			'kivalosolutions' => esc_html__('Kivalosolutions SMS ( Ghana)', 'school-management'),
+			'gatewaysms'      => esc_html__('Gatewaysms ( India )', 'school-management'),
+			'bulksmsgateway'      => esc_html__('Bulksmsgateway ( India )', 'school-management'),
 		);
 	}
 
@@ -73,6 +74,8 @@ class WLSM_SMS {
 			return self::msgclub($school_id, $message, $to);
 		} elseif ('gatewaysms' === $sms_carrier) {
 			return self::gatewaysms($school_id, $message, $to);
+		} elseif ('bulksmsgateway' === $sms_carrier) {
+			return self::bulksmsgateway($school_id, $message, $to);
 		} elseif ('pointsms' === $sms_carrier) {
 			return self::pointsms($school_id, $message, $to);
 		} elseif ('indiatext' === $sms_carrier) {
@@ -194,6 +197,56 @@ class WLSM_SMS {
 			$response = wp_remote_post("https://getwaysms.com/vendorsms/pushsms.aspx?user=$username&password=$password&msisdn=$number&sid=$sender_id&msg=$message&fl=0&gwid=$gwid", $data);
 			$result   = wp_remote_retrieve_body($response);
 
+			if ($result) {
+				return true;
+			}
+		} catch (Exception $e) {
+		}
+
+		return false;
+	}
+
+	public static function bulksmsgateway($school_id, $message, $numbers) {
+		try {
+			$bulksmsgateway = WLSM_M_Setting::get_settings_bulksmsgateway($school_id);
+			$username  = $bulksmsgateway['username'];
+			$password  = $bulksmsgateway['password'];
+			$sender_id = $bulksmsgateway['sender_id'];
+			$template_id      = $bulksmsgateway['template_id'];
+
+			if (is_array($numbers)) {
+				foreach ($numbers as $key => $number) {
+					if ((12 == strlen($number)) && ('91' == substr($number, 0, 2))) {
+						$numbers[$key] = substr($number, 2, 10);
+					} elseif ((13 == strlen($number)) && ('+91' == substr($number, 0, 3))) {
+						$numbers[$key] = substr($number, 3, 10);
+					} elseif ((11 == strlen($number)) && ('0' == substr($number, 0, 1))) {
+						$numbers[$key] = substr($number, 3, 10);
+					}
+				}
+				$number = implode(', ', $numbers);
+			} else {
+				if ((12 == strlen($numbers)) && ('91' == substr($numbers, 0, 2))) {
+					$number = substr($numbers, 2, 10);
+				} elseif ((13 == strlen($numbers)) && ('+91' == substr($numbers, 0, 3))) {
+					$number = substr($numbers, 3, 10);
+				} elseif ((11 == strlen($numbers)) && ('0' == substr($numbers, 0, 1))) {
+					$number = substr($numbers, 1, 10);
+				} else {
+					$number = $numbers;
+				}
+			}
+
+			if (!($username && $password && $sender_id)) {
+				return false;
+			}
+
+			$data = '';
+
+			$response = wp_remote_post(" http://api.bulksmsgateway.in/sendmessage.php?user=$username&password=$password&mobile=$number&sender=$sender_id&message=$message&type=3&template_id=$template_id ", $data);
+		
+			$result   = wp_remote_retrieve_body($response);
+			
 			if ($result) {
 				return true;
 			}
