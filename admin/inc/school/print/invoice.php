@@ -125,10 +125,17 @@ $due = $invoice->payable - $invoice->paid;
 					<tr>
 						<td><?php echo esc_html( ( $fee['label'] ) ); ?></td>
 						<!-- <td><?php echo esc_html( ( $fee['period'] ) ); ?></td> -->
+						<?php $sum += $fee['amount']; ?>
 						<td><?php echo esc_html( ( $fee['amount']) ); ?></td>
 					</tr>
 					<?php } ?>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td><strong><?php echo esc_html( 'Total' ); ?></strong></td>
+						<td><strong><?php echo esc_html( $sum ); ?></strong></td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 		<?php endif ?>
