@@ -371,6 +371,10 @@ class WLSM_P_Invoice
 							<span class="wlsm-font-bold"><?php esc_html_e('Due Date', 'school-management'); ?>:</span>
 							<span><?php echo esc_html(WLSM_Config::get_date_text($invoice->due_date)); ?></span>
 						</li>
+						<li class="wlsm-list-item">
+							<span class="wlsm-font-bold"><?php esc_html_e('Due Date Penalty Amount', 'school-management'); ?>:</span>
+							<span><?php echo esc_html(WLSM_Config::get_money_text($invoice->due_date_amount)); ?></span>
+						</li>
 					</ul>
 				</div>
 
@@ -407,6 +411,18 @@ class WLSM_P_Invoice
 						<?php esc_html_e('Fees Due', 'school-management'); ?>:
 					</label>
 					<?php
+
+					$due_date_amount = 0;
+					$date_now        = new DateTime();
+					$due_date        = new DateTime( $invoice->due_date);
+					
+					if ($date_now >= $due_date) {
+						$due_date_amount = $invoice->due_date_amount;
+						$due = $due + $due_date_amount;
+						}
+
+					
+
 					echo esc_html(WLSM_Config::get_money_text($due));
 					if ($invoice_partial_payment) {
 					?>
@@ -600,12 +616,21 @@ class WLSM_P_Invoice
 
 			$due = $invoice->payable - $invoice->paid;
 
+			$due_date_amount = 0;
+			$date_now        = new DateTime();
+			$due_date        = new DateTime( $invoice->due_date);
+			
+			if ($date_now >= $due_date) {
+				$due_date_amount = $invoice->due_date_amount;
+				$due  = $due+$due_date_amount;
+				}
+
 			$invoice_partial_payment = $invoice->partial_payment;
 
 			if (!$payment_amount) {
 				$errors['payment_amount'] = esc_html__('Please enter a valid amount.', 'school-management');
 			} else {
-				if ($payment_amount > $due) {
+				if ($payment_amount > $due + $due_date_amount) {
 					$errors['payment_amount'] = esc_html__('Amount exceeded due amount.', 'school-management');
 				} else {
 					if (!$invoice_partial_payment) {
@@ -1191,8 +1216,7 @@ EOT;
 		wp_send_json_error($errors);
 	}
 
-	public static function process_razorpay()
-	{
+	public static function process_razorpay() {
 		if (!wp_verify_nonce($_POST['security'], 'pay-with-razorpay')) {
 			die();
 		}
@@ -1239,7 +1263,6 @@ EOT;
 		}
 
 		$data = json_decode($response['body']);
-
 		if (!$data->captured) {
 			wp_send_json_error(esc_html__('Unable to capture the payment.', 'school-management'));
 		}
@@ -1251,6 +1274,7 @@ EOT;
 		$partial_payment = $invoice->partial_payment;
 
 		$due = $invoice->payable - $invoice->paid;
+		$due = $due + $invoice->due_date_amount;
 
 		if (($payment_amount <= 0) || ($payment_amount > $due) || (!$partial_payment && ($payment_amount != $due))) {
 			wp_send_json_error($unexpected_error_message);
@@ -1314,8 +1338,7 @@ EOT;
 		}
 	}
 
-	public static function process_stripe()
-	{
+	public static function process_stripe() {
 		// var_dump($_POST); die;
 
 		if (!wp_verify_nonce($_POST['security'], 'pay-with-stripe')) {
@@ -1347,6 +1370,7 @@ EOT;
 		$partial_payment = $invoice->partial_payment;
 
 		$due = $invoice->payable - $invoice->paid;
+		$due = $due + $invoice->due_date_amount;
 
 		$school_id  = $invoice->school_id;
 		$session_id = $invoice->session_id;
@@ -1531,6 +1555,7 @@ EOT;
 		$partial_payment = $invoice->partial_payment;
 
 		$due = $invoice->payable - $invoice->paid;
+		$due = $due + $invoice->due_date_amount;
 
 		if (($payment_amount <= 0) || ($payment_amount > $due) || (!$partial_payment && ($payment_amount != $due))) {
 			wp_send_json_error($unexpected_error_message);
@@ -1735,6 +1760,7 @@ EOT;
 		$partial_payment = $invoice->partial_payment;
 
 		$due = $invoice->payable - $invoice->paid;
+		$due = $due + $invoice->due_date_amount;
 
 		if (($payment_amount <= 0) || ($payment_amount > $due) || (!$partial_payment && ($payment_amount != $due))) {
 			wp_send_json_error($unexpected_error_message);
@@ -1930,6 +1956,7 @@ EOT;
 						$partial_payment = $invoice->partial_payment;
 
 						$due = $invoice->payable - $invoice->paid;
+						$due = $due + $invoice->due_date_amount;
 
 						if (($payment_amount <= 0) || ($payment_amount > $due) || (!$partial_payment && ($payment_amount != $due))) {
 							throw new Exception($unexpected_error_message);
@@ -2118,6 +2145,7 @@ EOT;
 						$partial_payment = $invoice->partial_payment;
 					
 						$due = $invoice->payable - $invoice->paid;
+						$due = $due + $invoice->due_date_amount;
 
 						if (($payment_amount <= 0) || ($payment_amount > $due) || (!$partial_payment && ($payment_amount != $due))) {
 							throw new Exception($unexpected_error_message);

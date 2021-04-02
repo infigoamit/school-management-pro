@@ -12,7 +12,7 @@ class WLSM_M_Staff_Accountant {
 	public static function fetch_invoices_query( $school_id, $session_id, $filter ) {
 		require WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/partials/fetch_invoices_query.php';
 
-		$query = 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.phone, sr.admission_number, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+		$query = 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.phone, sr.admission_number, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
 		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
@@ -26,7 +26,7 @@ class WLSM_M_Staff_Accountant {
 	public static function fetch_invoices( $school_id, $session_id ) {
 		require WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/partials/fetch_invoices_query.php';
 
-		$query = 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.phone, sr.admission_number, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+		$query = 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount ) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount ) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.phone, sr.admission_number, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
 		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
@@ -68,7 +68,7 @@ class WLSM_M_Staff_Accountant {
 
 	public static function fetch_invoice( $school_id, $session_id, $id ) {
 		global $wpdb;
-		$invoice = $wpdb->get_row( $wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.fee_list, i.description as invoice_description, i.date_issued, i.due_date, i.amount, i.discount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, i.partial_payment, i.status, sr.ID as student_id, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, sr.father_name, sr.father_phone, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+		$invoice = $wpdb->get_row( $wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.fee_list, i.description as invoice_description, i.date_issued, i.due_date, i.amount, i.discount, i.due_date_amount, (i.amount) as payable, COALESCE(SUM(p.amount), 0) as paid, i.partial_payment, i.status, sr.ID as student_id, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, sr.father_name, sr.father_phone, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
 		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
@@ -450,7 +450,7 @@ class WLSM_M_Staff_Accountant {
 	public static function get_student_pending_invoices( $student_id ) {
 		global $wpdb;
 		$invoices = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+			$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount ) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount ) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
 				JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 				JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 				JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
@@ -466,7 +466,7 @@ class WLSM_M_Staff_Accountant {
 	{
 		global $wpdb;
 		$invoices = $wpdb->get_results(
-			$wpdb->prepare('SELECT i.ID, i.label as invoice_title, wif.label as fees_title, wif.active_on_dashboard, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES .' as i
+			$wpdb->prepare('SELECT i.ID, i.label as invoice_title, wif.label as fees_title, wif.active_on_dashboard, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount ) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount ) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES .' as i
 				
 				JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 				JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
@@ -483,7 +483,7 @@ class WLSM_M_Staff_Accountant {
 	public static function get_student_pending_invoice( $invoice_id ) {
 		global $wpdb;
 		$invoice = $wpdb->get_row(
-			$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due, i.status, i.partial_payment, i.student_record_id as student_id, sr.name as student_name, sr.phone, sr.email, sr.address, sr.admission_number, sr.enrollment_number, sr.session_id, c.label as class_label, se.label as section_label, cs.school_id, u.user_email as login_email FROM ' . WLSM_INVOICES . ' as i
+			$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount ) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount ) - COALESCE(SUM(p.amount), 0)) as due, i.status, i.due_date_amount, i.partial_payment, i.student_record_id as student_id, sr.name as student_name, sr.phone, sr.email, sr.address, sr.admission_number, sr.enrollment_number, sr.session_id, c.label as class_label, se.label as section_label, cs.school_id, u.user_email as login_email FROM ' . WLSM_INVOICES . ' as i
 				JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 				JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 				JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
@@ -499,7 +499,7 @@ class WLSM_M_Staff_Accountant {
 	public static function get_student_invoices( $student_id ) {
 		global $wpdb;
 		$invoices = $wpdb->get_results(
-			$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount - i.discount) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+			$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, i.amount, (i.amount ) as payable, COALESCE(SUM(p.amount), 0) as paid, ((i.amount ) - COALESCE(SUM(p.amount), 0)) as due, i.status, sr.name as student_name, sr.enrollment_number, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
 				JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 				JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 				JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id

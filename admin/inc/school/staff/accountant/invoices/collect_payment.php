@@ -33,6 +33,7 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 		$invoice_discount        = $invoice->discount;
 		$invoice_date_issued     = $invoice->date_issued;
 		$invoice_due_date        = $invoice->due_date;
+		$due_date_amount        = $invoice->due_date_amount;
 		$invoice_partial_payment = $invoice->partial_payment;
 		$invoice_status          = $invoice->status;
 	}
@@ -121,6 +122,10 @@ $classes = WLSM_M_Staff_Class::fetch_classes( $school_id );
 						<li class="list-group-item">
 							<span class="wlsm-font-bold"><?php esc_html_e( 'Due Date', 'school-management' ); ?>:</span>
 							<span><?php echo esc_html( WLSM_Config::get_date_text( $invoice_due_date ) ); ?></span>
+						</li>
+						<li class="list-group-item">
+							<span class="wlsm-font-bold"><?php esc_html_e( 'Due Date Penalty Amount', 'school-management' ); ?>:</span>
+							<span><?php echo esc_html( WLSM_Config::get_money_text( $due_date_amount ) ); ?></span>
 						</li>
 					</ul>
 				</div>

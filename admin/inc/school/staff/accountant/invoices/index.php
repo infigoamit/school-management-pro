@@ -18,7 +18,7 @@ if ( WLSM_M_Role::check_permission( array( 'stats_payments' ), $current_school['
 
 // Invoices pending amount.
 $invoices_pending_amount = $wpdb->get_col(
-	$wpdb->prepare( 'SELECT ((i.amount - i.discount) - COALESCE(SUM(p.amount), 0)) as due FROM ' . WLSM_INVOICES . ' as i 
+	$wpdb->prepare( 'SELECT ((i.amount) - COALESCE(SUM(p.amount), 0)) as due FROM ' . WLSM_INVOICES . ' as i 
 		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id 
 		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id 
 		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id 

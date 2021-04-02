@@ -1,8 +1,10 @@
-Version 7.9 [30-03-2021]
+Version 7.9 [01-03-2021]
 ========
-* Fixed  : attendance can not see Feburary attendance issue fixed.
-* Added  : Discount is added in Student admission form in back-end for invoices.
-* Added  : New bulksmsgateway SMS API Added.
+* Fixed: attendance can not see February attendance issue fixed.
+* Added: Discount is added in Student admission form in back-end for invoices.
+* Added: New bulksmsgateway SMS API Added.
+* Updated: Fee type list will now show total as well.
+* Updated: Discount is now in percentage instead of the amount.
 
 Version 7.8 [23-03-2021]
 ========

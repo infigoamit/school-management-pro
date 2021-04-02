@@ -3,6 +3,15 @@ defined( 'ABSPATH' ) || die();
 
 $payment_amount  = '';
 
+
+$due_date_amount = 0;
+$date_now        = new DateTime();
+$due_date        = new DateTime( $invoice->due_date);
+ 
+if ($date_now >= $due_date) {
+	$due_date_amount = $invoice->due_date_amount;
+	}
+
 $partial_payment_not_allowed = $invoice && ! $invoice_partial_payment;
 if ( $partial_payment_not_allowed ) {
 	$payment_amount = $due;
@@ -39,7 +48,7 @@ $collect_payment_methods = WLSM_M_Invoice::collect_payment_methods();
 					<label for="wlsm_payment_amount" class="wlsm-font-bold">
 						<?php esc_html_e( 'Amount', 'school-management' ); ?>:
 					</label>
-					<input <?php if ( $partial_payment_not_allowed ) { echo 'readonly'; } ?> type="number" step="any" min="0" name="payment_amount" class="form-control" id="wlsm_payment_amount" placeholder="<?php esc_attr_e( 'Enter amount', 'school-management' ); ?>" value="<?php echo esc_attr( WLSM_Config::sanitize_money( $payment_amount ) ); ?>">
+					<input <?php if ( $partial_payment_not_allowed ) { echo 'readonly'; } ?> type="number" step="any" min="0" name="payment_amount" class="form-control" id="wlsm_payment_amount" placeholder="<?php esc_attr_e( 'Enter amount', 'school-management' ); ?>" value="<?php echo esc_attr( WLSM_Config::sanitize_money( $payment_amount + $due_date_amount ) ); ?>">
 				</div>
 				<div class="form-group">
 					<label for="wlsm_payment_method" class="wlsm-font-bold">

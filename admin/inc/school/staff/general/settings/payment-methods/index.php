@@ -578,68 +578,7 @@ Zimbabwe)', 'school-management' ); ?>
 					</div>
 				</div>
 
-				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_authorize_fields" aria-expanded="true" aria-controls="wlsm_authorize_fields">
-					<?php esc_html_e( 'authorize Payment Gateway ', 'school-management' ); ?>
-				</button>
-
-				<div class="collapse border border-top-0 border-primary p-3" id="wlsm_authorize_fields">
-
-					<div class="wlsm_payment_method wlsm_authorize">
-						<div class="row">
-							<div class="col-md-3">
-								<label for="wlsm_authorize_enable" class="wlsm-font-bold">
-									<?php esc_html_e( 'authorize Payment', 'school-management' ); ?>:
-								</label>
-							</div>
-							<div class="col-md-9">
-								<div class="form-group">
-									<label for="wlsm_authorize_enable" class="wlsm-font-bold">
-										<input <?php checked( $school_authorize_enable, true, true ); ?> type="checkbox" name="authorize_enable" id="wlsm_authorize_enable" value="1">
-										<?php esc_html_e( 'Enable', 'school-management' ); ?>
-									</label>
-									<?php if ( ! WLSM_Payment::currency_supports_authorize( $currency ) ) { ?>
-									<br>
-									<small class="text-secondary">
-										<?php
-										printf(
-											/* translators: %s: currency code */
-											__( 'authorize does not support currency %s.', 'school-management' ),
-											esc_html( $currency )
-										);
-										?>
-									</small>
-									<?php } ?>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="wlsm_payment_method wlsm_authorize">
-						<div class="row">
-							<div class="col-md-3">
-								<label for="wlsm_authorize_public_key" class="wlsm-font-bold"><?php esc_html_e( 'Login ID', 'school-management' ); ?>:</label>
-							</div>
-							<div class="col-md-9">
-								<div class="form-group">
-									<input name="authorize_public_key" type="text" id="wlsm_authorize_public_key" value="<?php echo esc_attr( $school_authorize_public_key ); ?>" class="form-control" placeholder="<?php esc_attr_e( 'Login ID', 'school-management' ); ?>">
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="wlsm_payment_method wlsm_authorize">
-						<div class="row">
-							<div class="col-md-3">
-								<label for="wlsm_authorize_secret_key" class="wlsm-font-bold"><?php esc_html_e( 'Transaction Key', 'school-management' ); ?>:</label>
-							</div>
-							<div class="col-md-9">
-								<div class="form-group">
-									<input name="authorize_secret_key" type="text" id="wlsm_authorize_secret_key" value="<?php echo esc_attr( $school_authorize_secret_key ); ?>" class="form-control" placeholder="<?php esc_attr_e( 'Transaction key', 'school-management' ); ?>">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 
 				<button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_sslcommerz_fields" aria-expanded="true" aria-controls="wlsm_sslcommerz_fields">
 					<?php esc_html_e( 'SSLCommerz Payment Gateway ( International )', 'school-management' ); ?>

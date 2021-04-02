@@ -64,7 +64,7 @@ $due = $invoice->payable - $invoice->paid;
 		</div>
 
    <div class="col-md-12">
-      <div class="invoice">
+      <div class="invoice border border-secondary">
          <!-- begin invoice-header -->
          <div class="invoice-header">
             <div class="invoice-from">
@@ -98,6 +98,10 @@ $due = $invoice->payable - $invoice->paid;
                <div class="invoice-detail">
 			   <?php esc_html_e( 'Due Date:', 'school-management' ); ?> - 
 							<?php echo esc_html( WLSM_Config::get_date_text( $invoice->due_date ) ); ?>
+               </div><div class="invoice-detail">
+			   <strong>
+			   <?php esc_html_e( 'Due Date Penalty Amount:', 'school-management' ); ?> </strong>- 
+							<?php echo esc_html( WLSM_Config::get_money_text( $invoice->due_date_amount ) ); ?>
                </div>
             </div>
          </div>
@@ -124,21 +128,28 @@ $due = $invoice->payable - $invoice->paid;
 					<?php foreach ( $fee_list as $fee ) { ?>
 					<tr>
 						<td><?php echo esc_html( ( $fee['label'] ) ); ?></td>
-						<!-- <td><?php echo esc_html( ( $fee['period'] ) ); ?></td> -->
 						<td><?php echo esc_html( ( $fee['amount']) ); ?></td>
+						<?php $sum +=  $fee['amount']; ?>
 					</tr>
 					<?php } ?>
 				</tbody>
+				<tfoot>
+				<tr>
+				<td><strong><?php echo esc_html( 'Total' ); ?></strong></td>
+				<td><strong><?php echo esc_html( $sum ); ?></strong></td>
+				</tr>
+				</tfoot>
 			</table>
 		</div>
 		<?php endif ?>
             <div class="table-responsive">
-               <table class="table table-invoice">
+               <table class="table table-invoice table-bordered">
                   <thead>
                      <tr>
-                        <th class="text-center"><?php esc_html_e( 'Total Amount', 'school-management' ); ?></th>
+                        <th class="text-center"><?php esc_html_e( 'Amount', 'school-management' ); ?></th>
                         <th class="text-center" ><?php esc_html_e( 'Discount', 'school-management' ); ?></th>
 						<th class="text-center" ><?php esc_html_e( 'Due', 'school-management' ); ?></th>
+						<th class="text-center" ><?php esc_html_e( 'After Due Date', 'school-management' ); ?></th>
 						<th class="text-center" ><?php esc_html_e( 'Status', 'school-management' ); ?></th>
 						
                      </tr>
@@ -148,7 +159,14 @@ $due = $invoice->payable - $invoice->paid;
                      <tr>
                         <td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></td>
 						<td class="text-center" ><?php echo esc_html( ( $invoice->discount ) ); ?>%</td>
-						<td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text( $due ) ); ?></td>
+						<td class="text-center" ><?php 
+							if($due > 0){
+								echo esc_html( WLSM_Config::get_money_text( $due ) ); 
+							} else {
+								echo esc_html( 0 );
+							}
+						?></td>
+                        <td class="text-center" ><?php echo esc_html( WLSM_Config::get_money_text(( $invoice->payable )+($invoice->due_date_amount)) ); ?></td>
 						<td class="text-center" >
 							<?php
 							echo wp_kses(
@@ -180,8 +198,8 @@ $due = $invoice->payable - $invoice->paid;
          </div>
          <!-- end invoice-note -->
          <!-- begin invoice-footer -->
-         <div class="invoice-footer">
-         </div>
+         <!-- <div class="invoice-footer">
+         </div> -->
          <!-- end invoice-footer -->
       </div>
    </div>

@@ -437,7 +437,7 @@ img.wlsm-print-id-card-signature {
 
 	.invoice-header {
 	margin: 0 -20px;
-	background: #f0f3f4;
+	/* background: #f0f3f4; */
 	padding: 20px
 	}
 
@@ -466,7 +466,7 @@ img.wlsm-print-id-card-signature {
 	}
 
 	.invoice-price {
-	background: #f0f3f4;
+	/* background: #f0f3f4; */
 	display: table;
 	width: 100%
 	}

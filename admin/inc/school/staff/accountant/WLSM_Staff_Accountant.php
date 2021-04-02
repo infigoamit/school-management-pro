@@ -261,13 +261,17 @@ class WLSM_Staff_Accountant {
 				if (count($filter_rows_limit)) {
 					foreach ($filter_rows_limit as $row) {
 						$due = $row->payable - $row->paid;
-
+							if($due>0){
+								$due_amount = $due;
+							}else {
+								$due_amount = 0;
+							}
 						if (WLSM_M_Invoice::get_paid_key() !== $row->status) {
 							$collect_payment = '<br><a href="' . esc_url($page_url . '&action=collect_payment&id=' . $row->ID . '#wlsm-fee-invoice-status') . '" class="btn wlsm-btn-xs btn-success">' . esc_html__('Collect Payment', 'school-management') . '</a>';
 						} else {
 							$collect_payment = '';
 						}
-
+						
 						// Table columns.
 						$data[] = array(
 							esc_html(WLSM_M_Staff_Class::get_name_text($row->student_name)),
@@ -276,7 +280,7 @@ class WLSM_Staff_Accountant {
 							esc_html(WLSM_M_Staff_Accountant::get_invoice_title_text($row->invoice_title)),
 							esc_html(WLSM_Config::get_money_text($row->payable)),
 							esc_html(WLSM_Config::get_money_text($row->paid)),
-							'<span class="wlsm-font-bold">' . esc_html(WLSM_Config::get_money_text($due)) . '</span>',
+							'<span class="wlsm-font-bold">' . esc_html(WLSM_Config::get_money_text($due_amount)) . '</span>',
 							wp_kses(
 								WLSM_M_Invoice::get_status_text($row->status),
 								array('span' => array('class' => array()))
@@ -374,7 +378,10 @@ class WLSM_Staff_Accountant {
 			$invoice_date_issued = isset($_POST['invoice_date_issued']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['invoice_date_issued'])) : NULL;
 			$invoice_due_date    = isset($_POST['invoice_due_date']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['invoice_due_date'])) : NULL;
 			$partial_payment     = isset($_POST['partial_payment']) ? (bool) $_POST['partial_payment'] : 0;
-
+			
+			$due_date_amount = isset($_POST['due_date_amount']) ? WLSM_Config::sanitize_money($_POST['due_date_amount']) : 0;
+			$due_date_period = isset($_POST['due_date_period']) ? sanitize_text_field($_POST['due_date_period']) : '';
+			
 
 			// Fees.
 			$fee_id     = (isset($_POST['fee_id']) && is_array($_POST['fee_id'])) ? $_POST['fee_id'] : array();
@@ -558,6 +565,8 @@ class WLSM_Staff_Accountant {
 					'date_issued'     => $invoice_date_issued,
 					'due_date'        => $invoice_due_date,
 					'partial_payment' => $partial_payment,
+					'due_date_amount' => $due_date_amount,
+					'due_date_period' => $due_date_period,
 				);
 
 				// Checks if update or insert.
@@ -1298,21 +1307,21 @@ class WLSM_Staff_Accountant {
 		if ($payment_amount <= 0) {
 			$errors['payment_amount'] = esc_html__('Please provide a valid amount.', 'school-management');
 		} else {
-			if ($payment_amount > $due) {
-				$errors['payment_amount'] = sprintf(
-					/* translators: %s: payable amount */
-					__('Amount cannot exceed payable amount: %s', 'school-management'),
-					WLSM_Config::get_money_text($due)
-				);
-			}
+			// if ($payment_amount > $due) {
+			// 	$errors['payment_amount'] = sprintf(
+			// 		/* translators: %s: payable amount */
+			// 		__('Amount cannot exceed payable amount: %s', 'school-management'),
+			// 		WLSM_Config::get_money_text($due)
+			// 	);
+			// }
 
-			if (!$partial_payment && ($payment_amount != $due)) {
-				$errors['payment_amount'] = sprintf(
-					/* translators: %s: payable amount */
-					__('Partial payment is not allowed. Amount must be equal to payable amount: %s', 'school-management'),
-					WLSM_Config::get_money_text($due)
-				);
-			}
+			// if (!$partial_payment && ($payment_amount != $due)) {
+			// 	$errors['payment_amount'] = sprintf(
+			// 		/* translators: %s: payable amount */
+			// 		__('Partial payment is not allowed. Amount must be equal to payable amount: %s', 'school-management'),
+			// 		WLSM_Config::get_money_text($due)
+			// 	);
+			// }
 		}
 
 		if (strlen($payment_method) > 50) {

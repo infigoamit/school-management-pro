@@ -85,7 +85,7 @@ class WLSM_Notify {
 		if ( $email_invoice_generated_enable || $sms_invoice_generated_enable ) {
 			global $wpdb;
 			$invoice = $wpdb->get_row(
-				$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, (i.amount - i.discount) as payable, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, c.label as class_label, se.label as section_label, u.user_email as login_email, s.label as school_name FROM ' . WLSM_INVOICES . ' as i 
+				$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, (i.amount ) as payable, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, c.label as class_label, se.label as section_label, u.user_email as login_email, s.label as school_name FROM ' . WLSM_INVOICES . ' as i 
 					JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id 
 					JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id 
 					JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id 
@@ -350,7 +350,7 @@ class WLSM_Notify {
 		if ( $sms_invoice_generated_to_parent_enable ) {
 			global $wpdb;
 			$invoice = $wpdb->get_row(
-				$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, (i.amount - i.discount) as payable, sr.name as student_name, sr.phone, sr.father_phone, sr.mother_phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, c.label as class_label, se.label as section_label, u.user_email as login_email, s.label as school_name FROM ' . WLSM_INVOICES . ' as i 
+				$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, (i.amount ) as payable, sr.name as student_name, sr.phone, sr.father_phone, sr.mother_phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, c.label as class_label, se.label as section_label, u.user_email as login_email, s.label as school_name FROM ' . WLSM_INVOICES . ' as i 
 					JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id 
 					JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id 
 					JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id 

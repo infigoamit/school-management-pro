@@ -346,6 +346,14 @@ class WLSM_Helper {
 		);
 	}
 
+	public static function due_date_period() {
+		return array(
+			'one-time' => esc_html__( 'Daily', 'school-management' ),
+			'monthly'  => esc_html__( 'Monthly', 'school-management' ),
+			'annually' => esc_html__( 'Annually', 'school-management' ),
+		);
+	}
+
 	public static function get_certificate_property( $key ) {
 		if ( array_key_exists( $key, self::certificate_properties() ) ) {
 			return self::certificate_properties()[ $key ];

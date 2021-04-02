@@ -74,7 +74,8 @@ $due = $invoice->payable - $invoice->paid;
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
 						<span class="wlsm-font-bold"><?php esc_html_e( 'Payable', 'school-management' ); ?>:</span>
-						<span><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); ?></span>
+						<span><?php echo esc_html( WLSM_Config::get_money_text( $invoice->payable ) ); 
+						?></span>
 					</li>
 					<li class="list-group-item">
 						<span class="wlsm-font-bold"><?php esc_html_e( 'Paid', 'school-management' ); ?>:</span>
@@ -86,7 +87,11 @@ $due = $invoice->payable - $invoice->paid;
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
 						<span class="wlsm-font-bold"><?php esc_html_e( 'Due', 'school-management' ); ?>:</span>
-						<span class="wlsm-font-bold"><?php echo esc_html( WLSM_Config::get_money_text( $due ) ); ?></span>
+						<span class="wlsm-font-bold"><?php 
+						if($due > 0 ){
+							echo esc_html( WLSM_Config::get_money_text( $due ) ); 
+						}
+						?></span>
 					</li>
 					<li class="list-group-item">
 						<span class="wlsm-font-bold"><?php esc_html_e( 'Status', 'school-management' ); ?>:</span>

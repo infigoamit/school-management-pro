@@ -3392,6 +3392,16 @@
 			}
 		});
 
+		var collectDueDatePayment = $('#wlsm-due-date-periods');
+		$(document).on('change', '#wlsm_due_date_amont_by_period', function(event) {
+			if($(this).is(':checked')) {
+				collectDueDatePayment.fadeIn();
+				wlsmInitializePaymentDatePicker();
+			} else {
+				collectDueDatePayment.hide();
+			}
+		});
+
 		$(document).on('click', '.wlsm-print-invoice-fee-structure', function() {
 			var element = $(this);
 			var studentsSelected = $("#wlsm_student :selected");
