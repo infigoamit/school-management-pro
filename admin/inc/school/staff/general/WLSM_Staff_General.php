@@ -7710,6 +7710,10 @@ class WLSM_Staff_General
 			$email_student_registration_to_student_subject = isset($_POST['email_student_registration_to_student_subject']) ? sanitize_text_field(stripslashes($_POST['email_student_registration_to_student_subject'])) : '';
 			$email_student_registration_to_student_body    = isset($_POST['email_student_registration_to_student_body']) ? wp_kses_post(stripslashes($_POST['email_student_registration_to_student_body'])) : '';
 
+			$email_student_invoice_due_date_student_enable  = isset($_POST['email_student_invoice_due_date_student_enable']) ? (bool) ($_POST['email_student_invoice_due_date_student_enable']) : 0;
+			$email_student_invoice_due_date_student_subject = isset($_POST['email_student_invoice_due_date_student_subject']) ? sanitize_text_field(stripslashes($_POST['email_student_invoice_due_date_student_subject'])) : '';
+			$email_student_invoice_due_date_student_body    = isset($_POST['email_student_invoice_due_date_student_body']) ? wp_kses_post(stripslashes($_POST['email_student_invoice_due_date_student_body'])) : '';
+
 			$email_student_registration_to_admin_enable  = isset($_POST['email_student_registration_to_admin_enable']) ? (bool) ($_POST['email_student_registration_to_admin_enable']) : 0;
 			$email_student_registration_to_admin_subject = isset($_POST['email_student_registration_to_admin_subject']) ? sanitize_text_field(stripslashes($_POST['email_student_registration_to_admin_subject'])) : '';
 			$email_student_registration_to_admin_body    = isset($_POST['email_student_registration_to_admin_body']) ? wp_kses_post(stripslashes($_POST['email_student_registration_to_admin_body'])) : '';
@@ -7912,6 +7916,31 @@ class WLSM_Staff_General
 					array('ID'            => $email_student_registration_to_student->ID)
 				);
 			}
+				// Email Student Registration to Student.
+				$email_student_invoice_due_date_student = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "email_student_invoice_due_date_student"', $school_id));
+
+				$email_student_invoice_due_date_student_data = array(
+					'enable'  => $email_student_invoice_due_date_student_enable,
+					'subject' => $email_student_invoice_due_date_student_subject,
+					'body'    => $email_student_invoice_due_date_student_body,
+				);
+
+				if (!$email_student_invoice_due_date_student) {
+					$wpdb->insert(
+						WLSM_SETTINGS,
+						array(
+							'setting_key'   => 'email_student_invoice_due_date_student',
+							'setting_value' => serialize($email_student_invoice_due_date_student_data),
+							'school_id'     => $school_id,
+						)
+					);
+				} else {
+					$wpdb->update(
+						WLSM_SETTINGS,
+						array('setting_value' => serialize($email_student_invoice_due_date_student_data)),
+						array('ID'            => $email_student_invoice_due_date_student->ID)
+					);
+				}
 
 			// Email Student Registration to Admin.
 			$email_student_registration_to_admin = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "email_student_registration_to_admin"', $school_id));
