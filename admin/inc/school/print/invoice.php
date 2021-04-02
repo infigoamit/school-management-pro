@@ -128,28 +128,16 @@ $due = $invoice->payable - $invoice->paid;
 					<?php foreach ( $fee_list as $fee ) { ?>
 					<tr>
 						<td><?php echo esc_html( ( $fee['label'] ) ); ?></td>
-<<<<<<< HEAD
-=======
-						<!-- <td><?php echo esc_html( ( $fee['period'] ) ); ?></td> -->
-						<?php $sum += $fee['amount']; ?>
->>>>>>> 5d48df97cc9cb450c7b4c45525745ff2dea88c34
 						<td><?php echo esc_html( ( $fee['amount']) ); ?></td>
 						<?php $sum +=  $fee['amount']; ?>
 					</tr>
 					<?php } ?>
 				</tbody>
 				<tfoot>
-<<<<<<< HEAD
 				<tr>
 				<td><strong><?php echo esc_html( 'Total' ); ?></strong></td>
 				<td><strong><?php echo esc_html( $sum ); ?></strong></td>
 				</tr>
-=======
-					<tr>
-						<td><strong><?php echo esc_html( 'Total' ); ?></strong></td>
-						<td><strong><?php echo esc_html( $sum ); ?></strong></td>
-					</tr>
->>>>>>> 5d48df97cc9cb450c7b4c45525745ff2dea88c34
 				</tfoot>
 			</table>
 		</div>
