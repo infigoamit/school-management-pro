@@ -348,7 +348,7 @@ class WLSM_Helper {
 
 	public static function due_date_period() {
 		return array(
-			'one-time' => esc_html__( 'Daily', 'school-management' ),
+			'daily'    => esc_html__( 'Daily', 'school-management' ),
 			'monthly'  => esc_html__( 'Monthly', 'school-management' ),
 			'annually' => esc_html__( 'Annually', 'school-management' ),
 		);

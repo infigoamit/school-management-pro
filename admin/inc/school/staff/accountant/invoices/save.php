@@ -367,7 +367,7 @@ if (!$invoice) {
 					</div>
 
 					<!-- <div class="col-md-3">
-						<div class="form-group mt-5">
+						<div class="form-group">
 							<input class="form-check-input mt-1" type="checkbox" name="due_date_amont_by_period" id="wlsm_due_date_amont_by_period" value="1">
 							<label class="ml-4 mb-1 form-check-label wlsm-font-bold text-dark" for="wlsm_due_date_amont_by_period">
 								<?php esc_html_e('Increase Due Date Amount By Time', 'school-management'); ?>
@@ -376,8 +376,8 @@ if (!$invoice) {
 						</div>
 					</div>
 
-					<div class="col-md-4" id="wlsm-due-date-periods" style="display: none;">
-						<div class="form-group mt-4">
+					<div class="col-md-3" id="wlsm-due-date-periods" style="display: none;">
+						<div class="form-group ">
                         <select name="due_date_period" class="form-control selectpicker" id="wlsm_period" data-live-search="true">
 							<?php foreach ($due_date_periods as $key => $value) { ?>
 								<option value="<?php echo esc_attr($key); ?>" <?php selected($key, $period, true); ?>>

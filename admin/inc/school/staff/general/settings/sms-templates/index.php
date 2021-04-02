@@ -27,6 +27,7 @@ defined( 'ABSPATH' ) || die();
 				require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/sms-templates/inquiry_received_to_inquisitor.php';
 				require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/sms-templates/inquiry_received_to_admin.php';
 				require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/sms-templates/student_registration_to_student.php';
+				require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/sms-templates/student_invoice_due_date_student.php';
 				require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/sms-templates/student_registration_to_admin.php';
 				?>
 

@@ -100,7 +100,7 @@ $due = $invoice->payable - $invoice->paid;
 							<?php echo esc_html( WLSM_Config::get_date_text( $invoice->due_date ) ); ?>
                </div><div class="invoice-detail">
 			   <strong>
-			   <?php esc_html_e( 'Due Date Penalty Amount:', 'school-management' ); ?> </strong>- 
+			   <?php esc_html_e( 'Due Date Penalty:', 'school-management' ); ?> </strong> 
 							<?php echo esc_html( WLSM_Config::get_money_text( $invoice->due_date_amount ) ); ?>
                </div>
             </div>

@@ -987,6 +987,26 @@ class WLSM_M_Setting {
 			'message' => $message,
 		);
 	}
+	
+	public static function get_settings_sms_student_invoice_due_date_student( $school_id ) {
+		global $wpdb;
+
+		$enable  = 0;
+		$message = NULL;
+
+		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_student_invoice_due_date_student"', $school_id ) );
+
+		if ( $settings ) {
+			$settings = unserialize( $settings->setting_value );
+			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
+			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+		}
+
+		return array(
+			'enable'  => $enable,
+			'message' => $message,
+		);
+	}
 
 	public static function get_settings_sms_student_registration_to_admin( $school_id ) {
 		global $wpdb;

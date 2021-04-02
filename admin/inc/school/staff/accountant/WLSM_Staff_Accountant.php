@@ -408,6 +408,10 @@ class WLSM_Staff_Accountant {
 				$errors['invoice_amount'] = esc_html__('Please specify a valid invoice amount.', 'school-management');
 			}
 
+			if ($partial_payment && $due_date_amount) {
+				$errors['due_date_amount'] = esc_html__('You can not have Due Date Amount in Partial Payment.', 'school-management');
+			}
+
 			if ($invoice_discount > $invoice_amount) {
 				$errors['invoice_discount'] = esc_html__('Discount must be lower or equal to invoice amount.', 'school-management');
 			}

@@ -8652,6 +8652,9 @@ class WLSM_Staff_General
 			$sms_student_registration_to_student_enable  = isset($_POST['sms_student_registration_to_student_enable']) ? (bool) ($_POST['sms_student_registration_to_student_enable']) : 0;
 			$sms_student_registration_to_student_message = isset($_POST['sms_student_registration_to_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_registration_to_student_message'])) : '';
 
+			$sms_student_invoice_due_date_student_enable  = isset($_POST['sms_student_invoice_due_date_student_enable']) ? (bool) ($_POST['sms_student_invoice_due_date_student_enable']) : 0;
+			$sms_student_invoice_due_date_student_message = isset($_POST['sms_student_invoice_due_date_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_invoice_due_date_student_message'])) : '';
+
 			$sms_student_registration_to_admin_enable  = isset($_POST['sms_student_registration_to_admin_enable']) ? (bool) ($_POST['sms_student_registration_to_admin_enable']) : 0;
 			$sms_student_registration_to_admin_message = isset($_POST['sms_student_registration_to_admin_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_registration_to_admin_message'])) : '';
 		} catch (Exception $exception) {
@@ -8964,6 +8967,31 @@ class WLSM_Staff_General
 					WLSM_SETTINGS,
 					array('setting_value' => serialize($sms_student_registration_to_student_data)),
 					array('ID'            => $sms_student_registration_to_student->ID)
+				);
+			}
+
+			// SMS Student invoice due date notification Student.
+			$sms_student_invoice_due_date_student = $wpdb->get_row($wpdb->prepare('SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_student_invoice_due_date_student"', $school_id));
+
+			$sms_student_invoice_due_date_student_data = array(
+				'enable'  => $sms_student_invoice_due_date_student_enable,
+				'message' => $sms_student_invoice_due_date_student_message,
+			);
+
+			if (!$sms_student_invoice_due_date_student) {
+				$wpdb->insert(
+					WLSM_SETTINGS,
+					array(
+						'setting_key'   => 'sms_student_invoice_due_date_student',
+						'setting_value' => serialize($sms_student_invoice_due_date_student_data),
+						'school_id'     => $school_id,
+					)
+				);
+			} else {
+				$wpdb->update(
+					WLSM_SETTINGS,
+					array('setting_value' => serialize($sms_student_invoice_due_date_student_data)),
+					array('ID'            => $sms_student_invoice_due_date_student->ID)
 				);
 			}
 
