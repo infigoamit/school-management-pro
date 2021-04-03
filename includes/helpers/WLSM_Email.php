@@ -17,6 +17,8 @@ class WLSM_Email {
 				$available_placeholders = array_keys( self::student_admission_placeholders() );
 			} elseif ( 'invoice_generated' === $email_for ) {
 				$available_placeholders = array_keys( self::invoice_generated_placeholders() );
+			}  elseif ( 'invoice_due_date' === $email_for ) {
+				$available_placeholders = array_keys( self::invoice_generated_placeholders() );
 			} elseif ( 'online_fee_submission' === $email_for ) {
 				$available_placeholders = array_keys( self::online_fee_submission_placeholders() );
 			} elseif ( 'offline_fee_submission' === $email_for ) {

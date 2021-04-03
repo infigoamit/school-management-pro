@@ -571,6 +571,86 @@ class WLSM_Notify {
 		}
 	}
 
+	public static function notify_for_invoice_due_date( ) {
+		global $wpdb;
+		$schools =    $wpdb->get_results( "SELECT ID FROM ".WLSM_SCHOOLS." ORDER BY ID DESC" );
+		foreach ($schools as $school) {
+			
+			$school_id = $school->ID;
+		
+
+		$settings_email_invoice_due_date = WLSM_M_Setting::get_settings_email_student_invoice_due_date_student( $school_id );
+		$email_invoice_due_date_enable   = $settings_email_invoice_due_date['enable'];
+
+		$settings_sms_invoice_due_date = WLSM_M_Setting::get_settings_sms_student_invoice_due_date_student( $school_id );
+		$sms_invoice_due_date_enable   = $settings_sms_invoice_due_date['enable'];
+
+		if ( $email_invoice_due_date_enable || $sms_invoice_due_date_enable ) {
+			global $wpdb;
+			$invoices = $wpdb->get_results(
+				$wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.date_issued, i.due_date, (i.amount ) as payable, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, c.label as class_label, se.label as section_label, u.user_email as login_email, s.label as school_name FROM ' . WLSM_INVOICES . ' as i 
+					JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id 
+					JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id 
+					JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id 
+					JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = se.class_school_id 
+					JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id 
+					JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = cs.school_id 
+					LEFT OUTER JOIN ' . WLSM_PAYMENTS . ' as p ON p.invoice_id = i.ID 
+					LEFT OUTER JOIN ' . WLSM_USERS . ' as u ON u.ID = sr.user_id 
+					WHERE YEAR(i.due_date) = YEAR(NOW()) AND MONTH(i.due_date) = MONTH(NOW()) AND DAY(i.due_date) = DAY(NOW())')
+			);
+
+			if ( ! $invoices ) {
+				return false;
+			}
+
+			foreach ($invoices as $invoice) {		
+
+			$email_to = $invoice->email ? $invoice->email : $invoice->login_email;
+			$sms_to   = $invoice->phone ? $invoice->phone : '';
+
+			if ( ! ( $email_to || $sms_to ) ) {
+				return false;
+			}
+
+			$for = 'invoice_due_date';
+
+			$name = stripcslashes( $invoice->student_name );
+
+			$placeholders = array(
+				'[INVOICE_TITLE]'       => $invoice->invoice_title,
+				'[INVOICE_NUMBER]'      => $invoice->invoice_number,
+				'[INVOICE_PAYABLE]'     => WLSM_Config::sanitize_money( $invoice->payable ),
+				'[INVOICE_DATE_ISSUED]' => WLSM_Config::get_date_text( $invoice->date_issued ),
+				'[INVOICE_DUE_DATE]'    => WLSM_Config::get_date_text( $invoice->due_date ),
+				'[STUDENT_NAME]'        => $name,
+				'[CLASS]'               => stripcslashes( $invoice->class_label ),
+				'[SECTION]'             => stripcslashes( $invoice->section_label ),
+				'[ROLL_NUMBER]'         => $invoice->roll_number,
+				'[ENROLLMENT_NUMBER]'   => $invoice->enrollment_number,
+				'[ADMISSION_NUMBER]'    => $invoice->admission_number,
+				'[SCHOOL_NAME]'         => stripcslashes( $invoice->school_name ),
+			);
+
+			if ( $email_invoice_due_date_enable && $email_to ) {
+				// Invoice due_date Email template.
+				$subject = $settings_email_invoice_due_date['subject'];
+				$body    = $settings_email_invoice_due_date['body'];
+
+				WLSM_Email::send_email( $school_id, $email_to, $subject, $body, $name, $for, $placeholders );
+			}
+
+			if ( $sms_invoice_due_date_enable && $sms_to ) {
+				// Invoice due_date SMS template.
+				$message = $settings_sms_invoice_due_date['message'];
+
+				WLSM_SMS::send_sms( $school_id, $sms_to, $message, $for, $placeholders );
+			}
+		}
+			}
+		}
+	}
+
 	public static function notify_for_custom_message( $data ) {
 		$school_id  = $data['school_id'];
 		$student_id = $data['student_id'];

@@ -7,7 +7,7 @@ $email_student_invoice_due_date_student_enable   = $settings_email_student_invoi
 $email_student_invoice_due_date_student_subject  = $settings_email_student_invoice_due_date_student['subject'];
 $email_student_invoice_due_date_student_body     = $settings_email_student_invoice_due_date_student['body'];
 
-$email_student_invoice_due_date_student_placeholders = WLSM_Email::student_registration_to_student_placeholders();
+$email_student_invoice_due_date_student_placeholders = WLSM_Email::invoice_generated_placeholders();
 
 ?>
 <button type="button" class="mt-2 btn btn-block btn-primary" data-toggle="collapse" data-target="#wlsm_email_student_invoice_due_date_student_fields" aria-expanded="true" aria-controls="wlsm_email_student_invoice_due_date_student_fields">

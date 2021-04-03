@@ -25,6 +25,10 @@ class WLSM_Schedule {
 		);
 	}
 
+	public static function notify_for_invoice_due_date() {
+		WLSM_Notify::notify_for_invoice_due_date( );
+	}
+	
 	public static function notify_for_online_fee_submission( $school_id, $session_id, $payment_id ) {
 		WLSM_Notify::notify_for_online_fee_submission(
 			array(

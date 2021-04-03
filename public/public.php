@@ -49,6 +49,12 @@ if ( class_exists( 'WooCommerce' ) ) {
 }
 
 // Schedules.
+//  Notification for invoice due date.
+if ( ! wp_next_scheduled( 'wlsm_notify_for_invoice_due_date' ) ) {
+	wp_schedule_event( time(), 'daily', 'wlsm_notify_for_invoice_due_date' );
+}
+add_action( 'wlsm_notify_for_invoice_due_date', array( 'WLSM_Schedule', 'notify_for_invoice_due_date' ), 10, 3 );
+
 add_action( 'wlsm_notify_for_student_admission', array( 'WLSM_Schedule', 'notify_for_student_admission' ), 10, 4 );
 add_action( 'wlsm_notify_for_invoice_generated', array( 'WLSM_Schedule', 'notify_for_invoice_generated' ), 10, 3 );
 add_action( 'wlsm_notify_for_online_fee_submission', array( 'WLSM_Schedule', 'notify_for_online_fee_submission' ), 10, 3 );
