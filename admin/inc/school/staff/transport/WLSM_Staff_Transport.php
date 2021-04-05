@@ -791,4 +791,634 @@ class WLSM_Staff_Transport {
 		}
 		wp_send_json_error( $errors );
 	}
+
+	public static function fetch_hostels() {
+		$current_user = WLSM_M_Role::can( 'manage_hostel' );
+
+		if ( ! $current_user ) {
+			die();
+		}
+
+		$school_id = $current_user['school']['id'];
+
+		global $wpdb;
+
+		$page_url = WLSM_M_Staff_Transport::get_hostels_page_url();
+
+		$query = WLSM_M_Staff_Transport::fetch_hostel_query( $school_id );
+
+		$query_filter = $query;
+
+		// Grouping.
+		$group_by = ' ' . WLSM_M_Staff_Transport::fetch_hostel_query_group_by();
+
+		$query        .= $group_by;
+		$query_filter .= $group_by;
+
+		// Searching.
+		$condition = '';
+		if ( isset( $_POST['search']['value'] ) ) {
+			$search_value = sanitize_text_field( $_POST['search']['value'] );
+			if ( '' !== $search_value ) {
+				$condition .= '' .
+				'(h.hostel_name LIKE "%' . $search_value . '%") OR ' .
+				'(h.hostel_type LIKE "%' . $search_value . '%") OR ' .
+				'(h.hostel_address LIKE "%' . $search_value . '%") OR ' .
+				'(h.hostel_intake LIKE "%' . $search_value . '%")';
+
+				$query_filter .= ( ' HAVING ' . $condition );
+			}
+		}
+
+		// Ordering.
+		$columns = array( 'h.hostel_name', 'h.hostel_type', 'h.hostel_address', 'h.hostel_intake' );
+		if ( isset( $_POST['order'] ) && isset( $columns[ $_POST['order']['0']['column'] ] ) ) {
+			$order_by  = sanitize_text_field( $columns[ $_POST['order']['0']['column'] ] );
+			$order_dir = sanitize_text_field( $_POST['order']['0']['dir'] );
+
+			$query_filter .= ' ORDER BY ' . $order_by . ' ' . $order_dir;
+		} else {
+			$query_filter .= ' ORDER BY h.ID DESC';
+		}
+
+		// Limiting.
+		$limit = '';
+		if ( -1 != $_POST['length'] ) {
+			$start  = absint( $_POST['start'] );
+			$length = absint( $_POST['length'] );
+
+			$limit  = ' LIMIT ' . $start . ', ' . $length;
+		}
+
+		// Total query.
+		$rows_query = WLSM_M_Staff_Transport::fetch_hostel_query_count( $school_id );
+
+		// Total rows count.
+		$total_rows_count = $wpdb->get_var( $rows_query );
+
+		// Filtered rows count.
+		if ( $condition ) {
+			$filter_rows_count = $wpdb->get_var( $rows_query . ' AND (' . $condition . ')' );
+		} else {
+			$filter_rows_count = $total_rows_count;
+		}
+
+		// Filtered limit rows.
+		$filter_rows_limit = $wpdb->get_results( $query_filter . $limit );
+
+		$data = array();
+
+		if ( count( $filter_rows_limit ) ) {
+			foreach ( $filter_rows_limit as $row ) {
+
+				$hostel_id = $row->ID;
+
+				// Get vehicle incharge.
+				$admins = WLSM_M_Staff_Transport::get_vehicle_incharge( $school_id, $hostel_id );
+
+				if ( count( $admins ) ) {
+					$hostel_incharge = '';
+					foreach ( $admins as $admin ) {
+						if ( WLSM_M_Role::get_admin_key() === $admin->role ) {
+							$staff_page_url = WLSM_M_Staff_General::get_admins_page_url();
+						} else {
+							$staff_page_url = WLSM_M_Staff_General::get_employees_page_url();
+						}
+						
+						$hostel_incharge .= '- <span class="wlsm-font-bold"><a class="text-dark" target="_blank" href="' . esc_url( $staff_page_url . '&action=save&id=' . $admin->ID ) . '">' . esc_html( stripcslashes( $admin->name ) );
+
+						if ( $admin->phone ) {
+							$hostel_incharge .= ' (' . esc_html( $admin->phone ) . ')';
+						}
+
+						if ( $admin->username ) {
+							$hostel_incharge .= ' (' . esc_html( $admin->username ) . ')';
+						}
+
+						$hostel_incharge .= '</a></span><br>';
+					}
+				} else {
+					$hostel_incharge = '-';
+				}
+
+				// Table columns.
+				$data[] = array(
+					esc_html( $row->ID ),
+					esc_html( $row->hostel_name ),
+					esc_html( $row->hostel_type ),
+					esc_html( ( $row->hostel_address ) ),
+					esc_html( ( $row->hostel_intake ) ),
+					'<a class="text-primary" href="' . esc_url( $page_url . "&action=save&id=" . $row->ID ) . '"><span class="dashicons dashicons-edit"></span></a>&nbsp;&nbsp;
+					<a class="text-danger wlsm-delete-hostel" data-nonce="' . esc_attr( wp_create_nonce( 'delete-hostel-' . $row->ID ) ) . '" data-hostel="' . esc_attr( $row->ID ) . '" href="#" data-message-title="' . esc_attr__( 'Please Confirm!', 'school-management' ) . '" data-message-content="' . esc_attr__( 'This will delete the hostel.', 'school-management' ) . '" data-cancel="' . esc_attr__( 'Cancel', 'school-management' ) . '" data-submit="' . esc_attr__( 'Confirm', 'school-management' ) . '"><span class="dashicons dashicons-trash"></span></a>'
+				);
+			}
+		}
+
+		$output = array(
+			'draw'            => intval( $_POST['draw'] ),
+			'recordsTotal'    => $total_rows_count,
+			'recordsFiltered' => $filter_rows_count,
+			'data'            => $data
+		);
+
+		echo json_encode( $output );
+		die();
+	}
+
+	public static function fetch_rooms() {
+		$current_user = WLSM_M_Role::can( 'manage_hostel' );
+
+		if ( ! $current_user ) {
+			die();
+		}
+
+		$school_id = $current_user['school']['id'];
+
+		global $wpdb;
+
+		$page_url = WLSM_M_Staff_Transport::get_rooms_page_url();
+
+		$query = WLSM_M_Staff_Transport::fetch_room_query( $school_id );
+
+		$query_filter = $query;
+
+		// Grouping.
+		$group_by = ' ' . WLSM_M_Staff_Transport::fetch_hostel_query_group_by();
+
+		$query        .= $group_by;
+		$query_filter .= $group_by;
+
+		// Searching.
+		$condition = '';
+		if ( isset( $_POST['search']['value'] ) ) {
+			$search_value = sanitize_text_field( $_POST['search']['value'] );
+			if ( '' !== $search_value ) {
+				$condition .= '' .
+				'(h.room_name LIKE "%' . $search_value . '%") OR ' .
+				'(h.number_of_bed LIKE "%' . $search_value . '%") OR ' .
+				'(h.hostel LIKE "%' . $search_value . '%") OR ' .
+				'(h.note LIKE "%' . $search_value . '%")';
+
+				$query_filter .= ( ' HAVING ' . $condition );
+			}
+		}
+
+		// Ordering.
+		$columns = array( 'h.room_name', 'h.number_of_bed', 'h.hostel', 'h.note' );
+		if ( isset( $_POST['order'] ) && isset( $columns[ $_POST['order']['0']['column'] ] ) ) {
+			$order_by  = sanitize_text_field( $columns[ $_POST['order']['0']['column'] ] );
+			$order_dir = sanitize_text_field( $_POST['order']['0']['dir'] );
+
+			$query_filter .= ' ORDER BY ' . $order_by . ' ' . $order_dir;
+		} else {
+			$query_filter .= ' ORDER BY h.ID DESC';
+		}
+
+		// Limiting.
+		$limit = '';
+		if ( -1 != $_POST['length'] ) {
+			$start  = absint( $_POST['start'] );
+			$length = absint( $_POST['length'] );
+
+			$limit  = ' LIMIT ' . $start . ', ' . $length;
+		}
+
+		// Total query.
+		$rows_query = WLSM_M_Staff_Transport::fetch_hostel_query_count( $school_id );
+
+		// Total rows count.
+		$total_rows_count = $wpdb->get_var( $rows_query );
+
+		// Filtered rows count.
+		if ( $condition ) {
+			$filter_rows_count = $wpdb->get_var( $rows_query . ' AND (' . $condition . ')' );
+		} else {
+			$filter_rows_count = $total_rows_count;
+		}
+
+		// Filtered limit rows.
+		$filter_rows_limit = $wpdb->get_results( $query_filter . $limit );
+
+		$data = array();
+
+		if ( count( $filter_rows_limit ) ) {
+			foreach ( $filter_rows_limit as $row ) {
+
+				$room_id = $row->ID;
+
+				// Get vehicle incharge.
+				$admins = WLSM_M_Staff_Transport::get_vehicle_incharge( $school_id, $room_id );
+
+				if ( count( $admins ) ) {
+					$hostel_incharge = '';
+					foreach ( $admins as $admin ) {
+						if ( WLSM_M_Role::get_admin_key() === $admin->role ) {
+							$staff_page_url = WLSM_M_Staff_General::get_admins_page_url();
+						} else {
+							$staff_page_url = WLSM_M_Staff_General::get_employees_page_url();
+						}
+						
+						$hostel_incharge .= '- <span class="wlsm-font-bold"><a class="text-dark" target="_blank" href="' . esc_url( $staff_page_url . '&action=save&id=' . $admin->ID ) . '">' . esc_html( stripcslashes( $admin->name ) );
+
+						if ( $admin->phone ) {
+							$hostel_incharge .= ' (' . esc_html( $admin->phone ) . ')';
+						}
+
+						if ( $admin->username ) {
+							$hostel_incharge .= ' (' . esc_html( $admin->username ) . ')';
+						}
+
+						$hostel_incharge .= '</a></span><br>';
+					}
+				} else {
+					$hostel_incharge = '-';
+				}
+
+				// Table columns.
+				$data[] = array(
+					esc_html( $row->ID ),
+					esc_html( $row->room_name ),
+					esc_html( $row->number_of_beds ),
+					// esc_html( ( $row->hostel_name ) ),
+					// esc_html( ( $row->note ) ),
+					'<a class="text-primary" href="' . esc_url( $page_url . "&action=save&id=" . $row->ID ) . '"><span class="dashicons dashicons-edit"></span></a>&nbsp;&nbsp;
+					<a class="text-danger wlsm-delete-room" data-nonce="' . esc_attr( wp_create_nonce( 'delete-room-' . $row->ID ) ) . '" data-room="' . esc_attr( $row->ID ) . '" href="#" data-message-title="' . esc_attr__( 'Please Confirm!', 'school-management' ) . '" data-message-content="' . esc_attr__( 'This will delete the room.', 'school-management' ) . '" data-cancel="' . esc_attr__( 'Cancel', 'school-management' ) . '" data-submit="' . esc_attr__( 'Confirm', 'school-management' ) . '"><span class="dashicons dashicons-trash"></span></a>'
+				);
+			}
+		}
+
+		$output = array(
+			'draw'            => intval( $_POST['draw'] ),
+			'recordsTotal'    => $total_rows_count,
+			'recordsFiltered' => $filter_rows_count,
+			'data'            => $data
+		);
+
+		echo json_encode( $output );
+		die();
+	}
+
+	public static function save_room() {
+
+		$current_user = WLSM_M_Role::can( 'manage_hostel' );
+		
+		if ( ! $current_user ) {
+			die();
+		}
+		
+		$school_id = $current_user['school']['id'];
+		
+		try {
+			ob_start();
+			global $wpdb;
+		
+			$room_id = isset( $_POST['room_id'] ) ? absint( $_POST['room_id'] ) : 0;
+		
+			if ( $room_id ) {
+				if ( ! wp_verify_nonce( $_POST[ 'edit-room-' . $room_id ], 'edit-room-' . $room_id ) ) {
+					die();
+				}
+			} else {
+				if ( ! wp_verify_nonce( $_POST['add-room'], 'add-room' ) ) {
+					die();
+				}
+			}
+		
+			// Checks if room exists.
+			if ( $room_id ) {
+				$room = WLSM_M_Staff_Transport::get_room( $school_id, $room_id );
+		
+				if ( ! $room ) {
+					throw new Exception( esc_html__( 'room not found.', 'school-management' ) );
+				}
+			}
+		
+			$room_name       = isset( $_POST['name'] ) ? sanitize_text_field( $_POST['name'] ) : '';
+			$number_of_rooms = isset( $_POST['bed_number'] ) ? sanitize_text_field( $_POST['bed_number'] ) : '';
+			$hostel          = isset( $_POST['hostel'] ) ? sanitize_text_field( $_POST['hostel'] ) : '';
+			$note            = isset( $_POST['note'] ) ? sanitize_text_field( $_POST['note'] ) : '';
+		
+			// Start validation.
+			$errors = array();
+		
+			if ( empty( $room_name ) ) {
+				$errors['room_name'] = esc_html__( 'Please specify room name.', 'school-management' );
+			} elseif ( strlen( $room_name ) > 60 ) {
+				$errors['room_name'] = esc_html__( 'Maximum length cannot exceed 60 characters.', 'school-management' );
+			}
+		
+		} catch ( Exception $exception ) {
+			$buffer = ob_get_clean();
+			if ( ! empty( $buffer ) ) {
+				$response = $buffer;
+			} else {
+				$response = $exception->getMessage();
+			}
+			wp_send_json_error( $response );
+		}
+		
+		if ( count( $errors ) < 1 ) {
+			try {
+				$wpdb->query( 'BEGIN;' );
+		
+				if ( $room_id ) {
+					$message = esc_html__( 'Room updated successfully.', 'school-management' );
+					$reset   = false;
+				} else {
+					$message = esc_html__( 'Room added successfully.', 'school-management' );
+					$reset   = true;
+				}
+		
+				// Room data.
+				$data = array(
+					'room_name'      => $room_name,
+					'number_of_beds' => $number_of_rooms,
+					'hostel_id'      => $hostel,
+					'note'           => $note,
+				);
+		
+				if ( $room_id ) {
+					$data['updated_at'] = current_time( 'Y-m-d H:i:s' );
+		
+					$success = $wpdb->update( WLSM_ROOMS, $data, array( 'ID' => $room_id ) );
+				} else {
+					$data['created_at'] = current_time( 'Y-m-d H:i:s' );
+		
+					// $data['school_id'] = $school_id;
+		
+					$success = $wpdb->insert( WLSM_ROOMS, $data );
+				}
+		
+				$buffer = ob_get_clean();
+				if ( ! empty( $buffer ) ) {
+					throw new Exception( $buffer );
+				}
+		
+				if ( false === $success ) {
+					throw new Exception( $wpdb->last_error );
+				}
+		
+				if (isset($wlsm_pan_card_id_to_delete)) {
+					wp_delete_attachment($wlsm_pan_card_id_to_delete, true);
+				}
+		
+				$wpdb->query( 'COMMIT;' );
+		
+				wp_send_json_success( array( 'message' => $message, 'reset' => $reset ) );
+			} catch ( Exception $exception ) {
+				$wpdb->query( 'ROLLBACK;' );
+				wp_send_json_error( $exception->getMessage() );
+			}
+		}
+		wp_send_json_error( $errors );
+		}
+
+	public static function save_hostel() {
+
+		$current_user = WLSM_M_Role::can( 'manage_hostel' );
+
+		if ( ! $current_user ) {
+			die();
+		}
+
+		$school_id = $current_user['school']['id'];
+
+		try {
+			ob_start();
+			global $wpdb;
+
+			$hostel_id = isset( $_POST['hostel_id'] ) ? absint( $_POST['hostel_id'] ) : 0;
+
+			if ( $hostel_id ) {
+				if ( ! wp_verify_nonce( $_POST[ 'edit-hostel-' . $hostel_id ], 'edit-hostel-' . $hostel_id ) ) {
+					die();
+				}
+			} else {
+				if ( ! wp_verify_nonce( $_POST['add-hostel'], 'add-hostel' ) ) {
+					die();
+				}
+			}
+
+			// Checks if hostel exists.
+			if ( $hostel_id ) {
+				$hostel = WLSM_M_Staff_Transport::get_hostel( $school_id, $hostel_id );
+
+				if ( ! $hostel ) {
+					throw new Exception( esc_html__( 'hostel not found.', 'school-management' ) );
+				}
+			}
+
+			$hostel_name    = isset( $_POST['hostel_name'] ) ? sanitize_text_field( $_POST['hostel_name'] ) : '';
+			$hostel_type    = isset( $_POST['hostel_type'] ) ? sanitize_text_field( $_POST['hostel_type'] ) : '';
+			$hostel_address = isset( $_POST['address'] ) ? sanitize_text_field( $_POST['address'] ) : '';
+			$intake         = isset( $_POST['intake'] ) ? sanitize_text_field( $_POST['intake'] ) : '';
+			$fees         = isset( $_POST['fees'] ) ? sanitize_text_field( $_POST['fees'] ) : '';
+
+			// Start validation.
+			$errors = array();
+
+			if ( empty( $hostel_name ) ) {
+				$errors['hostel_name'] = esc_html__( 'Please specify hostel name.', 'school-management' );
+			} elseif ( strlen( $hostel_name ) > 60 ) {
+				$errors['hostel_name'] = esc_html__( 'Maximum length cannot exceed 60 characters.', 'school-management' );
+			}
+
+			if ( strlen( $hostel_type ) > 60 ) {
+				$errors['hostel_type'] = esc_html__( 'Maximum length cannot exceed 60 characters.', 'school-management' );
+			}
+
+			if ( strlen( $hostel_address ) > 60 ) {
+				$errors['hostel_address'] = esc_html__( 'Maximum length cannot exceed 60 characters.', 'school-management' );
+			}
+
+			if ( strlen( $intake ) > 40 ) {
+				$errors['intake'] = esc_html__( 'Maximum length cannot exceed 40 characters.', 'school-management' );
+			}
+
+		} catch ( Exception $exception ) {
+			$buffer = ob_get_clean();
+			if ( ! empty( $buffer ) ) {
+				$response = $buffer;
+			} else {
+				$response = $exception->getMessage();
+			}
+			wp_send_json_error( $response );
+		}
+
+		if ( count( $errors ) < 1 ) {
+			try {
+				$wpdb->query( 'BEGIN;' );
+
+				if ( $hostel_id ) {
+					$message = esc_html__( 'Hostel updated successfully.', 'school-management' );
+					$reset   = false;
+				} else {
+					$message = esc_html__( 'Hostel added successfully.', 'school-management' );
+					$reset   = true;
+				}
+
+				// Hostel data.
+				$data = array(
+					'hostel_name'    => $hostel_name,
+					'hostel_type'    => $hostel_type,
+					'hostel_address' => $hostel_address,
+					'hostel_intake'  => $intake,
+					'fees'    => $fees,
+				);
+
+				if ( $hostel_id ) {
+					$data['updated_at'] = current_time( 'Y-m-d H:i:s' );
+
+					$success = $wpdb->update( WLSM_HOSTELS, $data, array( 'ID' => $hostel_id, 'school_id' => $school_id ) );
+				} else {
+					$data['created_at'] = current_time( 'Y-m-d H:i:s' );
+
+					$data['school_id'] = $school_id;
+
+					$success = $wpdb->insert( WLSM_HOSTELS, $data );
+				}
+
+				$buffer = ob_get_clean();
+				if ( ! empty( $buffer ) ) {
+					throw new Exception( $buffer );
+				}
+
+				if ( false === $success ) {
+					throw new Exception( $wpdb->last_error );
+				}
+
+				if (isset($wlsm_pan_card_id_to_delete)) {
+					wp_delete_attachment($wlsm_pan_card_id_to_delete, true);
+				}
+
+				$wpdb->query( 'COMMIT;' );
+
+				wp_send_json_success( array( 'message' => $message, 'reset' => $reset ) );
+			} catch ( Exception $exception ) {
+				$wpdb->query( 'ROLLBACK;' );
+				wp_send_json_error( $exception->getMessage() );
+			}
+		}
+		wp_send_json_error( $errors );
+	}
+
+	public static function delete_hostel() {
+		$current_user = WLSM_M_Role::can( 'manage_hostel' );
+
+		if ( ! $current_user ) {
+			die();
+		}
+
+		$school_id = $current_user['school']['id'];
+
+		try {
+			ob_start();
+			global $wpdb;
+
+			$hostel_id = isset( $_POST['hostel_id'] ) ? absint( $_POST['hostel_id'] ) : 0;
+
+			if ( ! wp_verify_nonce( $_POST[ 'delete-hostel-' . $hostel_id ], 'delete-hostel-' . $hostel_id ) ) {
+				die();
+			}
+
+			// Checks if hostel exists.
+			$hostel = WLSM_M_Staff_Transport::get_hostel( $school_id, $hostel_id );
+
+			if ( ! $hostel ) {
+				throw new Exception( esc_html__( 'Hostel not found.', 'school-management' ) );
+			}
+
+		} catch ( Exception $exception ) {
+			$buffer = ob_get_clean();
+			if ( ! empty( $buffer ) ) {
+				$response = $buffer;
+			} else {
+				$response = $exception->getMessage();
+			}
+			wp_send_json_error( $response );
+		}
+
+		try {
+			$wpdb->query( 'BEGIN;' );
+
+			$success = $wpdb->delete( WLSM_HOSTELS, array( 'ID' => $hostel_id ) );
+			$message = esc_html__( 'Hostel deleted successfully.', 'school-management' );
+
+			$exception = ob_get_clean();
+			if ( ! empty( $exception ) ) {
+				throw new Exception( $exception );
+			}
+
+			if ( false === $success ) {
+				throw new Exception( $wpdb->last_error );
+			}
+
+			$wpdb->query( 'COMMIT;' );
+
+			wp_send_json_success( array( 'message' => $message ) );
+		} catch ( Exception $exception ) {
+			$wpdb->query( 'ROLLBACK;' );
+			wp_send_json_error( $exception->getMessage() );
+		}
+	}
+
+	public static function delete_room() {
+		$current_user = WLSM_M_Role::can( 'manage_hostel' );
+
+		if ( ! $current_user ) {
+			die();
+		}
+
+		$school_id = $current_user['school']['id'];
+
+		try {
+			ob_start();
+			global $wpdb;
+
+			$room_id = isset( $_POST['room_id'] ) ? absint( $_POST['room_id'] ) : 0;
+
+			if ( ! wp_verify_nonce( $_POST[ 'delete-room-' . $room_id ], 'delete-room-' . $room_id ) ) {
+				die();
+			}
+
+			// Checks if room exists.
+			$room = WLSM_M_Staff_Transport::get_room( $school_id, $room_id );
+
+			if ( ! $room ) {
+				throw new Exception( esc_html__( 'room not found.', 'school-management' ) );
+			}
+
+		} catch ( Exception $exception ) {
+			$buffer = ob_get_clean();
+			if ( ! empty( $buffer ) ) {
+				$response = $buffer;
+			} else {
+				$response = $exception->getMessage();
+			}
+			wp_send_json_error( $response );
+		}
+
+		try {
+			$wpdb->query( 'BEGIN;' );
+
+			$success = $wpdb->delete( WLSM_ROOMS, array( 'ID' => $room_id ) );
+			$message = esc_html__( 'room deleted successfully.', 'school-management' );
+
+			$exception = ob_get_clean();
+			if ( ! empty( $exception ) ) {
+				throw new Exception( $exception );
+			}
+
+			if ( false === $success ) {
+				throw new Exception( $wpdb->last_error );
+			}
+
+			$wpdb->query( 'COMMIT;' );
+
+			wp_send_json_success( array( 'message' => $message ) );
+		} catch ( Exception $exception ) {
+			$wpdb->query( 'ROLLBACK;' );
+			wp_send_json_error( $exception->getMessage() );
+		}
+	}
 }

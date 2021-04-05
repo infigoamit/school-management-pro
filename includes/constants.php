@@ -60,6 +60,9 @@ define( 'WLSM_EVENTS', $wpdb->prefix . 'wlsm_events' );
 define( 'WLSM_EVENT_RESPONSES', $wpdb->prefix . 'wlsm_event_responses' );
 define( 'WLSM_MEETINGS', $wpdb->prefix . 'wlsm_meetings' );
 
+define( 'WLSM_HOSTELS', $wpdb->prefix . 'wlsm_hostels' );
+define( 'WLSM_ROOMS', $wpdb->prefix . 'wlsm_rooms' );
+
 /* Multi-School admin capability */
 define( 'WLSM_ADMIN_CAPABILITY', 'manage_options' );
 
@@ -134,6 +137,11 @@ define( 'WLSM_MENU_STAFF_LIBRARY_CARDS', 'sm-staff-library-cards' );
 define( 'WLSM_MENU_STAFF_VEHICLES', 'sm-staff-vehicles' );
 define( 'WLSM_MENU_STAFF_ROUTES', 'sm-staff-routes' );
 define( 'WLSM_MENU_STAFF_TRANSPORT_REPORT', 'sm-staff-transport-report' );
+
+// Hostel
+define( 'WLSM_MENU_STAFF_HOSTEL', 'sm-staff-hostel' );
+define( 'WLSM_MENU_STAFF_HOSTELS', 'sm-staff-hostel-dash' );
+define( 'WLSM_MENU_STAFF_ROOMS', 'sm-staff-rooms' );
 
 /* Groups */
 define( 'WLSM_MENU_STAFF_ACADEMIC', 'sm-staff-academic' );

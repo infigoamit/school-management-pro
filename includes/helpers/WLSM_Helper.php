@@ -354,6 +354,14 @@ class WLSM_Helper {
 		);
 	}
 
+	public static function hostel_type_list() {
+		return array(
+			'girls' => esc_html__( 'Girls', 'school-management' ),
+			'boys'  => esc_html__( 'Boys', 'school-management' ),
+			'co-ed' => esc_html__( 'Co-Ed', 'school-management' ),
+		);
+	}
+
 	public static function get_certificate_property( $key ) {
 		if ( array_key_exists( $key, self::certificate_properties() ) ) {
 			return self::certificate_properties()[ $key ];

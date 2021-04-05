@@ -352,6 +352,17 @@ class WLSM_Menu {
 						$school_staff_transport_report_submenu = add_submenu_page( WLSM_MENU_STAFF_TRANSPORT, esc_html__( 'Transport Report', 'school-management' ), esc_html__( 'Report', 'school-management' ), 'read', WLSM_MENU_STAFF_TRANSPORT_REPORT, array( 'WLSM_Menu', 'school_staff_transport_report' ) );
 						add_action( 'admin_print_styles-' . $school_staff_transport_report_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
 					}
+
+					$school_staff_group_hostel_menu = add_menu_page( esc_html__( 'SM Hostel', 'school-management' ), esc_html__( 'SM Hostel', 'school-management' ), 'read', WLSM_MENU_STAFF_HOSTEL, array( 'WLSM_Menu', 'school_staff_group_hostel' ), 'dashicons-admin-home', 34 );
+					add_action( 'admin_print_styles-' . $school_staff_group_hostel_menu, array( 'WLSM_Menu', 'menu_page_assets' ) );
+
+				// hostel -
+				$school_staff_hostel_submenu = add_submenu_page( WLSM_MENU_STAFF_HOSTEL, esc_html__( 'Hostels', 'school-management' ), esc_html__( 'Hostels', 'school-management' ), 'read', WLSM_MENU_STAFF_HOSTELS, array( 'WLSM_Menu', 'school_staff_hostel' ) );
+				add_action( 'admin_print_styles-' . $school_staff_hostel_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
+
+				// room -
+				$school_staff_room_submenu = add_submenu_page( WLSM_MENU_STAFF_HOSTEL, esc_html__( 'Rooms', 'school-management' ), esc_html__( 'Rooms', 'school-management' ), 'read', WLSM_MENU_STAFF_ROOMS, array( 'WLSM_Menu', 'school_staff_room' ) );
+				add_action( 'admin_print_styles-' . $school_staff_room_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
 				}
 			}}
 		} else {
@@ -459,6 +470,19 @@ class WLSM_Menu {
 	// School - Transfer Student.
 	public static function school_staff_transfer_student() {
 		require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/transfer-student/route.php';
+	}
+
+	// Hostel - Group.
+	public static function school_staff_group_hostel() {
+		require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/groups/hostel.php';
+	}
+
+	public static function school_staff_hostel() {
+		require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/hostel/hostels/route.php';
+	}
+
+	public static function school_staff_room() {
+		require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/hostel/rooms/route.php';
 	}
 
 	// School - Manage Certificates.
@@ -681,10 +705,10 @@ class WLSM_Menu {
 		wp_enqueue_script( 'responsive-bootstrap4', WLSM_PLUGIN_URL . 'assets/js/datatable/responsive.bootstrap4.min.js', array( 'jquery' ), true, true );
 
 		wp_enqueue_script( 'wlsm-admin', WLSM_PLUGIN_URL . 'assets/js/wlsm-admin.js', array( 'jquery', 'jquery-form' ), '5.1', true );
-		wp_localize_script( 'wlsm-admin', 'wlsmsecurity', wp_create_nonce( 'wlsm-security' ) );
-		wp_localize_script( 'wlsm-admin', 'wlsmatformat', WLSM_Config::at_format() );
-		wp_localize_script( 'wlsm-admin', 'wlsmdateformat', WLSM_Config::date_format() );
-		wp_localize_script( 'wlsm-admin', 'wlsmadminurl', admin_url() );
-		wp_localize_script( 'wlsm-admin', 'wlsmloadingtext', esc_html__( 'Loading...', 'school-management' ) );
+		wp_localize_script( 'wlsm-admin', 'wlsmsecurity', [wp_create_nonce( 'wlsm-security' )] );
+		wp_localize_script( 'wlsm-admin', 'wlsmatformat', [WLSM_Config::at_format()] );
+		wp_localize_script( 'wlsm-admin', 'wlsmdateformat',[ WLSM_Config::date_format()] );
+		wp_localize_script( 'wlsm-admin', 'wlsmadminurl', [admin_url() ]);
+		wp_localize_script( 'wlsm-admin', 'wlsmloadingtext', [esc_html__( 'Loading...', 'school-management' )] );
 	}
 }
