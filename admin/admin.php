@@ -308,6 +308,16 @@ add_action( 'wp_ajax_wlsm-save-route', array( 'WLSM_Staff_Transport', 'save_rout
 add_action( 'wp_ajax_wlsm-delete-route', array( 'WLSM_Staff_Transport', 'delete_route' ) );
 add_action( 'wp_ajax_wlsm-get-transport-report', array( 'WLSM_Staff_Transport', 'get_transport_report' ) );
 
+// Staff: Hostel.
+add_action( 'wp_ajax_wlsm-fetch-hostels', array( 'WLSM_Staff_Transport', 'fetch_hostels' ) );
+add_action( 'wp_ajax_wlsm-save-hostel', array( 'WLSM_Staff_Transport', 'save_hostel' ) );
+add_action( 'wp_ajax_wlsm-delete-hostel', array( 'WLSM_Staff_Transport', 'delete_hostel' ) );
+
+// staff: room
+add_action( 'wp_ajax_wlsm-fetch-rooms', array( 'WLSM_Staff_Transport', 'fetch_rooms' ) );
+add_action( 'wp_ajax_wlsm-save-room', array( 'WLSM_Staff_Transport', 'save_room' ) );
+add_action( 'wp_ajax_wlsm-delete-room', array( 'WLSM_Staff_Transport', 'delete_room' ) );
+
 // Staff: Logs.
 add_action( 'wp_ajax_wlsm-fetch-logs', array( 'WLSM_Staff_General', 'fetch_logs' ) );
 

@@ -15,6 +15,82 @@ class WLSM_M_Staff_Transport {
 		return $query;
 	}
 
+	// Hostel
+
+	public static function get_room( $school_id, $id ) {
+		global $wpdb;
+		$room = $wpdb->get_row( $wpdb->prepare( 'SELECT h.ID FROM ' . WLSM_ROOMS . ' as h 
+		LEFT OUTER JOIN ' . WLSM_HOSTELS . ' as wh ON h.hostel_id = wh.ID
+		WHERE wh.school_id = %d AND h.ID = %d', $school_id, $id ) );
+		return $room;
+	}
+	
+	public static function get_hostels_page_url() {
+		return admin_url( 'admin.php?page=' . WLSM_MENU_STAFF_HOSTELS );
+	}
+
+	public static function get_rooms_page_url() {
+		return admin_url( 'admin.php?page=' . WLSM_MENU_STAFF_ROOMS );
+	}
+
+	public static function fetch_room_query( $school_id ) {
+		$query = 'SELECT h.ID, h.room_name, h.hostel_id, h.number_of_beds, h.note, wh.hostel_name FROM ' . WLSM_ROOMS . ' as h 
+		LEFT OUTER JOIN ' . WLSM_HOSTELS . ' as wh ON h.hostel_id = wh.ID
+		WHERE wh.school_id = ' . absint( $school_id );
+		return $query;
+	}
+
+	public static function fetch_hostel_query( $school_id ) {
+		$query = 'SELECT h.ID, h.hostel_name, h.hostel_type, h.hostel_address, h.hostel_intake FROM ' . WLSM_HOSTELS . ' as h WHERE h.school_id = ' . absint( $school_id );
+		return $query;
+	}
+
+	public static function fetch_hostel_query_group_by() {
+		$group_by = 'GROUP BY h.ID';
+		return $group_by;
+	}
+
+	public static function fetch_hostel_query_count( $school_id ) {
+		$query = 'SELECT COUNT(DISTINCT v.ID) FROM ' . WLSM_HOSTELS . ' as v WHERE v.school_id = ' . absint( $school_id );
+		return $query;
+	}
+
+	public static function get_hostel( $school_id, $id ) {
+		global $wpdb;
+		$hostel = $wpdb->get_row( $wpdb->prepare( 'SELECT h.ID FROM ' . WLSM_HOSTELS . ' as h WHERE h.school_id = %d AND h.ID = %d', $school_id, $id ) );
+		return $hostel;
+	}
+
+	public static function fetch_hostel( $school_id, $id ) {
+		global $wpdb;
+		$hostel = $wpdb->get_row( $wpdb->prepare( 'SELECT h.ID, h.hostel_name, h.hostel_type, h.hostel_address, h.hostel_intake, h.fees FROM ' . WLSM_HOSTELS . ' as h WHERE h.school_id = %d AND h.ID = %d', $school_id, $id ) );
+		return $hostel;
+	}
+
+	public static function fetch_room( $school_id, $id ) {
+		global $wpdb;
+		$room = $wpdb->get_row( $wpdb->prepare( 'SELECT h.ID, h.room_name, h.hostel_id, h.number_of_beds, h.note, wh.hostel_name FROM ' . WLSM_ROOMS . ' as h 
+		LEFT OUTER JOIN ' . WLSM_HOSTELS . ' as wh ON h.hostel_id = wh.ID
+		WHERE wh.school_id = %d AND h.ID = %d', $school_id, $id ) );
+		return $room;
+	}
+
+	public static function fetch_rooms( $school_id, $room_id ) {
+		global $wpdb;
+		$vehicles = $wpdb->get_col( $wpdb->prepare( 'SELECT DISTINCT wh.ID FROM ' . WLSM_ROOMS . ' as rov 
+		JOIN ' . WLSM_HOSTELS . ' as wh ON rov.hostel_id = wh.ID
+		WHERE wh.school_id = %d AND rov.ID = %d', $school_id, $room_id ) );
+		return $vehicles;
+	}
+
+	public static function fetch_hostels( $school_id ) {
+		global $wpdb;
+		$hostels = $wpdb->get_results( $wpdb->prepare( 'SELECT h.ID, h.hostel_name, h.hostel_type, h.hostel_address, h.hostel_intake FROM ' . WLSM_HOSTELS . ' as h WHERE h.school_id = %d', $school_id ) );
+		return $hostels;
+	}
+
+
+
 	public static function fetch_vehicle_query_group_by() {
 		$group_by = 'GROUP BY v.ID';
 		return $group_by;
