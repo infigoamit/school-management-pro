@@ -1,4 +1,4 @@
-Version 7.9 [01-03-2021]
+Version 7.9 [05-04-2021]
 ========
 * Fixed  : Attendance can not see February attendance issue fixed.
 * Added  : Discount is added in Student admission form in back-end for invoices.
