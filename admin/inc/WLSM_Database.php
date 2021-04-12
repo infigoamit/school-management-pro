@@ -408,7 +408,7 @@ class WLSM_Database
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_INVOICES . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 				invoice_number varchar(60) DEFAULT NULL,
-				label varchar(100) DEFAULT NULL,
+				label varchar(255) DEFAULT NULL,
 				description varchar(255) DEFAULT NULL,
 				amount decimal(12,2) UNSIGNED DEFAULT '0.00',
 				discount decimal(12,2) UNSIGNED DEFAULT '0.00',
