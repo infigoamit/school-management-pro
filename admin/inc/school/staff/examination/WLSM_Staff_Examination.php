@@ -643,6 +643,9 @@ class WLSM_Staff_Examination {
 			$show_in_assessment    = isset( $_POST['show_in_assessment'] ) ? (bool) $_POST['show_in_assessment'] : 1;
 			$is_active             = isset( $_POST['is_active'] ) ? (bool) $_POST['is_active'] : 1;
 
+			$show_rank    = isset( $_POST['show_rank'] ) ? (bool) $_POST['show_rank'] : 1;
+			$show_remark    = isset( $_POST['show_remark'] ) ? (bool) $_POST['show_remark'] : 1;
+
 			// Exam papers.
 			$paper_id      = ( isset( $_POST['paper_id'] ) && is_array( $_POST['paper_id'] ) ) ? $_POST['paper_id'] : array();
 			$subject_label = ( isset( $_POST['subject_label'] ) && is_array( $_POST['subject_label'] ) ) ? $_POST['subject_label'] : array();
@@ -890,6 +893,8 @@ class WLSM_Staff_Examination {
 					'time_table_published'  => $time_table_published,
 					'show_in_assessment'    => $show_in_assessment,
 					'is_active'             => $is_active,
+					'show_rank'             => $show_rank,
+					'show_remark'           => $show_remark,
 				);
 
 				if ( $exam_id ) {

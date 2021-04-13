@@ -664,6 +664,14 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD show_in_assessment tinyint(1) NOT NULL DEFAULT '1'");
 		}
 
+//		Show ranks
+		/* Add show_rank, show_remark column if not exists to exams table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAMS . "' AND COLUMN_NAME = 'show_rank'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD show_rank tinyint(1) NOT NULL DEFAULT '1'");
+			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD show_remark tinyint(1) NOT NULL DEFAULT '1'");
+		}
+
 		/* Create class_school_exam table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_CLASS_SCHOOL_EXAM . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

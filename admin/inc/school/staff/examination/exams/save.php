@@ -18,6 +18,8 @@ $start_date  = '';
 $end_date    = '';
 $exam_group  = '';
 $is_active   = 1;
+$show_rank   = 1;
+$show_remark = 1;
 
 $enable_room_numbers   = 0;
 $results_published     = 0;
@@ -51,6 +53,9 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 		$admit_cards_published = $exam->admit_cards_published;
 		$time_table_published  = $exam->time_table_published;
 		$show_in_assessment    = $exam->show_in_assessment;
+
+		$show_rank   = $exam->show_rank;
+		$show_remark = $exam->show_remark;
 
 		$grade_criteria = WLSM_Config::sanitize_grade_criteria( $exam->grade_criteria );
 
@@ -191,7 +196,7 @@ $subject_types = WLSM_Helper::subject_type_list();
 					?>
 					<div class="wlsm-exam-paper-box card col" data-exam-paper="<?php echo esc_attr( $index ); ?>">
 						<button type="button" class="btn btn-sm btn-danger wlsm-remove-exam-paper-btn"><i class="fas fa-times"></i></button>
-						
+
 						<input type="hidden" name="paper_id[]" value="<?php echo esc_attr( $exam_paper->ID ); ?>">
 
 						<div class="form-row">
@@ -608,8 +613,70 @@ $subject_types = WLSM_Helper::subject_type_list();
 							</div>
 						</div>
 					</div>
+
+					<!-- Show Rank in exam results -->
+					<div class="col-md-6">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="wlsm-form-sub-heading wlsm-font-bold">
+									<?php esc_html_e( 'Show Ranks In Results', 'school-management' ); ?>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-row">
+							<div class="form-group col-md-12">
+								<div class="form-check form-check-inline">
+									<input <?php checked( 1, $show_rank, true ); ?> class="form-check-input" type="radio" name="show_rank" id="wlsm_show_rank" value="1">
+									<label class="ml-1 form-check-label text-success font-weight-bold" for="wlsm_show_rank">
+										<?php esc_html_e('Yes', 'school-management' ); ?>
+									</label>
+								</div>
+								<div class="form-check form-check-inline">
+									<input <?php checked( 0, $show_rank, true ); ?> class="form-check-input" type="radio" name="show_rank" id="wlsm_results_unpublished" value="0">
+									<label class="ml-1 form-check-label text-secondary font-weight-bold" for="wlsm_results_unpublished">
+									<?php esc_html_e('No', 'school-management' ); ?>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
+
+            <!-- Show in Remark -->
+            <div class="wlsm-form-section">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="wlsm-form-sub-heading wlsm-font-bold">
+									<?php esc_html_e('Show Ranks In Results', 'school-management'); ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="form-check form-check-inline">
+                                    <input <?php checked(1, $show_remark, true); ?> class="form-check-input" type="radio" name="show_remark" id="wlsm_show_remark" value="1">
+                                    <label class="ml-1 form-check-label text-success font-weight-bold" for="wlsm_show_remark">
+										<?php esc_html_e('Yes', 'school-management'); ?>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input <?php checked(0, $show_remark, true); ?> class="form-check-input" type="radio" name="show_remark" id="wlsm_results_unpublished" value="0">
+                                    <label class="ml-1 form-check-label text-secondary font-weight-bold" for="wlsm_results_unpublished">
+										<?php esc_html_e('No', 'school-management'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
 			<?php if ( $exam ) { ?>
 			<!-- Shortcodes -->

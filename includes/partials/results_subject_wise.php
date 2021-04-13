@@ -178,6 +178,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 			}
 			?>
 		</th>
+		<td></td>
 	</tr>
 	<tr>
 		<th><?php esc_html_e('Percentage', 'school-management'); ?></th>
@@ -203,6 +204,8 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 			}
 			?>
 		</th>
+		<td></td>
+		
 	</tr>
 	<tr>
 		<th><?php esc_html_e('Rank', 'school-management'); ?></th>
@@ -221,6 +224,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 		<?php
 		}
 		?>
+		<td></td>
 		<td></td>
 	</tr>
 </tbody>

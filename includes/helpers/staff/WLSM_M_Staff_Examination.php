@@ -44,7 +44,7 @@ class WLSM_M_Staff_Examination {
 
 	public static function fetch_exam( $school_id, $id ) {
 		global $wpdb;
-		$exam = $wpdb->get_row( $wpdb->prepare( 'SELECT ex.ID, ex.label as exam_title, ex.exam_center, ex.start_date, ex.end_date, ex.grade_criteria, ex.is_active, ex.enable_room_numbers, ex.exam_group, ex.admit_cards_published, ex.time_table_published, ex.results_published, ex.show_in_assessment FROM ' . WLSM_EXAMS . ' as ex 
+		$exam = $wpdb->get_row( $wpdb->prepare( 'SELECT ex.ID, ex.label as exam_title, ex.show_rank, ex.show_remark, ex.exam_center, ex.start_date, ex.end_date, ex.grade_criteria, ex.is_active, ex.enable_room_numbers, ex.exam_group, ex.admit_cards_published, ex.time_table_published, ex.results_published, ex.show_in_assessment FROM ' . WLSM_EXAMS . ' as ex 
 		JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = ex.school_id 
 		WHERE ex.school_id = %d AND ex.ID = %d', $school_id, $id ) );
 		return $exam;
