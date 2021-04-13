@@ -20,6 +20,7 @@ $exam_group  = '';
 $is_active   = 1;
 $show_rank   = 1;
 $show_remark = 1;
+$show_eremark = 1;
 
 $enable_room_numbers   = 0;
 $results_published     = 0;
@@ -56,6 +57,7 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 
 		$show_rank   = $exam->show_rank;
 		$show_remark = $exam->show_remark;
+		$show_eremark = $exam->show_eremark;
 
 		$grade_criteria = WLSM_Config::sanitize_grade_criteria( $exam->grade_criteria );
 
@@ -652,7 +654,7 @@ $subject_types = WLSM_Helper::subject_type_list();
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="wlsm-form-sub-heading wlsm-font-bold">
-									<?php esc_html_e('Show Ranks In Results', 'school-management'); ?>
+									<?php esc_html_e('Show Subjects Remarks', 'school-management'); ?>
                                 </div>
                             </div>
                         </div>
@@ -675,6 +677,32 @@ $subject_types = WLSM_Helper::subject_type_list();
                         </div>
                     </div>
 
+					<div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="wlsm-form-sub-heading wlsm-font-bold">
+									<?php esc_html_e('Show Remarks ( School,Teacher )', 'school-management'); ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="form-check form-check-inline">
+                                    <input <?php checked(1, $show_eremark, true); ?> class="form-check-input" type="radio" name="show_eremark" id="wlsm_show_eremark" value="1">
+                                    <label class="ml-1 form-check-label text-success font-weight-bold" for="wlsm_show_eremark">
+										<?php esc_html_e('Yes', 'school-management'); ?>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input <?php checked(0, $show_eremark, true); ?> class="form-check-input" type="radio" name="show_eremark" id="wlsm_results_unpublished" value="0">
+                                    <label class="ml-1 form-check-label text-secondary font-weight-bold" for="wlsm_results_unpublished">
+										<?php esc_html_e('No', 'school-management'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

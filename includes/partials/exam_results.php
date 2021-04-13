@@ -31,6 +31,8 @@ $student_rank = WLSM_M_Staff_Examination::calculate_exam_ranks( $school_id, $exa
 		}
 
 		$percentage = WLSM_Config::sanitize_percentage( $exam_paper->maximum_marks, WLSM_Config::sanitize_marks( $obtained_marks ) );
+		$teacher_remark = $exam_result->teacher_remark;
+		$school_remark = $exam_result->school_remark;
 
 		$total_maximum_marks  += $exam_paper->maximum_marks;
 		$total_obtained_marks += WLSM_Config::sanitize_marks( $obtained_marks );
@@ -71,8 +73,17 @@ $student_rank = WLSM_M_Staff_Examination::calculate_exam_ranks( $school_id, $exa
 		</th>
 		<?php } ?>
 	</tr>
+    <?php if ($show_rank=== '1'){ ?>
 	<tr>
 		<th colspan="4"><?php esc_html_e( 'Rank', 'school-management' ); ?></th>
 		<th colspan="<?php echo esc_html( $show_marks_grades ? '2' : '1' ); ?>"><?php echo esc_html( $student_rank ); ?></th>
 	</tr>
+    <?php }?>
+
+	<?php if ($show_eremark=== '1'){ ?>
+	<tr>
+		<td colspan="3"><strong><?php esc_html_e( 'Teacher Remark :', 'school-management' ); ?></strong>  <?php  echo $teacher_remark; ?></td>
+		<td colspan="3"><strong><?php esc_html_e( 'School Remark :', 'school-management' ); ?></strong>  <?php  echo $school_remark; ?></td>		
+	</tr>
+	<?php }?>
 </tbody>

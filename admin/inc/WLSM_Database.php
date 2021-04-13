@@ -670,6 +670,7 @@ class WLSM_Database
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD show_rank tinyint(1) NOT NULL DEFAULT '1'");
 			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD show_remark tinyint(1) NOT NULL DEFAULT '1'");
+			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD show_eremark tinyint(1) NOT NULL DEFAULT '1'");
 		}
 
 		/* Create class_school_exam table */
@@ -751,6 +752,13 @@ class WLSM_Database
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAM_RESULTS . "' AND COLUMN_NAME = 'remark'");
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_EXAM_RESULTS . " ADD remark text DEFAULT NULL");
+		}
+
+		/* Add teacher_remark, school_remark  column if not exists to fees table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAM_RESULTS . "' AND COLUMN_NAME = 'teacher_remark'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_EXAM_RESULTS . " ADD teacher_remark text DEFAULT NULL");
+			$wpdb->query("ALTER TABLE " . WLSM_EXAM_RESULTS . " ADD school_remark text DEFAULT NULL");
 		}
 
 		/* Create notices table */

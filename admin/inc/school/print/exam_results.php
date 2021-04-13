@@ -43,7 +43,22 @@ $marks_grades         = $grade_criteria['marks_grades'];
 		<?php require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/print/partials/school_header.php'; ?>
 
 		<div class="wlsm-heading wlsm-exam-results-heading h5 wlsm-text-center">
-			<span><?php esc_html_e( 'EXAM RESULT', 'school-management' ); ?></span>
+		<div class="wlsm-exam-results-table-heading">
+					<?php
+					printf(
+						wp_kses(
+							/* translators: 1: exam title, 2: start date, 3: end date */
+							__( '<span class="wlsm-font-bold">Exam: </span> %1$s (%2$s - %3$s)', 'school-management' ),
+							array(
+								'span' => array( 'class' => array() )
+							)
+						),
+						esc_html( WLSM_M_Staff_Examination::get_exam_label_text( $exam_title ) ),
+						esc_html( WLSM_Config::get_date_text( $start_date ) ),
+						esc_html( WLSM_Config::get_date_text( $end_date ) )
+					);
+					?>
+				</div>
 		</div>
 
 		<div class="row wlsm-student-details">

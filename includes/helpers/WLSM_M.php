@@ -93,7 +93,7 @@ class WLSM_M {
 	}
 
 	public static function study_materials_query() {
-		return 'SELECT sm.ID, sm.label as title, sm.description, sm.attachments, sm.created_at, wl.ID as subject_id FROM ' . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . ' as cssm 
+		return 'SELECT sm.ID, sm.label as title, sm.description, sm.attachments, sm.created_at FROM ' . WLSM_CLASS_SCHOOL_STUDY_MATERIAL . ' as cssm 
 		JOIN ' . WLSM_STUDY_MATERIALS . ' as sm ON sm.ID = cssm.study_material_id 
 		JOIN ' . WLSM_SUBJECTS . ' as wl ON wl.ID = cssm.study_material_subject_id
 		LEFT OUTER JOIN ' . WLSM_SECTIONS . ' as ws ON ws.ID = cssm.study_material_section_id

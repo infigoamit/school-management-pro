@@ -645,6 +645,7 @@ class WLSM_Staff_Examination {
 
 			$show_rank    = isset( $_POST['show_rank'] ) ? (bool) $_POST['show_rank'] : 1;
 			$show_remark    = isset( $_POST['show_remark'] ) ? (bool) $_POST['show_remark'] : 1;
+			$show_eremark    = isset( $_POST['show_eremark'] ) ? (bool) $_POST['show_eremark'] : 1;
 
 			// Exam papers.
 			$paper_id      = ( isset( $_POST['paper_id'] ) && is_array( $_POST['paper_id'] ) ) ? $_POST['paper_id'] : array();
@@ -895,6 +896,7 @@ class WLSM_Staff_Examination {
 					'is_active'             => $is_active,
 					'show_rank'             => $show_rank,
 					'show_remark'           => $show_remark,
+					'show_eremark'           => $show_eremark,
 				);
 
 				if ( $exam_id ) {
@@ -1627,6 +1629,10 @@ class WLSM_Staff_Examination {
 			$obtained_marks = ( isset( $_POST['obtained_marks'] ) && is_array( $_POST['obtained_marks'] ) ) ? $_POST['obtained_marks'] : array();
 			$remark = ( isset( $_POST['remark'] ) && is_array( $_POST['remark'] ) ) ? $_POST['remark'] : array();
 
+			$teacher_remark = isset( $_POST['teacher_remark'] ) ? sanitize_text_field( $_POST['teacher_remark'] ) : '';
+			$school_remark  = isset( $_POST['school_remark'] ) ? sanitize_text_field( $_POST['school_remark'] ) : '';
+
+
 			// Start validation.
 			$errors = array();
 
@@ -1698,6 +1704,8 @@ class WLSM_Staff_Examination {
 							$exam_result_data = array(
 								'obtained_marks' => $marks_obtained,
 								'remark'         => $remark[$exam_paper->ID],
+								'teacher_remark' => $teacher_remark,
+								'school_remark'  => $school_remark,
 								'updated_at'     => current_time( 'Y-m-d H:i:s' )
 							);
 
@@ -1707,6 +1715,8 @@ class WLSM_Staff_Examination {
 							// If result do not exist, insert.
 							$exam_result_data = array(
 								'obtained_marks' => $marks_obtained,
+								'teacher_remark' => $teacher_remark,
+								'school_remark'  => $school_remark,
 								'remark'         => $remark[$exam_paper->ID],
 								'exam_paper_id'  => $exam_paper->ID,
 								'admit_card_id'  => $admit_card_id
@@ -1842,6 +1852,9 @@ class WLSM_Staff_Examination {
 			$exam_center = $exam->exam_center;
 			$start_date  = $exam->start_date;
 			$end_date    = $exam->end_date;
+			$show_rank   = $exam->show_rank;
+			$show_remark = $exam->show_remark;
+			$show_eremark = $exam->show_eremark;
 
 			$exam_papers  = WLSM_M_Staff_Examination::get_exam_papers_by_admit_card( $school_id, $admit_card_id );
 			$exam_results = WLSM_M_Staff_Examination::get_exam_results_by_admit_card( $school_id, $admit_card_id );

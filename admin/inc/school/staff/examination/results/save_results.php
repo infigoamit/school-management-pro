@@ -246,7 +246,22 @@ if ($admit_card) {
 									?>
 								</tbody>
 							</table>
-						</div>		
+						</div>
+
+					<!-- Student Remarks  -->
+					<div class="row">
+
+						<div class="col">
+						<label for="wlsm_teacher_remark"><strong>Teacher Remark</strong></label>
+							<input type="text" name="teacher_remark"  class="form-control" placeholder="Enter Remark">
+						</div>
+
+						<div class="col">
+						<label for="wlsm_teacher_remark"><strong>School Remark</strong></label>
+							<input type="text" name="school_remark"  class="form-control" placeholder="Enter Remark">
+						</div>
+
+					</div>
 
 						<div class="row mt-2">
 							<div class="col-md-12 text-center">

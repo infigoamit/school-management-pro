@@ -45,13 +45,17 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 		<th><?php esc_html_e('Subject', 'school-management'); ?></th>
 		<?php
 		foreach ($exams as $key => $exam) {
+		$show_remark = $exam->show_remark;
 		?>
 			<th><?php echo esc_html(stripslashes($exam->exam_title)); ?></th>
 		<?php
 		}
 		?>
 		<th><?php esc_html_e('Total', 'school-management'); ?></th>
-		<th><?php esc_html_e('Remarks', 'school-management'); ?></th>
+		<?php if ($show_remark === '1'): ?>
+			<th><?php esc_html_e('Remarks', 'school-management'); ?></th>
+		<?php endif ?>
+		
 	</tr>
 </thead>
 <tbody>
@@ -78,6 +82,10 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 			foreach ($exams as $key => $exam) {
 				// Get exam paper with this subject code.
 				$exam_result = WLSM_M_Staff_Examination::get_exam_result_by_subject_code($school_id, $exam->ID, $student_id, $subject->code);
+
+				// last exam setting
+				$show_rank   = $exam->show_rank;
+				
 			?>
 				<td>
 					<?php
@@ -121,7 +129,9 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 				}
 				?>
 			</td>
+			<?php if ($show_remark === '1'): ?>
 			<td> <?php  echo esc_html($remark);?></td>
+			<?php endif ?>
 		</tr>
 	<?php
 	}
@@ -178,7 +188,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 			}
 			?>
 		</th>
-		<td></td>
+		
 	</tr>
 	<tr>
 		<th><?php esc_html_e('Percentage', 'school-management'); ?></th>
@@ -204,9 +214,10 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 			}
 			?>
 		</th>
-		<td></td>
+	
 		
 	</tr>
+	<?php if ($show_rank=== '1'){ ?>
 	<tr>
 		<th><?php esc_html_e('Rank', 'school-management'); ?></th>
 		<?php
@@ -225,6 +236,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 		}
 		?>
 		<td></td>
-		<td></td>
+	
 	</tr>
+	<?php }?>
 </tbody>
