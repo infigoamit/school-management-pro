@@ -775,6 +775,7 @@ class WLSM_Staff_Accountant {
 		if (!$current_user) {
 			die();
 		}
+		WLSM_Helper::check_demo();
 
 		$school_id  = $current_user['school']['id'];
 		$session_id = $current_user['session']['ID'];
@@ -1234,6 +1235,7 @@ class WLSM_Staff_Accountant {
 		if (!$current_user) {
 			die();
 		}
+		WLSM_Helper::check_demo();
 
 		$school_id  = $current_user['school']['id'];
 		$session_id = $current_user['session']['ID'];
@@ -1533,6 +1535,7 @@ class WLSM_Staff_Accountant {
 		if (!$current_user) {
 			die();
 		}
+		WLSM_Helper::check_demo();
 
 		$school_id  = $current_user['school']['id'];
 		$session_id = $current_user['session']['ID'];
@@ -1931,6 +1934,8 @@ class WLSM_Staff_Accountant {
 		if (!$current_user) {
 			die();
 		}
+
+		WLSM_Helper::check_demo();
 
 		$school_id  = $current_user['school']['id'];
 		$session_id = $current_user['session']['ID'];

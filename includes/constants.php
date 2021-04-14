@@ -64,7 +64,7 @@ define( 'WLSM_MEETINGS', $wpdb->prefix . 'wlsm_meetings' );
 define( 'WLSM_ADMIN_CAPABILITY', 'manage_options' );
 
 /* Demo mode */
-define( 'WLSM_DEMO_MODE', false );
+define( 'WLSM_DEMO_MODE', true );
 
 /* Menu page slugs for manager */
 define( 'WLSM_MENU_SM', 'school-management' );
