@@ -342,6 +342,7 @@ class WLSM_Helper {
 		return array(
 			'one-time' => esc_html__( 'One Time', 'school-management' ),
 			'monthly'  => esc_html__( 'Monthly', 'school-management' ),
+			'quaterly' => esc_html__( 'Quaterly', 'school-management' ),
 			'annually' => esc_html__( 'Annually', 'school-management' ),
 		);
 	}
