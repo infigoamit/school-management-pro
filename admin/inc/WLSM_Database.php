@@ -437,6 +437,12 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_INVOICES . " ADD fee_list text DEFAULT NULL");
 		}
 
+		/* Add invoice_amount_total columns if not exists to WLSM_INVOICES table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INVOICES . "' AND COLUMN_NAME = 'invoice_amount_total'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_INVOICES . " ADD decimal(12,2) UNSIGNED DEFAULT '0.00'");
+		}
+
 		/* Add due_date_amount, due_date_period columns if not exists to WLSM_INVOICES table */
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_INVOICES . "' AND COLUMN_NAME = 'due_date_amount'");
 		if (empty($row)) {

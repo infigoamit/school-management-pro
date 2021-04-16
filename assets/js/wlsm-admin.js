@@ -3326,6 +3326,7 @@
 		var fee_box = $('#fee-section');
 		var invoice_fee_type_amount = $('#wlsm_invoice_fee_type_amount');
 		var fee_type_note = $('#fee_type_note');
+		var invoice_amount_total = $('#invoice_amount_total');
 
 		var recalculate = $('#get-invoices-total_amount');
 
@@ -3343,6 +3344,7 @@
 				fee_box.hide();
 				recalculate.hide();
 				invoice_fee_type_amount.hide();
+				invoice_amount_total.hide();
 				invoiceStudent.attr('name', 'student[]');
 				invoiceStudent.attr('multiple', 'multiple');
 				invoiceStudentLabel.html(invoiceStudentLabel.data('bulk-label'));
@@ -3352,6 +3354,7 @@
 				fee_type_note.fadeIn();
 				recalculate.fadeIn();
 				invoicePayments.hide();
+				invoice_amount_total.hide();
 				invoiceStudent.attr('name', 'student');
 				invoiceStudent.removeAttr('multiple');
 				invoiceStudentLabel.html(invoiceStudentLabel.data('single-label'));

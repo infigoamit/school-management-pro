@@ -375,6 +375,7 @@ class WLSM_Staff_Accountant {
 			$invoice_description = isset($_POST['invoice_description']) ? sanitize_text_field($_POST['invoice_description']) : '';
 			$invoice_amount      = isset($_POST['invoice_amount']) ? WLSM_Config::sanitize_money($_POST['invoice_amount']) : 0;
 			$invoice_discount    = isset($_POST['invoice_discount']) ? WLSM_Config::sanitize_money($_POST['invoice_discount']) : 0;
+			$invoice_amount_total    = isset($_POST['invoice_amount_total']) ? WLSM_Config::sanitize_money($_POST['invoice_amount_total']) : 0;
 			$invoice_date_issued = isset($_POST['invoice_date_issued']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['invoice_date_issued'])) : NULL;
 			$invoice_due_date    = isset($_POST['invoice_due_date']) ? DateTime::createFromFormat(WLSM_Config::date_format(), sanitize_text_field($_POST['invoice_due_date'])) : NULL;
 			$partial_payment     = isset($_POST['partial_payment']) ? (bool) $_POST['partial_payment'] : 0;
@@ -565,6 +566,7 @@ class WLSM_Staff_Accountant {
 					'label'           => $invoice_title,
 					'description'     => $invoice_description,
 					'amount'          => $invoice_amount,
+					'invoice_amount_total'            => $invoice_amount_total,
 					'discount'        => $invoice_discount,
 					'date_issued'     => $invoice_date_issued,
 					'due_date'        => $invoice_due_date,
@@ -633,10 +635,14 @@ class WLSM_Staff_Accountant {
 
 							$receipt_number = WLSM_M_Invoice::get_receipt_number($school_id);
 
+							?><pre>
+							<?php var_dump($invoice_amount_total);?>
+							</pre><?php die; 
 							// Payment data.
 							$payment_data = array(
 								'receipt_number'    => $receipt_number,
 								'amount'            => $payment_amount,
+								'invoice_amount_total'            => $invoice_amount_total,
 								'payment_method'    => $payment_method,
 								'transaction_id'    => $transaction_id,
 								'note'              => $payment_note,

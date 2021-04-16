@@ -25,6 +25,7 @@ $invoice_title           = '';
 $invoice_number          = '';
 $invoice_description     = '';
 $invoice_amount          = '';
+$invoice_amount_total          = '';
 $invoice_discount        = '';
 $invoice_date_issued     = '';
 $invoice_due_date        = '';
@@ -326,6 +327,14 @@ if (!$invoice) {
 						</label>
 						<input id="fee-amount" type="number" step="any" min="0" name="fee_type_amount" class="form-control" placeholder="<?php esc_attr_e('Enter amount', 'school-management'); ?>" value="" readonly>
 					</div>
+					<div class="form-group col-md-4" id="invoice_amount_total">
+						<label for="wlsm_invoice_amount" class="wlsm-font-bold">
+							<?php esc_html_e('Total', 'school-management'); ?>:
+						</label>
+						<input type="number" step="any" min="0" name="invoice_amount_total" class="form-control" id="wlsm_invoice_amount" placeholder="<?php esc_attr_e('Enter invoice amount', 'school-management'); ?>" value="<?php echo esc_attr($invoice_amount_total ? WLSM_Config::sanitize_money($invoice_amount_total) : ''); ?>">
+					</div>
+
+
 					<div class="form-group col-md-4">
 						<label for="wlsm_invoice_amount" class="wlsm-font-bold">
 							<?php esc_html_e('Amount', 'school-management'); ?>:

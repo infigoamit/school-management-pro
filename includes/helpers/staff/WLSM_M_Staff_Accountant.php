@@ -68,7 +68,7 @@ class WLSM_M_Staff_Accountant {
 
 	public static function fetch_invoice( $school_id, $session_id, $id ) {
 		global $wpdb;
-		$invoice = $wpdb->get_row( $wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.fee_list, i.description as invoice_description, i.date_issued, i.due_date, i.amount, i.discount, i.due_date_amount, (i.amount) as payable, COALESCE(SUM(p.amount), 0) as paid, i.partial_payment, i.status, sr.ID as student_id, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, sr.father_name, sr.father_phone, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
+		$invoice = $wpdb->get_row( $wpdb->prepare( 'SELECT i.ID, i.label as invoice_title, i.invoice_number, i.fee_list, i.description as invoice_description, i.date_issued, i.due_date, i.amount, i.invoice_amount_total, i.discount, i.due_date_amount, (i.amount) as payable, COALESCE(SUM(p.amount), 0) as paid, i.partial_payment, i.status, sr.ID as student_id, sr.name as student_name, sr.phone, sr.email, sr.admission_number, sr.enrollment_number, sr.roll_number, sr.father_name, sr.father_phone, c.label as class_label, se.label as section_label FROM ' . WLSM_INVOICES . ' as i
 		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id
 		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id
 		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id
