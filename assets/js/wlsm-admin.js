@@ -2555,6 +2555,7 @@
 					'<td><input type="number" step="1" min="0" name="grade_criteria[min][]"></td>' +
 					'<td><input type="number" step="1" min="1" name="grade_criteria[max][]"></td>' +
 					'<td><input type="text" name="grade_criteria[grade][]"></td>' +
+					'<td><input type="text" name="grade_discription[grade][]"></td>' +
 					'<td><span class="wlsm-grade-criteria-remove text-danger dashicons dashicons-no"></span></td>' +
 				'</tr>' +
 			'');
