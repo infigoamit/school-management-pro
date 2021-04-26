@@ -340,10 +340,11 @@ class WLSM_Helper {
 
 	public static function fee_period_list() {
 		return array(
-			'one-time' => esc_html__( 'One Time', 'school-management' ),
-			'monthly'  => esc_html__( 'Monthly', 'school-management' ),
-			'quaterly' => esc_html__( 'Quaterly', 'school-management' ),
-			'annually' => esc_html__( 'Annually', 'school-management' ),
+			'one-time'    => esc_html__( 'One Time', 'school-management' ),
+			'monthly'     => esc_html__( 'Monthly', 'school-management' ),
+			'quaterly'    => esc_html__( 'Quaterly', 'school-management' ),
+			'half-yearly' => esc_html__( 'Half Yearly', 'school-management' ),
+			'annually'    => esc_html__( 'Annually', 'school-management' ),
 		);
 	}
 

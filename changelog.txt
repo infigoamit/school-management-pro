@@ -1,10 +1,11 @@
-Version 8.0 [13-04-2021]
+Version 8.0 [16-04-2021]
 ========
 * Added  : Show teacher remark added in exam result (Optional )
 * Added  : Show school remark added in exam result (Optional )
 * Updated: In Exam Subject Remark Made Optional settings
 * Updated: Teacher and school remark setting will take effect for exam result and student result assessment both.
 * Added  : Hostel management addon added to the school management plugin ( This is added as an extra plugin. )
+* Added  : In single fee invoice total amount added
 
 Version 7.9 [05-04-2021]
 ========

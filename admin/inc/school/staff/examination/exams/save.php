@@ -358,7 +358,6 @@ $subject_types = WLSM_Helper::subject_type_list();
 												<td><?php esc_html_e( 'Percentage >=', 'school-management' ); ?></td>
 												<td><?php esc_html_e( 'Percentage <=', 'school-management' ); ?></td>
 												<td><?php esc_html_e( 'Assign Grade', 'school-management' ); ?></td>
-												<td><?php esc_html_e( 'Grade Discription', 'school-management' ); ?></td>
 												<td><?php esc_html_e( 'Action', 'school-management' ); ?></td>
 											</tr>
 										</thead>
@@ -368,8 +367,6 @@ $subject_types = WLSM_Helper::subject_type_list();
 												<td><input type="number" step="1" min="0" name="grade_criteria[min][]" value="<?php echo esc_attr( $mark_grade['min'] ); ?>"></td>
 												<td><input type="number" step="1" min="1" name="grade_criteria[max][]" value="<?php echo esc_attr( $mark_grade['max'] ); ?>"></td>
 												<td><input type="text" name="grade_criteria[grade][]" value="<?php echo esc_attr( $mark_grade['grade'] ); ?>"></td>
-												<td><input type="text" name="grade_discription[grade][]" value="<?php echo esc_attr( $mark_grade['discription'] ); ?>"></td>
-												
 												<td><span class="wlsm-grade-criteria-remove text-danger dashicons dashicons-no"></span></td>
 											</tr>
 											<?php } ?>
