@@ -143,6 +143,23 @@ $registration_types  = WLSM_Helper::meeting_registration_types();
 			<input type="hidden" name="meeting_id" value="<?php echo esc_attr( $meeting->ID ); ?>">
 			<?php } ?>
 
+			<div class="form-row mt-3">
+						<div class="form-group col-md-12">
+							<div class="form-check form-check-inline  btn btn-primary">
+								<input checked class="form-check-input" type="radio" name="class_type" id="zoom_class" value="zoom_class">
+								<label class="ml-1 form-check-label wlsm-font-bold" for="zoom_class">
+									<?php esc_html_e('Zoom Live Class', 'school-management'); ?>
+								</label>
+							</div>
+							<div class="form-check form-check-inline  btn btn-primary">
+								<input class="form-check-input" type="radio" name="class_type" id="bbb_class" value="bbb_class">
+								<label class="ml-1 form-check-label wlsm-font-bold" for="bbb_class">
+									<?php esc_html_e('Big Blue Button', 'school-management'); ?>
+								</label>
+							</div>
+						</div>
+					</div>
+
 			<div class="wlsm-form-section">
 				<div class="form-row">
 					<div class="form-group col-md-4">
