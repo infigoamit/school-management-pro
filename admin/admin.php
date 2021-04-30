@@ -352,6 +352,18 @@ add_action( 'wp_ajax_wlsm-get-subject-teachers', array( 'WLSM_Staff_General', 'g
 // Fee type get for students_page_url
 add_action( 'wp_ajax_wlsm-get-fee-type', array( 'WLSM_Staff_General', 'get_fee_type' ) );
 
+
+// Staff: Hostel.
+add_action( 'wp_ajax_wlsm-fetch-hostels', array( 'WLSM_Staff_Transport', 'fetch_hostels' ) );
+add_action( 'wp_ajax_wlsm-save-hostel', array( 'WLSM_Staff_Transport', 'save_hostel' ) );
+add_action( 'wp_ajax_wlsm-delete-hostel', array( 'WLSM_Staff_Transport', 'delete_hostel' ) );
+
+// staff: room
+add_action( 'wp_ajax_wlsm-fetch-rooms', array( 'WLSM_Staff_Transport', 'fetch_rooms' ) );
+add_action( 'wp_ajax_wlsm-save-room', array( 'WLSM_Staff_Transport', 'save_room' ) );
+add_action( 'wp_ajax_wlsm-delete-room', array( 'WLSM_Staff_Transport', 'delete_room' ) );
+
+
 // Bulk Action.
 add_action( 'wp_ajax_wlsm-bulk-action', array( 'WLSM_Bulk_Action', 'bulk_action' ) );
 

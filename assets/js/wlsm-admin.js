@@ -4831,6 +4831,95 @@
 			}
 		});
 
+		// Staff: hostels Table.
+		var hostelsTable = $('#wlsm-hostels-table');
+		wlsmInitializeTable(hostelsTable, { action: 'wlsm-fetch-hostels' });
+
+		// Staff: Delete hostel.
+		$(document).on('click', '.wlsm-delete-hostel', function(event) {
+			var hostelId = $(this).data('hostel');
+			var nonce = $(this).data('nonce');
+			var data = "hostel_id=" + hostelId + "&delete-hostel-" + hostelId + "=" + nonce + "&action=wlsm-delete-hostel";
+			var performActions = function() {
+				hostelsTable.DataTable().ajax.reload(null, false);
+			}
+			wlsmAction(event, this, data, performActions);
+		});
+
+		// Staff: Save hostel.
+		var saveHostelFormId = '#wlsm-save-hostel-form';
+		var saveHostelForm = $(saveHostelFormId);
+		var saveHostelBtn = $('#wlsm-save-hostel-btn');
+		saveHostelForm.ajaxForm({
+			beforeSubmit: function(arr, $form, options) {
+				return wlsmBeforeSubmit(saveHostelBtn);
+			},
+			success: function(response) {
+				if(response.success) {
+					wlsmShowSuccessAlert(response.data.message, saveHostelFormId);
+					toastr.success(response.data.message);
+					if(response.data.hasOwnProperty('reset') && response.data.reset) {
+						saveHostelForm[0].reset();
+					} else {
+						$('.wlsm-section-heading-box').load(location.href + " " + '.wlsm-section-heading', function () {});
+					}
+				} else {
+					wlsmDisplayFormErrors(response, saveHostelFormId);
+				}
+			},
+			error: function(response) {
+				wlsmDisplayFormError(response, saveHostelFormId, saveHostelBtn);
+			},
+			complete: function(event, xhr, settings) {
+				wlsmComplete(saveHostelBtn);
+			}
+		});
+
+		// Staff: Save room.
+		var saveRoomFormId = '#wlsm-save-room-form';
+		var saveRoomForm = $(saveRoomFormId);
+		var saveRoomBtn = $('#wlsm-save-room-btn');
+		saveRoomForm.ajaxForm({
+			beforeSubmit: function(arr, $form, options) {
+				return wlsmBeforeSubmit(saveRoomBtn);
+			},
+			success: function(response) {
+				if(response.success) {
+					wlsmShowSuccessAlert(response.data.message, saveRoomFormId);
+					toastr.success(response.data.message);
+					if(response.data.hasOwnProperty('reset') && response.data.reset) {
+						saveRoomForm[0].reset();
+					} else {
+						$('.wlsm-section-heading-box').load(location.href + " " + '.wlsm-section-heading', function () {});
+					}
+				} else {
+					wlsmDisplayFormErrors(response, saveRoomFormId);
+				}
+			},
+			error: function(response) {
+				wlsmDisplayFormError(response, saveRoomFormId, saveRoomBtn);
+			},
+			complete: function(event, xhr, settings) {
+				wlsmComplete(saveRoomBtn);
+			}
+		});
+
+		// Staff: rooms Table.
+		var roomsTable = $('#wlsm-rooms-table');
+		wlsmInitializeTable(roomsTable, { action: 'wlsm-fetch-rooms' });
+
+		// Staff: Delete room.
+		$(document).on('click', '.wlsm-delete-room', function(event) {
+			var roomId = $(this).data('room');
+			var nonce = $(this).data('nonce');
+			var data = "room_id=" + roomId + "&delete-room-" + roomId + "=" + nonce + "&action=wlsm-delete-room";
+			var performActions = function() {
+				roomsTable.DataTable().ajax.reload(null, false);
+			}
+			wlsmAction(event, this, data, performActions);
+		});
+
+
 		// Staff: Vehicles Table.
 		var vehiclesTable = $('#wlsm-vehicles-table');
 		wlsmInitializeTable(vehiclesTable, { action: 'wlsm-fetch-vehicles' });

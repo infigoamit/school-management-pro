@@ -182,6 +182,7 @@ class WLSM_M_Role {
 			'send_notifications'          => esc_html__( 'Send Notifications', 'school-management' ),
 			'manage_settings'             => esc_html__( 'Manage Settings', 'school-management' ),
 			'manage_logs'                 => esc_html__( 'Manage Logs', 'school-management' ),
+			'manage_hostel'                 => esc_html__( 'Manage hostel', 'school-management' ),
 		);
 	}
 

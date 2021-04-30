@@ -816,6 +816,42 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_CLASS_SCHOOL_NOTICE . " ADD student_school_id bigint(20) UNSIGNED DEFAULT NULL");
 		}
 
+			/* Create HOSTELS table */
+			$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_HOSTELS . " (
+				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				hostel_name varchar(200) DEFAULT NULL,
+				hostel_type varchar(200) DEFAULT NULL,
+				hostel_address varchar(200) DEFAULT NULL,
+				hostel_intake varchar(200) DEFAULT NULL,
+				school_id bigint(20) UNSIGNED DEFAULT NULL,
+				created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+				updated_at timestamp NULL DEFAULT NULL,
+				PRIMARY KEY (ID),
+				INDEX (school_id),
+				FOREIGN KEY (school_id) REFERENCES " . WLSM_HOSTELS . " (ID) ON DELETE CASCADE
+				) ENGINE=InnoDB " . $charset_collate;
+		dbDelta($sql);
+
+			/* Add fees column if not exists to student_records table */
+			$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_HOSTELS . "' AND COLUMN_NAME = 'fees'");
+			if (empty($row)) {
+				$wpdb->query("ALTER TABLE " . WLSM_HOSTELS . " ADD fees varchar(200) DEFAULT NULL");
+			}
+
+			/* Create hostel_room table */
+			$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_ROOMS . " (
+				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+				hostel_id bigint(20) UNSIGNED DEFAULT NULL,
+				room_name varchar(200) DEFAULT NULL,
+				number_of_beds varchar(200) DEFAULT NULL,
+				note text DEFAULT NULL,
+				created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+				updated_at timestamp NULL DEFAULT NULL,
+				PRIMARY KEY (ID),
+				FOREIGN KEY (hostel_id) REFERENCES " . WLSM_HOSTELS . " (ID) ON DELETE CASCADE
+				) ENGINE=InnoDB " . $charset_collate;
+		dbDelta($sql);
+
 		/* Create study_materials table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_STUDY_MATERIALS . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
