@@ -539,6 +539,7 @@ class WLSM_Staff_General
 
 			// Transport Detail.
 			$route_vehicle_id = isset($_POST['route_vehicle_id']) ? absint($_POST['route_vehicle_id']) : 0;
+			$room_id = isset($_POST['room_id']) ? absint($_POST['room_id']) : 0;
 
 			// Status.
 			$is_active = isset($_POST['is_active']) ? (bool) $_POST['is_active'] : 1;
@@ -973,6 +974,7 @@ class WLSM_Staff_General
 					'route_vehicle_id'  => $route_vehicle_id,
 					'user_id'           => $update_student_user_id,
 					'parent_user_id'    => $parent_user_id,
+					'room_id'           => $room_id,
 					'is_active'         => $is_active,
 				);
 

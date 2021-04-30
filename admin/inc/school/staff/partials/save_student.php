@@ -61,6 +61,7 @@ $route_vehicle_id  = '';
 $username          = '';
 $login_email       = '';
 $is_active         = 1;
+$room_id         = '';
 
 $sections = array();
 
@@ -112,6 +113,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 		$username          = $student->username;
 		$login_email       = $student->login_email;
 		$is_active         = $student->is_active;
+		$room_id         = $student->room_id;
 
 		$sections = WLSM_M_Staff_Class::fetch_sections($student->class_school_id);
 
@@ -156,7 +158,7 @@ if (!$current_user) {
 $fee_periods = WLSM_Helper::fee_period_list();
 
 $routes_vehicles = WLSM_M_Staff_Transport::fetch_routes_vehicles($school_id);
-
+$rooms = WLSM_M_Staff_Transport::fetch_hostel_rooms($school_id);
 $routes = array();
 foreach ($routes_vehicles as $route_vehicle) {
 	if (array_key_exists($route_vehicle->route_id, $routes)) {
@@ -891,6 +893,34 @@ foreach ($routes_vehicles as $route_vehicle) {
 					</div>
 				</div>
 			</div>
+
+				<!-- hostel Detail -->
+				<div class="wlsm-form-section">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="wlsm-form-sub-heading wlsm-font-bold">
+							<?php esc_html_e('Hostel Detail', 'school-management'); ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="wlsm_room" class="wlsm-font-bold">
+							<?php esc_html_e('Hostel Room No.', 'school-management'); ?>:
+						</label>
+						<select name="room_id" class="form-control selectpicker" id="wlsm_room" data-live-search="true" title="<?php esc_attr_e('Select', 'school-management'); ?>">
+							<option value=""><?php esc_html_e('Select', 'school-management'); ?></option>
+									<?php  foreach ($rooms as $room) { ?>
+										<option <?php selected($room_id, $room->ID, true); ?> value="<?php echo esc_attr( $room->ID); ?>">
+											<?php echo esc_html($room->room_name); ?>
+										</option>
+									<?php  } ?>
+						</select>
+					</div>
+				</div>
+			</div>
+
 
 			<!-- Status -->
 			<div class="wlsm-form-section">

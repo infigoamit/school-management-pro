@@ -1184,6 +1184,13 @@ class WLSM_Database
 			$wpdb->query("ALTER TABLE " . WLSM_STUDENT_RECORDS . " ADD FOREIGN KEY (route_vehicle_id) REFERENCES " . WLSM_ROUTE_VEHICLE . " (ID) ON DELETE SET NULL");
 		}
 
+		/* Add room_id column if not exists to student_records table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_STUDENT_RECORDS . "' AND COLUMN_NAME = 'room_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_STUDENT_RECORDS . " ADD room_id bigint(20) UNSIGNED DEFAULT NULL");
+			
+		}
+
 		/* Create logs table */
 		$sql = "CREATE TABLE IF NOT EXISTS " . WLSM_LOGS . " (
 				ID bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,

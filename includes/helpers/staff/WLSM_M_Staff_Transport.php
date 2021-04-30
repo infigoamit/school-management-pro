@@ -107,6 +107,12 @@ class WLSM_M_Staff_Transport {
 			WHERE ro.school_id = %d GROUP BY rov.ID', $school_id ) );
 		return $routes_vehicles;
 	}
+	public static function fetch_hostel_rooms( $school_id ) {
+		global $wpdb;
+		$hostel_rooms = $wpdb->get_results( $wpdb->prepare( 'SELECT ro.ID, ro.room_name FROM ' . WLSM_ROOMS . ' as ro 
+			' ) );
+		return $hostel_rooms;
+	}
 
 	public static function get_route_vehicle( $school_id, $route_vehicle_id ) {
 		global $wpdb;
