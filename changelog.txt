@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+Version 8.2 [19-05-2021]
+========
+* Attendance  : bug fixes. 
+
+=======
+>>>>>>> 70cc516f8b7298d760bb0409e3727b8411c81042
 Version 8.1 [30-04-2021]
 ========
 * Added  : Hostel module is added with school package.

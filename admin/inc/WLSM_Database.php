@@ -584,7 +584,6 @@ class WLSM_Database
 				created_at timestamp NULL DEFAULT CURRENT_TIMESTAMP,
 				updated_at timestamp NULL DEFAULT NULL,
 				PRIMARY KEY (ID),
-				UNIQUE (student_record_id),
 				INDEX (student_record_id),
 				FOREIGN KEY (student_record_id) REFERENCES " . WLSM_STUDENT_RECORDS . " (ID) ON DELETE CASCADE
 				) ENGINE=InnoDB " . $charset_collate;
