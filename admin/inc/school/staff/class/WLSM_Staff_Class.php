@@ -938,24 +938,26 @@ class WLSM_Staff_Class
 				if (isset($students[$student_id])) {
 					$student = $students[$student_id];
 					$status  = $status_ids[$student_id];
+					
 
 					if (!empty($status)) {
+						
 						
 						if ($attendance_by === 'subject' ) {
 							$sql = 'INSERT INTO ' . WLSM_ATTENDANCE . ' (attendance_date, student_record_id, added_by, subject_id, status) VALUES ("%s", %d, %d, %d, "%s") ON DUPLICATE KEY UPDATE status = "%s", subject_id = %d, updated_at = "%s"';
 							
 							$success = $wpdb->query($wpdb->prepare($sql, $attendance_date, $student_id, get_current_user_id(), $subject_id, $status, $status, $subject_id, current_time('Y-m-d H:i:s')));
+
+							
 							
 						} else {
 							$sql = 'INSERT INTO ' . WLSM_ATTENDANCE . ' (attendance_date, student_record_id, added_by, status) VALUES ("%s", %d, %d, "%s") ON DUPLICATE KEY UPDATE status = "%s", updated_at = "%s"';
+							
 							$success = $wpdb->query($wpdb->prepare($sql, $attendance_date, $student_id, get_current_user_id(), $status, $status, current_time('Y-m-d H:i:s')));
 							
 						}
 			
-						$buffer = ob_get_clean();
-						if (!empty($buffer)) {
-							throw new Exception($buffer);
-						}
+						
 						
 						if (false === $success) {
 							throw new Exception($wpdb->last_error);

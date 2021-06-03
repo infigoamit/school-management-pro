@@ -3,6 +3,7 @@ Version 8.3 [2-06-2021]
 ========
 * updated: msgclub api update.
 * Fixed: attendance showing only one day.
+* Fixed: Staff can take subject wise attendance.
 
 Version 8.2 [19-05-2021]
 ========

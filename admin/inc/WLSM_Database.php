@@ -1399,7 +1399,7 @@ class WLSM_Database
 	public static function uninstall()
 	{
 		delete_option('wlsm-key');
-		delete_option('wlsm-valid');
+		// delete_option('wlsm-valid');
 		delete_option('wlsm-cache');
 		delete_option('wlsm-updation-detail');
 		if (get_option('wlsm_delete_on_uninstall')) {
