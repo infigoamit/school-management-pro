@@ -590,6 +590,13 @@ class WLSM_Database
 		dbDelta($sql);
 
 		/* Add subject_id column if not exists to exams table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS 
+		WHERE CONSTRAINT_NAME ='student_record_id'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " DROP CONSTRAINT student_record_id");
+		}
+
+		/* Add subject_id column if not exists to exams table */
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_ATTENDANCE . "' AND COLUMN_NAME = 'subject_id'");
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_ATTENDANCE . " ADD subject_id bigint(20) UNSIGNED DEFAULT NULL");

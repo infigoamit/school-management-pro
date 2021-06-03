@@ -1,11 +1,17 @@
+
+Version 8.3 [2-06-2021]
+========
+* updated: msgclub api update.
+* Fixed: attendance showing only one day.
+
 Version 8.2 [19-05-2021]
 ========
-* Attendance: bug fixes.
-* Fixed     : Point SMS api Updated.
-* Added     : Template ID added
-* Fixed     : staff user always can see hostels.
-* Fixed     : update notification disabled for all roles except admin.
-* Fixed     : MsgClub sms template
+* Fixed: Attendance bug fixes.
+* Fixed: Point SMS api Updated.
+* Added: Template ID added
+* Fixed: staff user always can see hostels.
+* Fixed: update notification disabled for all roles except admin.
+* Fixed: MsgClub sms template
 
 Version 8.1 [30-04-2021]
 ========
