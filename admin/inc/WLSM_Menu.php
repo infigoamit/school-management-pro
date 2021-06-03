@@ -352,17 +352,22 @@ class WLSM_Menu {
 						$school_staff_transport_report_submenu = add_submenu_page( WLSM_MENU_STAFF_TRANSPORT, esc_html__( 'Transport Report', 'school-management' ), esc_html__( 'Report', 'school-management' ), 'read', WLSM_MENU_STAFF_TRANSPORT_REPORT, array( 'WLSM_Menu', 'school_staff_transport_report' ) );
 						add_action( 'admin_print_styles-' . $school_staff_transport_report_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
 					}
+
+				// Hostel - Group.
+				if ( WLSM_M_Role::check_permission( array( 'manage_hostel' ), $permissions ) ) {
+
 					$school_staff_group_hostel_menu = add_menu_page( esc_html__( 'SM Hostel', 'school-management' ), esc_html__( 'SM Hostel', 'school-management' ), 'read', WLSM_MENU_STAFF_HOSTEL, array( 'WLSM_Menu', 'school_staff_group_hostel' ), 'dashicons-admin-home', 34 );
 					add_action( 'admin_print_styles-' . $school_staff_group_hostel_menu, array( 'WLSM_Menu', 'menu_page_assets' ) );
 
-				// hostel -
-				$school_staff_hostel_submenu = add_submenu_page( WLSM_MENU_STAFF_HOSTEL, esc_html__( 'Hostels', 'school-management' ), esc_html__( 'Hostels', 'school-management' ), 'read', WLSM_MENU_STAFF_HOSTELS, array( 'WLSM_Menu', 'school_staff_hostel' ) );
-				add_action( 'admin_print_styles-' . $school_staff_hostel_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
+					// hostel -
+					$school_staff_hostel_submenu = add_submenu_page( WLSM_MENU_STAFF_HOSTEL, esc_html__( 'Hostels', 'school-management' ), esc_html__( 'Hostels', 'school-management' ), 'read', WLSM_MENU_STAFF_HOSTELS, array( 'WLSM_Menu', 'school_staff_hostel' ) );
+					add_action( 'admin_print_styles-' . $school_staff_hostel_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
 
-				// room -
-				$school_staff_room_submenu = add_submenu_page( WLSM_MENU_STAFF_HOSTEL, esc_html__( 'Rooms', 'school-management' ), esc_html__( 'Rooms', 'school-management' ), 'read', WLSM_MENU_STAFF_ROOMS, array( 'WLSM_Menu', 'school_staff_room' ) );
-				add_action( 'admin_print_styles-' . $school_staff_room_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
-				}
+					// room -
+					$school_staff_room_submenu = add_submenu_page( WLSM_MENU_STAFF_HOSTEL, esc_html__( 'Rooms', 'school-management' ), esc_html__( 'Rooms', 'school-management' ), 'read', WLSM_MENU_STAFF_ROOMS, array( 'WLSM_Menu', 'school_staff_room' ) );
+					add_action( 'admin_print_styles-' . $school_staff_room_submenu, array( 'WLSM_Menu', 'menu_page_assets' ) );
+					}
+			}
 			}}
 		} else {
 			$school_management_menu = add_menu_page( esc_html__( 'School Management', 'school-management' ), esc_html__( 'School Management', 'school-management' ), WLSM_ADMIN_CAPABILITY, 'school-management-license', array( 'WLSM_Menu', 'admin_menu' ), 'dashicons-welcome-learn-more', 27 );

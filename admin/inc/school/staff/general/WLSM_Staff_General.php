@@ -15,7 +15,7 @@ require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/staff/WLSM_M_Staff_General
 class WLSM_Staff_General
 {
 	public static function get_class_sections() {
-		$current_user = WLSM_M_Role::can(array('manage_admissions', 'manage_students', 'manage_invoices', 'manage_transfer_student', 'manage_certificates', 'manage_library', 'manage_transport', 'manage_homework', 'manage_exams', 'manage_admins', 'manage_employees', 'manage_student_leaves'));
+		$current_user = WLSM_M_Role::can(array('manage_admissions', 'manage_students', 'manage_invoices', 'manage_transfer_student', 'manage_certificates', 'manage_library', 'manage_transport', 'manage_homework', 'manage_exams', 'manage_admins', 'manage_employees', 'manage_student_leaves', 'manage_attendance'));
 
 		if (!$current_user) {
 			die();
@@ -8086,6 +8086,8 @@ class WLSM_Staff_General
 			$msgclub_sender_id        = isset($_POST['msgclub_sender_id']) ? sanitize_text_field($_POST['msgclub_sender_id']) : '';
 			$msgclub_route_id         = isset($_POST['msgclub_route_id']) ? sanitize_text_field($_POST['msgclub_route_id']) : '';
 			$msgclub_sms_content_type = isset($_POST['msgclub_sms_content_type']) ? sanitize_text_field($_POST['msgclub_sms_content_type']) : '';
+			$entityid                 = isset($_POST['msgclub_entityid']) ? sanitize_text_field($_POST['msgclub_entityid']) : '';
+			$tmid                     = isset($_POST['msgclub_tmid']) ? sanitize_text_field($_POST['msgclub_tmid']) : '';
 
 			$pob_sender_id = isset($_POST['pob_sender_id']) ? sanitize_text_field($_POST['pob_sender_id']) : '';
 			$pob_username  = isset($_POST['pob_username']) ? sanitize_text_field($_POST['pob_username']) : '';
@@ -8283,6 +8285,8 @@ class WLSM_Staff_General
 					'sender_id'        => $msgclub_sender_id,
 					'route_id'         => $msgclub_route_id,
 					'sms_content_type' => $msgclub_sms_content_type,
+					'entityid'         => $entityid,
+					'tmid'             => $tmid,
 				);
 
 				if (!$msgclub) {
@@ -8627,47 +8631,61 @@ class WLSM_Staff_General
 				die();
 			}
 
-			$sms_student_admission_enable  = isset($_POST['sms_student_admission_enable']) ? (bool) ($_POST['sms_student_admission_enable']) : 0;
-			$sms_student_admission_message = isset($_POST['sms_student_admission_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_admission_message'])) : '';
+			$sms_student_admission_enable      = isset($_POST['sms_student_admission_enable']) ? (bool) ($_POST['sms_student_admission_enable']) : 0;
+			$sms_student_admission_message     = isset($_POST['sms_student_admission_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_admission_message'])) : '';
+			$sms_student_template_id_admission = isset($_POST['sms_student_template_id_admission']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_admission'])) : '';
 
 			$sms_invoice_generated_enable  = isset($_POST['sms_invoice_generated_enable']) ? (bool) ($_POST['sms_invoice_generated_enable']) : 0;
 			$sms_invoice_generated_message = isset($_POST['sms_invoice_generated_message']) ? sanitize_text_field(stripslashes($_POST['sms_invoice_generated_message'])) : '';
+			$sms_student_template_id_invoice_generate = isset($_POST['sms_student_template_id_invoice_generate']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_invoice_generate'])) : '';
 
 			$sms_online_fee_submission_enable  = isset($_POST['sms_online_fee_submission_enable']) ? (bool) ($_POST['sms_online_fee_submission_enable']) : 0;
 			$sms_online_fee_submission_message = isset($_POST['sms_online_fee_submission_message']) ? sanitize_text_field(stripslashes($_POST['sms_online_fee_submission_message'])) : '';
+			$sms_student_template_id_fee_submission_message = isset($_POST['sms_student_template_id_fee_submission_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_fee_submission_message'])) : '';
 
 			$sms_offline_fee_submission_enable  = isset($_POST['sms_offline_fee_submission_enable']) ? (bool) ($_POST['sms_offline_fee_submission_enable']) : 0;
 			$sms_offline_fee_submission_message = isset($_POST['sms_offline_fee_submission_message']) ? sanitize_text_field(stripslashes($_POST['sms_offline_fee_submission_message'])) : '';
+			$sms_student_template_id_fee_offline_submission_message = isset($_POST['sms_student_template_id_fee_offline_submission_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_fee_offline_submission_message'])) : '';
 
 			$sms_student_admission_to_parent_enable  = isset($_POST['sms_student_admission_to_parent_enable']) ? (bool) ($_POST['sms_student_admission_to_parent_enable']) : 0;
 			$sms_student_admission_to_parent_message = isset($_POST['sms_student_admission_to_parent_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_admission_to_parent_message'])) : '';
+			$sms_student_template_id_admission_to_parent = isset($_POST['sms_student_template_id_admission_to_parent']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_admission_to_parent'])) : '';
 
 			$sms_invoice_generated_to_parent_enable  = isset($_POST['sms_invoice_generated_to_parent_enable']) ? (bool) ($_POST['sms_invoice_generated_to_parent_enable']) : 0;
 			$sms_invoice_generated_to_parent_message = isset($_POST['sms_invoice_generated_to_parent_message']) ? sanitize_text_field(stripslashes($_POST['sms_invoice_generated_to_parent_message'])) : '';
+			$sms_student_template_id_invoice_generated_to_parent = isset($_POST['sms_student_template_id_invoice_generated_to_parent']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_invoice_generated_to_parent'])) : '';
 
 			$sms_online_fee_submission_to_parent_enable  = isset($_POST['sms_online_fee_submission_to_parent_enable']) ? (bool) ($_POST['sms_online_fee_submission_to_parent_enable']) : 0;
 			$sms_online_fee_submission_to_parent_message = isset($_POST['sms_online_fee_submission_to_parent_message']) ? sanitize_text_field(stripslashes($_POST['sms_online_fee_submission_to_parent_message'])) : '';
+			$sms_student_template_id_online_fee_submission_to_parent_message = isset($_POST['sms_student_template_id_online_fee_submission_to_parent_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_online_fee_submission_to_parent_message'])) : '';
 
 			$sms_offline_fee_submission_to_parent_enable  = isset($_POST['sms_offline_fee_submission_to_parent_enable']) ? (bool) ($_POST['sms_offline_fee_submission_to_parent_enable']) : 0;
 			$sms_offline_fee_submission_to_parent_message = isset($_POST['sms_offline_fee_submission_to_parent_message']) ? sanitize_text_field(stripslashes($_POST['sms_offline_fee_submission_to_parent_message'])) : '';
+			$sms_student_template_id_offline_fee_submission_to_parent_message = isset($_POST['sms_student_template_id_offline_fee_submission_to_parent_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_offline_fee_submission_to_parent_message'])) : '';
 
 			$sms_absent_student_enable  = isset($_POST['sms_absent_student_enable']) ? (bool) ($_POST['sms_absent_student_enable']) : 0;
 			$sms_absent_student_message = isset($_POST['sms_absent_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_absent_student_message'])) : '';
+			$sms_student_template_id_absent_student_message = isset($_POST['sms_student_template_id_absent_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_absent_student_message'])) : '';
 
 			$sms_inquiry_received_to_inquisitor_enable  = isset($_POST['sms_inquiry_received_to_inquisitor_enable']) ? (bool) ($_POST['sms_inquiry_received_to_inquisitor_enable']) : 0;
 			$sms_inquiry_received_to_inquisitor_message = isset($_POST['sms_inquiry_received_to_inquisitor_message']) ? sanitize_text_field(stripslashes($_POST['sms_inquiry_received_to_inquisitor_message'])) : '';
+			$sms_student_template_idinquiry_received_to_inquisitor_message = isset($_POST['sms_student_template_idinquiry_received_to_inquisitor_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_idinquiry_received_to_inquisitor_message'])) : '';
 
 			$sms_inquiry_received_to_admin_enable  = isset($_POST['sms_inquiry_received_to_admin_enable']) ? (bool) ($_POST['sms_inquiry_received_to_admin_enable']) : 0;
 			$sms_inquiry_received_to_admin_message = isset($_POST['sms_inquiry_received_to_admin_message']) ? sanitize_text_field(stripslashes($_POST['sms_inquiry_received_to_admin_message'])) : '';
+			$sms_student_template_id_inquiry_received_to_admin_message = isset($_POST['sms_student_template_id_inquiry_received_to_admin_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_inquiry_received_to_admin_message'])) : '';
 
 			$sms_student_registration_to_student_enable  = isset($_POST['sms_student_registration_to_student_enable']) ? (bool) ($_POST['sms_student_registration_to_student_enable']) : 0;
 			$sms_student_registration_to_student_message = isset($_POST['sms_student_registration_to_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_registration_to_student_message'])) : '';
+			$sms_student_template_id_registration_to_student_message = isset($_POST['sms_student_template_id_registration_to_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_registration_to_student_message'])) : '';
 
 			$sms_student_invoice_due_date_student_enable  = isset($_POST['sms_student_invoice_due_date_student_enable']) ? (bool) ($_POST['sms_student_invoice_due_date_student_enable']) : 0;
 			$sms_student_invoice_due_date_student_message = isset($_POST['sms_student_invoice_due_date_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_invoice_due_date_student_message'])) : '';
+			$sms_student_template_id_invoice_due_date_student_message = isset($_POST['sms_student_template_id_invoice_due_date_student_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_invoice_due_date_student_message'])) : '';
 
 			$sms_student_registration_to_admin_enable  = isset($_POST['sms_student_registration_to_admin_enable']) ? (bool) ($_POST['sms_student_registration_to_admin_enable']) : 0;
 			$sms_student_registration_to_admin_message = isset($_POST['sms_student_registration_to_admin_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_registration_to_admin_message'])) : '';
+			$sms_student_template_id_registration_to_admin_message = isset($_POST['sms_student_template_id_registration_to_admin_message']) ? sanitize_text_field(stripslashes($_POST['sms_student_template_id_registration_to_admin_message'])) : '';
 		} catch (Exception $exception) {
 			$buffer = ob_get_clean();
 			if (!empty($buffer)) {
@@ -8687,6 +8705,7 @@ class WLSM_Staff_General
 			$sms_student_admission_data = array(
 				'enable'  => $sms_student_admission_enable,
 				'message' => $sms_student_admission_message,
+				'template_id' => $sms_student_template_id_admission,
 			);
 
 			if (!$sms_student_admission) {
@@ -8712,6 +8731,7 @@ class WLSM_Staff_General
 			$sms_invoice_generated_data = array(
 				'enable'  => $sms_invoice_generated_enable,
 				'message' => $sms_invoice_generated_message,
+				'template_id' => $sms_student_template_id_invoice_generate,
 			);
 
 			if (!$sms_invoice_generated) {
@@ -8737,6 +8757,7 @@ class WLSM_Staff_General
 			$sms_online_fee_submission_data = array(
 				'enable'  => $sms_online_fee_submission_enable,
 				'message' => $sms_online_fee_submission_message,
+				'template_id' => $sms_student_template_id_fee_submission_message,
 			);
 
 			if (!$sms_online_fee_submission) {
@@ -8762,6 +8783,7 @@ class WLSM_Staff_General
 			$sms_offline_fee_submission_data = array(
 				'enable'  => $sms_offline_fee_submission_enable,
 				'message' => $sms_offline_fee_submission_message,
+				'template_id' => $sms_student_template_id_fee_offline_submission_message,
 			);
 
 			if (!$sms_offline_fee_submission) {
@@ -8787,6 +8809,7 @@ class WLSM_Staff_General
 			$sms_student_admission_to_parent_data = array(
 				'enable'  => $sms_student_admission_to_parent_enable,
 				'message' => $sms_student_admission_to_parent_message,
+				'template_id' => $sms_student_template_id_admission_to_parent,
 			);
 
 			if (!$sms_student_admission_to_parent) {
@@ -8812,6 +8835,7 @@ class WLSM_Staff_General
 			$sms_invoice_generated_to_parent_data = array(
 				'enable'  => $sms_invoice_generated_to_parent_enable,
 				'message' => $sms_invoice_generated_to_parent_message,
+				'template_id' => $sms_student_template_id_invoice_generated_to_parent,
 			);
 
 			if (!$sms_invoice_generated_to_parent) {
@@ -8837,6 +8861,7 @@ class WLSM_Staff_General
 			$sms_online_fee_submission_to_parent_data = array(
 				'enable'  => $sms_online_fee_submission_to_parent_enable,
 				'message' => $sms_online_fee_submission_to_parent_message,
+				'template_id' => $sms_student_template_id_online_fee_submission_to_parent_message,
 			);
 
 			if (!$sms_online_fee_submission_to_parent) {
@@ -8862,6 +8887,7 @@ class WLSM_Staff_General
 			$sms_offline_fee_submission_to_parent_data = array(
 				'enable'  => $sms_offline_fee_submission_to_parent_enable,
 				'message' => $sms_offline_fee_submission_to_parent_message,
+				'template_id' => $sms_student_template_id_offline_fee_submission_to_parent_message,
 			);
 
 			if (!$sms_offline_fee_submission_to_parent) {
@@ -8887,6 +8913,7 @@ class WLSM_Staff_General
 			$sms_absent_student_data = array(
 				'enable'  => $sms_absent_student_enable,
 				'message' => $sms_absent_student_message,
+				'template_id' => $sms_student_template_id_absent_student_message,
 			);
 
 			if (!$sms_absent_student) {
@@ -8912,6 +8939,7 @@ class WLSM_Staff_General
 			$sms_inquiry_received_to_inquisitor_data = array(
 				'enable'  => $sms_inquiry_received_to_inquisitor_enable,
 				'message' => $sms_inquiry_received_to_inquisitor_message,
+				'template_id' => $sms_student_template_idinquiry_received_to_inquisitor_message,
 			);
 
 			if (!$sms_inquiry_received_to_inquisitor) {
@@ -8937,6 +8965,7 @@ class WLSM_Staff_General
 			$sms_inquiry_received_to_admin_data = array(
 				'enable'  => $sms_inquiry_received_to_admin_enable,
 				'message' => $sms_inquiry_received_to_admin_message,
+				'template_id' => $sms_student_template_id_inquiry_received_to_admin_message,
 			);
 
 			if (!$sms_inquiry_received_to_admin) {
@@ -8962,6 +8991,7 @@ class WLSM_Staff_General
 			$sms_student_registration_to_student_data = array(
 				'enable'  => $sms_student_registration_to_student_enable,
 				'message' => $sms_student_registration_to_student_message,
+				'template_id' => $sms_student_template_id_registration_to_student_message,
 			);
 
 			if (!$sms_student_registration_to_student) {
@@ -8987,6 +9017,7 @@ class WLSM_Staff_General
 			$sms_student_invoice_due_date_student_data = array(
 				'enable'  => $sms_student_invoice_due_date_student_enable,
 				'message' => $sms_student_invoice_due_date_student_message,
+				'template_id' => $sms_student_template_id_invoice_due_date_student_message,
 			);
 
 			if (!$sms_student_invoice_due_date_student) {
@@ -9012,6 +9043,7 @@ class WLSM_Staff_General
 			$sms_student_registration_to_admin_data = array(
 				'enable'  => $sms_student_registration_to_admin_enable,
 				'message' => $sms_student_registration_to_admin_message,
+				'template_id' => $sms_student_template_id_registration_to_admin_message,
 			);
 
 			if (!$sms_student_registration_to_admin) {
@@ -9080,9 +9112,10 @@ class WLSM_Staff_General
 
 			$settings = WLSM_M_Setting::$method_name($school_id);
 
-			$message = $settings['message'];
+			$message     = $settings['message'];
+			$template_id = $settings['template_id'];
 
-			$sent = WLSM_SMS::send_sms($school_id, $sms_to, $message);
+			$sent = WLSM_SMS::send_sms($school_id, $sms_to, $message, $template_id);
 
 			if ($sent) {
 				wp_send_json_success(array('message' => $sent));

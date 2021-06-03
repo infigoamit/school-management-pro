@@ -933,45 +933,53 @@ class WLSM_Staff_Class
 			$wpdb->query('BEGIN;');
 
 			$attendance_absent_date = DateTime::createFromFormat('Y-m-d', $attendance_date);
-
+			
 			foreach ($student_ids_keys as $student_id) {
 				if (isset($students[$student_id])) {
 					$student = $students[$student_id];
 					$status  = $status_ids[$student_id];
 
 					if (!empty($status)) {
-
+						
 						if ($attendance_by === 'subject' ) {
 							$sql = 'INSERT INTO ' . WLSM_ATTENDANCE . ' (attendance_date, student_record_id, added_by, subject_id, status) VALUES ("%s", %d, %d, %d, "%s") ON DUPLICATE KEY UPDATE status = "%s", subject_id = %d, updated_at = "%s"';
+							
 							$success = $wpdb->query($wpdb->prepare($sql, $attendance_date, $student_id, get_current_user_id(), $subject_id, $status, $status, $subject_id, current_time('Y-m-d H:i:s')));
+							
 						} else {
 							$sql = 'INSERT INTO ' . WLSM_ATTENDANCE . ' (attendance_date, student_record_id, added_by, status) VALUES ("%s", %d, %d, "%s") ON DUPLICATE KEY UPDATE status = "%s", updated_at = "%s"';
 							$success = $wpdb->query($wpdb->prepare($sql, $attendance_date, $student_id, get_current_user_id(), $status, $status, current_time('Y-m-d H:i:s')));
+							
 						}
 			
 						$buffer = ob_get_clean();
 						if (!empty($buffer)) {
 							throw new Exception($buffer);
 						}
-
+						
 						if (false === $success) {
 							throw new Exception($wpdb->last_error);
 						}
-
+						
 						if ('a' === $status) {
 							// Notify for absent student.
+							
 							$data = array(
 								'school_id'       => $school_id,
 								'session_id'      => $session_id,
 								'student_id'      => $student_id,
 								'attendance_date' => $attendance_absent_date->format(WLSM_Config::date_format())
 							);
+							
 							if ($attendance_by === 'subject' ) { 
 								$data['subject_id'] = $subject_id;
 							}
+							
 							wp_schedule_single_event(time() + 30, 'wlsm_notify_for_absent_student', $data);
 						}
 					} else {
+						
+						
 						$wpdb->delete(
 							WLSM_ATTENDANCE,
 							array('attendance_date' => $attendance_date, 'student_record_id' => $student_id)
@@ -982,16 +990,18 @@ class WLSM_Staff_Class
 						}
 					}
 				} else {
+					
 					throw new Exception(esc_html__('Please select valid students.', 'school-management'));
 				}
 			}
-
-			$wpdb->query('COMMIT;');
+			
+			$wpdb->query('COMMIT');
 
 			$message = esc_html__('Attendance saved successfully.', 'school-management');
-
+			
 			wp_send_json_success(array('message' => $message));
 		} catch (Exception $exception) {
+			
 			$wpdb->query('ROLLBACK;');
 			wp_send_json_error($exception->getMessage());
 		}

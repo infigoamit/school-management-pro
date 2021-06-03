@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || die();
 $settings_sms_online_fee_submission = WLSM_M_Setting::get_settings_sms_online_fee_submission( $school_id );
 $sms_online_fee_submission_enable   = $settings_sms_online_fee_submission['enable'];
 $sms_online_fee_submission_message  = $settings_sms_online_fee_submission['message'];
+$sms_student_template_id_fee_submission_message  = $settings_sms_online_fee_submission['template_id'];
 
 $sms_online_fee_submission_placeholders = WLSM_SMS::online_fee_submission_placeholders();
 ?>
@@ -57,6 +58,16 @@ $sms_online_fee_submission_placeholders = WLSM_SMS::online_fee_submission_placeh
 			<div class="col-md-9">
 				<div class="form-group">
 					<textarea name="sms_online_fee_submission_message" id="wlsm_sms_online_fee_submission_message" class="form-control" rows="6" placeholder="<?php esc_attr_e( 'SMS Message', 'school-management' ); ?>"><?php echo esc_html( $sms_online_fee_submission_message ); ?></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="wlsm_sms_student_template_id_fee_submission_message" class="wlsm-font-bold"><?php esc_html_e( 'Template ID', 'school-management' ); ?>:</label>
+			</div>
+			<div class="col-md-9">
+				<div class="form-group">
+					<textarea name="sms_student_template_id_fee_submission_message" id="wlsm_sms_student_template_id_fee_submission_message" class="form-control" rows="1" placeholder="<?php esc_attr_e( 'SMS Tepmplate ID', 'school-management' ); ?>"><?php echo esc_html( $sms_student_template_id_fee_submission_message ); ?></textarea>
 				</div>
 			</div>
 		</div>

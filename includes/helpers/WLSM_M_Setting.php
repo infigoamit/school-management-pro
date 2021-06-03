@@ -415,6 +415,8 @@ class WLSM_M_Setting {
 		$sender_id        = NULL;
 		$route_id         = 1;
 		$sms_content_type = 'Unicode';
+		$tmid             = null;
+		$entityid         = null;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "msgclub"', $school_id ) );
 		if ( $settings ) {
@@ -423,6 +425,8 @@ class WLSM_M_Setting {
 			$sender_id        = isset( $settings['sender_id'] ) ? $settings['sender_id'] : '';
 			$route_id         = isset( $settings['route_id'] ) ? $settings['route_id'] : '';
 			$sms_content_type = isset( $settings['sms_content_type'] ) ? $settings['sms_content_type'] : '';
+			$tmid             = isset( $settings['tmid'] ) ? $settings['tmid'] : '';
+			$entityid         = isset( $settings['entityid'] ) ? $settings['entityid'] : '';
 		}
 
 		return array(
@@ -430,6 +434,8 @@ class WLSM_M_Setting {
 			'sender_id'        => $sender_id,
 			'route_id'         => $route_id,
 			'sms_content_type' => $sms_content_type,
+			'tmid'             => $tmid,
+			'entityid'         => $entityid,
 		);
 	}
 
@@ -953,18 +959,21 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_student_admission"', $school_id ) );
 
 		if ( $settings ) {
-			$settings = unserialize( $settings->setting_value );
-			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
-			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$settings    = unserialize( $settings->setting_value );
+			$enable      = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
+			$message     = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
-			'enable'  => $enable,
-			'message' => $message,
+			'enable'      => $enable,
+			'message'     => $message,
+			'template_id' => $template_id,
 		);
 	}
 
@@ -973,6 +982,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_student_registration_to_student"', $school_id ) );
 
@@ -980,11 +990,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 	
@@ -993,6 +1005,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_student_invoice_due_date_student"', $school_id ) );
 
@@ -1000,11 +1013,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 
@@ -1013,6 +1028,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_student_registration_to_admin"', $school_id ) );
 
@@ -1020,11 +1036,14 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
+
 		);
 	}
 
@@ -1033,6 +1052,9 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
+		
+		
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_invoice_generated"', $school_id ) );
 
@@ -1040,11 +1062,14 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
+
 		);
 	}
 
@@ -1053,6 +1078,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_online_fee_submission"', $school_id ) );
 
@@ -1060,11 +1086,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 
@@ -1073,6 +1101,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_offline_fee_submission"', $school_id ) );
 
@@ -1080,11 +1109,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 
@@ -1093,6 +1124,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_student_admission_to_parent"', $school_id ) );
 
@@ -1100,11 +1132,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 
@@ -1113,6 +1147,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_invoice_generated_to_parent"', $school_id ) );
 
@@ -1120,11 +1155,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 
@@ -1133,6 +1170,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_online_fee_submission_to_parent"', $school_id ) );
 
@@ -1140,11 +1178,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 
@@ -1153,6 +1193,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_offline_fee_submission_to_parent"', $school_id ) );
 
@@ -1160,11 +1201,14 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
+
 		);
 	}
 
@@ -1173,6 +1217,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_absent_student"', $school_id ) );
 
@@ -1180,11 +1225,14 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
+
 		);
 	}
 
@@ -1193,6 +1241,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_inquiry_received_to_inquisitor"', $school_id ) );
 
@@ -1200,11 +1249,14 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
+
 		);
 	}
 
@@ -1213,6 +1265,7 @@ class WLSM_M_Setting {
 
 		$enable  = 0;
 		$message = NULL;
+		$template_id = NULL;
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "sms_inquiry_received_to_admin"', $school_id ) );
 
@@ -1220,11 +1273,13 @@ class WLSM_M_Setting {
 			$settings = unserialize( $settings->setting_value );
 			$enable   = isset( $settings['enable'] ) ? (bool) $settings['enable'] : 0;
 			$message  = isset( $settings['message'] ) ? $settings['message'] : '';
+			$template_id = isset( $settings['template_id'] ) ? $settings['template_id'] : '';
 		}
 
 		return array(
 			'enable'  => $enable,
 			'message' => $message,
+			'template_id' => $template_id,
 		);
 	}
 

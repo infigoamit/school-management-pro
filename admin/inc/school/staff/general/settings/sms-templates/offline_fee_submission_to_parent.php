@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || die();
 $settings_sms_offline_fee_submission_to_parent = WLSM_M_Setting::get_settings_sms_offline_fee_submission_to_parent( $school_id );
 $sms_offline_fee_submission_to_parent_enable   = $settings_sms_offline_fee_submission_to_parent['enable'];
 $sms_offline_fee_submission_to_parent_message  = $settings_sms_offline_fee_submission_to_parent['message'];
+$sms_student_template_id_offline_fee_submission_to_parent_message  = $settings_sms_offline_fee_submission_to_parent['template_id'];
 
 $sms_offline_fee_submission_to_parent_placeholders = WLSM_SMS::offline_fee_submission_to_parent_placeholders();
 ?>
@@ -57,6 +58,16 @@ $sms_offline_fee_submission_to_parent_placeholders = WLSM_SMS::offline_fee_submi
 			<div class="col-md-9">
 				<div class="form-group">
 					<textarea name="sms_offline_fee_submission_to_parent_message" id="wlsm_sms_offline_fee_submission_to_parent_message" class="form-control" rows="6" placeholder="<?php esc_attr_e( 'SMS Message', 'school-management' ); ?>"><?php echo esc_html( $sms_offline_fee_submission_to_parent_message ); ?></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="wlsm_sms_student_template_id_offline_fee_submission_to_parent_message" class="wlsm-font-bold"><?php esc_html_e( 'Template ID', 'school-management' ); ?>:</label>
+			</div>
+			<div class="col-md-9">
+				<div class="form-group">
+					<textarea name="sms_student_template_id_offline_fee_submission_to_parent_message" id="wlsm_sms_student_template_id_offline_fee_submission_to_parent_message" class="form-control" rows="1" placeholder="<?php esc_attr_e( 'SMS Tepmplate ID', 'school-management' ); ?>"><?php echo esc_html( $sms_student_template_id_offline_fee_submission_to_parent_message ); ?></textarea>
 				</div>
 			</div>
 		</div>

@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || die();
 $settings_sms_student_registration_to_student = WLSM_M_Setting::get_settings_sms_student_registration_to_student( $school_id );
 $sms_student_registration_to_student_enable   = $settings_sms_student_registration_to_student['enable'];
 $sms_student_registration_to_student_message  = $settings_sms_student_registration_to_student['message'];
+$sms_student_template_id_registration_to_student_message  = $settings_sms_student_registration_to_student['template_id'];
 
 $sms_student_registration_to_student_placeholders = WLSM_SMS::student_registration_to_student_placeholders();
 ?>
@@ -57,6 +58,16 @@ $sms_student_registration_to_student_placeholders = WLSM_SMS::student_registrati
 			<div class="col-md-9">
 				<div class="form-group">
 					<textarea name="sms_student_registration_to_student_message" id="wlsm_sms_student_registration_to_student_message" class="form-control" rows="6" placeholder="<?php esc_attr_e( 'SMS Message', 'school-management' ); ?>"><?php echo esc_html( $sms_student_registration_to_student_message ); ?></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="wlsm_sms_student_template_id_registration_to_student_message" class="wlsm-font-bold"><?php esc_html_e( 'Template ID', 'school-management' ); ?>:</label>
+			</div>
+			<div class="col-md-9">
+				<div class="form-group">
+					<textarea name="sms_student_template_id_registration_to_student_message" id="wlsm_sms_student_template_id_registration_to_student_message" class="form-control" rows="1" placeholder="<?php esc_attr_e( 'SMS Tepmplate ID', 'school-management' ); ?>"><?php echo esc_html( $sms_student_template_id_registration_to_student_message ); ?></textarea>
 				</div>
 			</div>
 		</div>

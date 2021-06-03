@@ -38,8 +38,10 @@ class WLSM_UpdateChecker {
 	public function WLSM_installHooks(){
 		//Add custom Plugin update menu at Dashboard update menu section.
 		add_action('admin_menu', array( $this, 'WLSM_my_Plugin_menu'));	
+
 		//Add custom Plugin update available notice with link menu at top menu section.
 		add_action('admin_bar_menu', array( $this, 'WLSM_Plugin_update_link'), 99999999);
+
 		//Insert our update css style by this function at footer.
 		add_action('admin_footer', array( $this, 'WLSM_my_admin_Plugin_update_function'));		
 	}
@@ -82,8 +84,8 @@ class WLSM_UpdateChecker {
 	{
 		$new_version = $this->WLSM_getNewVersion();		
 		$old_version = $this->WLSM_getInstalledVersion();
-		if ( is_object($new_version) && version_compare($new_version->version, $old_version, '>') )
-		{
+		if(current_user_can('administrator')) {
+		if ( is_object($new_version) && version_compare($new_version->version, $old_version, '>') ) {
 		$args = array(
 				'id' => 'WLSM_Plugin_update_menu',
 				'title' => 'School Management <span style="color:#fff;font-weight:bold;">Update Available !</span>', 
@@ -94,6 +96,7 @@ class WLSM_UpdateChecker {
 					)
 			);
 			$wp_admin_bar->add_node($args);
+		}
 	    }
 	}
 	

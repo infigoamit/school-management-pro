@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || die();
 $settings_sms_inquiry_received_to_inquisitor = WLSM_M_Setting::get_settings_sms_inquiry_received_to_inquisitor( $school_id );
 $sms_inquiry_received_to_inquisitor_enable   = $settings_sms_inquiry_received_to_inquisitor['enable'];
 $sms_inquiry_received_to_inquisitor_message  = $settings_sms_inquiry_received_to_inquisitor['message'];
+$sms_student_template_idinquiry_received_to_inquisitor_message  = $settings_sms_inquiry_received_to_inquisitor['template_id'];
 
 $sms_inquiry_received_to_inquisitor_placeholders = WLSM_SMS::inquiry_received_to_inquisitor_placeholders();
 ?>
@@ -57,6 +58,16 @@ $sms_inquiry_received_to_inquisitor_placeholders = WLSM_SMS::inquiry_received_to
 			<div class="col-md-9">
 				<div class="form-group">
 					<textarea name="sms_inquiry_received_to_inquisitor_message" id="wlsm_sms_inquiry_received_to_inquisitor_message" class="form-control" rows="6" placeholder="<?php esc_attr_e( 'SMS Message', 'school-management' ); ?>"><?php echo esc_html( $sms_inquiry_received_to_inquisitor_message ); ?></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="wlsm_sms_student_template_idinquiry_received_to_inquisitor_message" class="wlsm-font-bold"><?php esc_html_e( 'Template ID', 'school-management' ); ?>:</label>
+			</div>
+			<div class="col-md-9">
+				<div class="form-group">
+					<textarea name="sms_student_template_idinquiry_received_to_inquisitor_message" id="wlsm_sms_student_template_idinquiry_received_to_inquisitor_message" class="form-control" rows="1" placeholder="<?php esc_attr_e( 'SMS Tepmplate ID', 'school-management' ); ?>"><?php echo esc_html( $sms_student_template_idinquiry_received_to_inquisitor_message ); ?></textarea>
 				</div>
 			</div>
 		</div>

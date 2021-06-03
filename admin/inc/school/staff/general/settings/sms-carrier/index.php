@@ -35,6 +35,8 @@ $school_msgclub_auth_key         = $settings_msgclub['auth_key'];
 $school_msgclub_sender_id        = $settings_msgclub['sender_id'];
 $school_msgclub_route_id         = $settings_msgclub['route_id'];
 $school_msgclub_sms_content_type = $settings_msgclub['sms_content_type'];
+$school_msgclub_entityid         = $settings_msgclub['entityid'];
+$school_msgclub_tmid             = $settings_msgclub['tmid'];
 
 // Point SMS settings.
 $settings_pointsms         = WLSM_M_Setting::get_settings_pointsms($school_id);
@@ -366,6 +368,32 @@ $school_ebulksms_sender   = $settings_ebulksms['sender'];
 						<div class="col-md-9">
 							<div class="form-group">
 								<input name="msgclub_sms_content_type" type="text" id="wlsm_msgclub_sms_content_type" value="<?php echo esc_attr($school_msgclub_sms_content_type); ?>" class="form-control" placeholder="<?php esc_attr_e('Infigo Msg SMS Content Type', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_msgclub">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_msgclub_entityid" class="wlsm-font-bold"><?php esc_html_e('PEID or Entity id should be of 19 digit', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="msgclub_entityid" type="text" id="wlsm_msgclub_entityid" value="<?php echo esc_attr($school_msgclub_entityid); ?>" class="form-control" placeholder="<?php esc_attr_e('Infigo Msg SMS', 'school-management'); ?>">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="wlsm_sms_carrier wlsm_msgclub">
+					<div class="row">
+						<div class="col-md-3">
+							<label for="wlsm_msgclub_tmid" class="wlsm-font-bold"><?php esc_html_e('Telemarketer id', 'school-management'); ?>:</label>
+						</div>
+						<div class="col-md-9">
+							<div class="form-group">
+								<input name="msgclub_tmid" type="text" id="wlsm_msgclub_tmid" value="<?php echo esc_attr($school_msgclub_tmid); ?>" class="form-control" placeholder="<?php esc_attr_e('Infigo Msg SMS', 'school-management'); ?>">
 							</div>
 						</div>
 					</div>

@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || die();
 $settings_sms_invoice_generated_to_parent = WLSM_M_Setting::get_settings_sms_invoice_generated_to_parent( $school_id );
 $sms_invoice_generated_to_parent_enable   = $settings_sms_invoice_generated_to_parent['enable'];
 $sms_invoice_generated_to_parent_message  = $settings_sms_invoice_generated_to_parent['message'];
+$sms_student_template_id_invoice_generated_to_parent  = $settings_sms_invoice_generated_to_parent['template_id'];
 
 $sms_invoice_generated_to_parent_placeholders = WLSM_SMS::invoice_generated_to_parent_placeholders();
 ?>
@@ -57,6 +58,16 @@ $sms_invoice_generated_to_parent_placeholders = WLSM_SMS::invoice_generated_to_p
 			<div class="col-md-9">
 				<div class="form-group">
 					<textarea name="sms_invoice_generated_to_parent_message" id="wlsm_sms_invoice_generated_to_parent_message" class="form-control" rows="6" placeholder="<?php esc_attr_e( 'SMS Message', 'school-management' ); ?>"><?php echo esc_html( $sms_invoice_generated_to_parent_message ); ?></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="wlsm_sms_student_template_id_invoice_generated_to_parent" class="wlsm-font-bold"><?php esc_html_e( 'Template ID', 'school-management' ); ?>:</label>
+			</div>
+			<div class="col-md-9">
+				<div class="form-group">
+					<textarea name="sms_student_template_id_invoice_generated_to_parent" id="wlsm_sms_student_template_id_invoice_generated_to_parent" class="form-control" rows="1" placeholder="<?php esc_attr_e( 'SMS Tepmplate ID', 'school-management' ); ?>"><?php echo esc_html( $sms_student_template_id_invoice_generated_to_parent ); ?></textarea>
 				</div>
 			</div>
 		</div>

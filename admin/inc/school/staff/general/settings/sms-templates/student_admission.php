@@ -5,6 +5,7 @@ defined( 'ABSPATH' ) || die();
 $settings_sms_student_admission = WLSM_M_Setting::get_settings_sms_student_admission( $school_id );
 $sms_student_admission_enable   = $settings_sms_student_admission['enable'];
 $sms_student_admission_message  = $settings_sms_student_admission['message'];
+$sms_student_template_id_admission= $settings_sms_student_admission['template_id'];
 
 $sms_student_admission_placeholders = WLSM_SMS::student_admission_placeholders();
 ?>
@@ -58,6 +59,17 @@ $sms_student_admission_placeholders = WLSM_SMS::student_admission_placeholders()
 				<div class="form-group">
 					<textarea name="sms_student_admission_message" id="wlsm_sms_student_admission_message" class="form-control" rows="6" placeholder="<?php esc_attr_e( 'SMS Message', 'school-management' ); ?>"><?php echo esc_html( $sms_student_admission_message ); ?></textarea>
 				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<label for="wlsm_sms_student_template_id_admission" class="wlsm-font-bold"><?php esc_html_e( 'Template ID', 'school-management' ); ?>:</label>
+			</div>
+			<div class="col-md-9">
+				<div class="form-group">
+					<textarea name="sms_student_template_id_admission" id="wlsm_sms_student_template_id_admission" class="form-control" rows="1" placeholder="<?php esc_attr_e( 'SMS Tepmplate ID', 'school-management' ); ?>"><?php echo esc_html( $sms_student_template_id_admission ); ?></textarea>
+				</div>
+				<label class="wlsm-font-bold"><?php esc_html_e( 'Note:  If you are using Template ID then use the templates text in message', 'school-management' ); ?></label>
 			</div>
 		</div>
 	</div>

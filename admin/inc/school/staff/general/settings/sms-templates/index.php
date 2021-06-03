@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || die();
 				<input type="hidden" name="<?php echo esc_attr( $nonce_action ); ?>" value="<?php echo esc_attr( $nonce ); ?>">
 
 				<input type="hidden" name="action" value="wlsm-save-school-sms-templates-settings">
-
+				<label class="wlsm-font-bold text-danger"><?php esc_html_e( 'Note:  If you are using Template ID then use the templates text in message', 'school-management' ); ?></label>
 				<?php
 				require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/sms-templates/student_admission.php';
 				require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/staff/general/settings/sms-templates/invoice_generated.php';

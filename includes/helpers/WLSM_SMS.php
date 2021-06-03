@@ -24,7 +24,7 @@ class WLSM_SMS {
 		);
 	}
 
-	public static function send_sms($school_id, $to, $message, $sms_for = '', $placeholders = array()) {
+	public static function send_sms($school_id, $to, $message, $template_id , $sms_for = '', $placeholders = array()) {
 		if (!empty($sms_for) && count($placeholders)) {
 			if ('student_admission' === $sms_for) {
 				$available_placeholders = array_keys(self::student_admission_placeholders());
@@ -71,13 +71,13 @@ class WLSM_SMS {
 		if ('smsstriker' === $sms_carrier) {
 			return self::smsstriker($school_id, $message, $to);
 		} elseif ('msgclub' === $sms_carrier) {
-			return self::msgclub($school_id, $message, $to);
+			return self::msgclub($school_id, $message, $template_id, $to);
 		} elseif ('gatewaysms' === $sms_carrier) {
 			return self::gatewaysms($school_id, $message, $to);
 		} elseif ('bulksmsgateway' === $sms_carrier) {
 			return self::bulksmsgateway($school_id, $message, $to);
 		} elseif ('pointsms' === $sms_carrier) {
-			return self::pointsms($school_id, $message, $to);
+			return self::pointsms($school_id, $message, $template_id, $to);
 		} elseif ('indiatext' === $sms_carrier) {
 			return self::indiatext($school_id, $message, $to);
 		} elseif ('nexmo' === $sms_carrier) {
@@ -256,13 +256,15 @@ class WLSM_SMS {
 		return false;
 	}
 
-	public static function msgclub($school_id, $message, $numbers) {
+	public static function msgclub($school_id, $message, $template_id, $numbers) {
 		try {
 			$msgclub          = WLSM_M_Setting::get_settings_msgclub($school_id);
 			$auth_key         = $msgclub['auth_key'];
 			$sender_id        = $msgclub['sender_id'];
 			$route_id         = $msgclub['route_id'];
 			$sms_content_type = $msgclub['sms_content_type'];
+			$entityid         = $msgclub['entityid'];
+			$tmid             = $msgclub['tmid'];
 
 			if (is_array($numbers)) {
 				$number = implode(', ', $numbers);
@@ -282,10 +284,13 @@ class WLSM_SMS {
 					'routeId'        => $route_id,
 					'mobileNos'      => $number,
 					'smsContentType' => $sms_content_type,
+					'entityid'       => $entityid,
+					'tmid'           => $tmid,
+					'templateid'     => $template_id,
 				),
 				'http://167.114.117.218/rest/services/sendSMS/sendGroupSms'
 			);
-
+			
 			$response = wp_remote_get($url);
 			$result   = wp_remote_retrieve_body($response);
 
@@ -298,7 +303,7 @@ class WLSM_SMS {
 		return false;
 	}
 
-	public static function pointsms($school_id, $message, $numbers) {
+	public static function pointsms($school_id, $message, $template_id, $numbers) {
 		try {
 			$pointsms  = WLSM_M_Setting::get_settings_pointsms($school_id);
 			$username  = $pointsms['username'];
@@ -337,24 +342,29 @@ class WLSM_SMS {
 
 			$url = add_query_arg(
 				array(
-					"user"     => $username,
-					"password" => $password,
-					"number"   => $number,
-					"senderid" => $sender_id,
-					"channel"  => $channel,
-					"DCS"      => 0,
-					"flashsms" => 0,
-					"text"     => $message,
-					"route"    => $route,
-					"peid"     => $peid,
+					"user"          => $username,
+					"password"      => $password,
+					"number"        => $number,
+					"senderid"      => $sender_id,
+					"channel"       => $channel,
+					"DCS"           => 0,
+					"flashsms"      => 0,
+					"text"          => $message,
+					"route"         => $route,
+					"peid"          => $peid,
+					"dlttemplateid" => $template_id,
 				),
 				'http://45.113.189.74/api/mt/SendSMS'
 			);
 
 			$response = wp_remote_get($url);
+			
 			$result   = wp_remote_retrieve_body($response);
+			$result = json_decode($result);
+			
+			
 			if ($result) {
-				return true;
+				return $result->ErrorMessage;
 			}
 		} catch (Exception $e) {
 		}
