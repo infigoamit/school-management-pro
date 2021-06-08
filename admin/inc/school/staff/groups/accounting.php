@@ -130,6 +130,20 @@ $page_url_income   = admin_url('admin.php?page=' . WLSM_MENU_STAFF_INCOME);
 			);
 		}
 
+		// Invoices pending amount.
+		$invoices_pending_amount = $wpdb->get_col(
+			$wpdb->prepare( 'SELECT ((i.amount) - COALESCE(SUM(p.amount), 0)) as due FROM ' . WLSM_INVOICES . ' as i 
+				JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id 
+				JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id 
+				JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id 
+				JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = se.class_school_id 
+				JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id 
+				LEFT OUTER JOIN ' . WLSM_PAYMENTS . ' as p ON p.invoice_id = i.ID 
+				WHERE cs.school_id = %d AND ss.ID = %d AND (i.status = "%s" OR i.status = "%s") GROUP BY i.ID', $school_id, $session_id, WLSM_M_Invoice::get_unpaid_key(), WLSM_M_Invoice::get_partially_paid_key() )
+		);
+
+		$invoices_pending_amount = array_sum( $invoices_pending_amount );
+
 		if (WLSM_M_Role::check_permission(array('stats_payments'), $current_school['permissions'])) {
 			// Total Payments.
 			$total_payments_count = $wpdb->get_var(WLSM_M_Staff_Accountant::fetch_payments_query_count($school_id, $session_id));
@@ -367,13 +381,13 @@ $page_url_income   = admin_url('admin.php?page=' . WLSM_MENU_STAFF_INCOME);
 			<div class="col-md-4 col-lg-3">
 				<div class="wlsm-stats-block">
 					<i class="fas fa-dollar-sign wlsm-stats-icon"></i>
-					<div class="wlsm-stats-counter"><?php echo esc_html(WLSM_Config::get_money_text($total_fees_structure_amount)); ?></div>
+					<div class="wlsm-stats-counter"><?php echo esc_html( WLSM_Config::get_money_text( $invoices_pending_amount ) ); ?></div>
 					<div class="wlsm-stats-label">
 						<?php
 						printf(
 							wp_kses(
 								/* translators: %s: session label */
-								__('Amount By Fees Structure<br><small class="text-secondary"> - Session: %s</small>', 'school-management'),
+								__('Amount Pending<br><small class="text-secondary"> - Session: %s</small>', 'school-management'),
 								array('small' => array('class' => array()), 'br' => array())
 							),
 							esc_html(WLSM_M_Session::get_label_text($current_session['label']))

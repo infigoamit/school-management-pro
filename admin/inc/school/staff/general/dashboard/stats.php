@@ -240,13 +240,13 @@ defined( 'ABSPATH' ) || die();
 	<div class="col-md-4 col-lg-3">
 		<div class="wlsm-stats-block">
 			<i class="fas fa-dollar-sign wlsm-stats-icon"></i>
-			<div class="wlsm-stats-counter"><?php echo esc_html( WLSM_Config::get_money_text( $total_fees_structure_amount ) ); ?></div>
+			<div class="wlsm-stats-counter"><?php echo esc_html( WLSM_Config::get_money_text( $invoices_pending_amount ) ); ?></div>
 			<div class="wlsm-stats-label">
 				<?php
 				printf(
 					wp_kses(
 						/* translators: %s: session label */
-						__( 'Amount By Fees Structure<br><small class="text-secondary"> - Session: %s</small>', 'school-management' ),
+						__( 'Amount Pending<br><small class="text-secondary"> - Session: %s</small>', 'school-management' ),
 						array( 'small' => array( 'class' => array() ), 'br' => array() )
 					),
 					esc_html( WLSM_M_Session::get_label_text( $current_session['label'] ) )

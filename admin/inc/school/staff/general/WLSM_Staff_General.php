@@ -1101,6 +1101,7 @@ class WLSM_Staff_General
 				
 				$fee_order = 10;
 				$list_data = array();
+				$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
 				if (count($fee_label)) {
 					foreach ($fee_label as $key => $value) {
 						array_push($place_holders_fee_labels, '%s');
@@ -1117,7 +1118,6 @@ class WLSM_Staff_General
 						
 						if ($is_insert) {
 							// Student fee does not exist, insert student fee.
-							$invoice_number = WLSM_M_Invoice::get_invoice_number($school_id);
 
 							$student_fee_data['label']             = $value;
 							$student_fee_data['student_record_id'] = $student_id;					

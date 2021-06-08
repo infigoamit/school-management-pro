@@ -123,6 +123,20 @@ if ( WLSM_M_Role::check_permission( array( 'manage_invoices' ), $current_school[
 	);
 }
 
+// Invoices pending amount.
+$invoices_pending_amount = $wpdb->get_col(
+	$wpdb->prepare( 'SELECT ((i.amount) - COALESCE(SUM(p.amount), 0)) as due FROM ' . WLSM_INVOICES . ' as i 
+		JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = i.student_record_id 
+		JOIN ' . WLSM_SESSIONS . ' as ss ON ss.ID = sr.session_id 
+		JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id 
+		JOIN ' . WLSM_CLASS_SCHOOL . ' as cs ON cs.ID = se.class_school_id 
+		JOIN ' . WLSM_CLASSES . ' as c ON c.ID = cs.class_id 
+		LEFT OUTER JOIN ' . WLSM_PAYMENTS . ' as p ON p.invoice_id = i.ID 
+		WHERE cs.school_id = %d AND ss.ID = %d AND (i.status = "%s" OR i.status = "%s") GROUP BY i.ID', $school_id, $session_id, WLSM_M_Invoice::get_unpaid_key(), WLSM_M_Invoice::get_partially_paid_key() )
+);
+
+$invoices_pending_amount = array_sum( $invoices_pending_amount );
+
 if ( WLSM_M_Role::check_permission( array( 'stats_payments' ), $current_school['permissions'] ) ) {
 	// Total Payments.
 	$total_payments_count = $wpdb->get_var( WLSM_M_Staff_Accountant::fetch_payments_query_count( $school_id, $session_id ) );
