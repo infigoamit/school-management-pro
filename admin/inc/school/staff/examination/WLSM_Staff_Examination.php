@@ -647,6 +647,9 @@ class WLSM_Staff_Examination {
 			$show_remark    = isset( $_POST['show_remark'] ) ? (bool) $_POST['show_remark'] : 1;
 			$show_eremark    = isset( $_POST['show_eremark'] ) ? (bool) $_POST['show_eremark'] : 1;
 
+			$psychomotor_analysis    = isset( $_POST['psychomotor_analysis'] ) ? (bool) $_POST['psychomotor_analysis'] : 1;
+
+
 			// Exam papers.
 			$paper_id      = ( isset( $_POST['paper_id'] ) && is_array( $_POST['paper_id'] ) ) ? $_POST['paper_id'] : array();
 			$subject_label = ( isset( $_POST['subject_label'] ) && is_array( $_POST['subject_label'] ) ) ? $_POST['subject_label'] : array();
@@ -665,6 +668,11 @@ class WLSM_Staff_Examination {
 			$gc_min   = ( isset( $_POST['grade_criteria']['min'] ) && is_array( $_POST['grade_criteria']['min'] ) ) ? $_POST['grade_criteria']['min'] : array();
 			$gc_max   = ( isset( $_POST['grade_criteria']['max'] ) && is_array( $_POST['grade_criteria']['max'] ) ) ? $_POST['grade_criteria']['max'] : array();
 			$gc_grade = ( isset( $_POST['grade_criteria']['grade'] ) && is_array( $_POST['grade_criteria']['grade'] ) ) ? $_POST['grade_criteria']['grade'] : array();
+
+			// psychomotor
+			$psych = ( isset( $_POST['psych']) && is_array( $_POST['psych']) ) ? $_POST['psych']: array();
+			$scale       = ( isset( $_POST['scale']) && is_array( $_POST['scale']) ) ? $_POST['scale']: array();
+			$def         = ( isset( $_POST['def']) && is_array( $_POST['def']) ) ? $_POST['def']: array();
 
 			// Start validation.
 			$errors = array();
@@ -718,8 +726,6 @@ class WLSM_Staff_Examination {
 			if ( ! count( $class_schools ) ) {
 				$errors['classes[]'] = esc_html__( 'Please select at least one class.', 'school-management' );
 			}
-
-			// var_dump($subject_type); die;
 
 			if ( count( $errors ) < 1 ) {
 				// Exam papers.
@@ -858,6 +864,17 @@ class WLSM_Staff_Examination {
 				)
 			);
 
+			// Psychmotor
+
+			$psychomotor = serialize(
+				array(
+					'psych' => $psych,
+					'scale' => $scale,
+					'def'   => $def,
+					)
+				);
+			
+
 		} catch ( Exception $exception ) {
 			$buffer = ob_get_clean();
 			if ( ! empty( $buffer ) ) {
@@ -888,6 +905,7 @@ class WLSM_Staff_Examination {
 					'start_date'            => $start_date,
 					'end_date'              => $end_date,
 					'grade_criteria'        => $grade_criteria,
+					'psychomotor'           => $psychomotor,
 					'enable_room_numbers'   => $enable_room_numbers,
 					'results_published'     => $results_published,
 					'admit_cards_published' => $admit_cards_published,
@@ -896,7 +914,8 @@ class WLSM_Staff_Examination {
 					'is_active'             => $is_active,
 					'show_rank'             => $show_rank,
 					'show_remark'           => $show_remark,
-					'show_eremark'           => $show_eremark,
+					'show_eremark'          => $show_eremark,
+					'psychomotor_analysis'          => $psychomotor_analysis,
 				);
 
 				if ( $exam_id ) {

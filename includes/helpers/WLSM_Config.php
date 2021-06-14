@@ -201,6 +201,26 @@ class WLSM_Config {
 		return $grade_criteria;
 	}
 
+	public static function sanitize_psychomotor( $grade_criteria ) {
+		if ( is_serialized( $grade_criteria ) ) {
+			$grade_criteria = unserialize( $grade_criteria );
+		}
+
+		if ( ! is_array( $grade_criteria ) ) {
+			$grade_criteria = array();
+		}
+
+		if ( ! isset( $grade_criteria['psych'] ) ) {
+			$grade_criteria['psych'] = array();
+		}if ( ! isset( $grade_criteria['scale'] ) ) {
+			$grade_criteria['scale'] = array();
+		}if ( ! isset( $grade_criteria['def'] ) ) {
+			$grade_criteria['def'] = array();
+		}
+
+		return $grade_criteria;
+	}
+
 	public static function get_default_grade_criteria() {
 		return array(
 			'enable_overall_grade' => false,

@@ -667,8 +667,15 @@ class WLSM_Database
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAMS . "' AND COLUMN_NAME = 'exam_group'");
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD exam_group varchar(60) DEFAULT NULL");
+			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD psychomotor_analysis tinyint(1) NOT NULL DEFAULT '1'");
 		}
-
+		
+		/* Add psychomotor column if not exists to exams table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAMS . "' AND COLUMN_NAME = 'psychomotor'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD psychomotor text DEFAULT NULL");
+			$wpdb->query("ALTER TABLE " . WLSM_EXAMS . " ADD psychomotor text DEFAULT NULL");
+		}
 
 		/* Add show_in_assessment column if not exists to exams table */
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAMS . "' AND COLUMN_NAME = 'show_in_assessment'");

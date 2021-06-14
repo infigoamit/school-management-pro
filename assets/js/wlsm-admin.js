@@ -2565,6 +2565,35 @@
 			$(this).parent().parent().remove();
 		});
 
+		// Add psych criteria.
+		$(document).on('click', '.wlsm-psych-criteria-add', function() {
+			$('.wlsm-psych-criteria tbody').append('' +
+				'<tr>' +
+				'<td><input type="text" name="psych[]" value="" placeholder="Example: Attitude"></td>'+
+					'<td><span class="wlsm-psych-criteria-remove text-danger dashicons dashicons-no"></span></td>' +
+				'</tr>' +
+			'');
+		});
+		// Remove psych criteria.
+		$(document).on('click', '.wlsm-psych-criteria-remove', function() {
+			$(this).parent().parent().remove();
+		});
+
+		// Add psych scale.
+		$(document).on('click', '.wlsm-psych-scale-add', function() {
+			$('.wlsm-psych-scale tbody').append('' +
+				'<tr>' +
+					'<td><input type="number" name="scale[]" value="" placeholder=" Enter"></td>'+
+					'<td><input type="text" name="def[]" value="" placeholder="Example : Good"></td>'+
+					'<td><span class="wlsm-psych-scale-remove text-danger dashicons dashicons-no"></span></td>' +
+				'</tr>' +
+			'');
+		});
+		// Remove psych scale.
+		$(document).on('click', '.wlsm-psych-scale-remove', function() {
+			$(this).parent().parent().remove();
+		});
+
 		// Staff: Save exam.
 		var saveExamFormId = '#wlsm-save-exam-form';
 		var saveExamForm = $(saveExamFormId);

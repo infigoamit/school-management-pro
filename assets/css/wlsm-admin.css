@@ -412,6 +412,17 @@
 .wlsm-grade-criteria-add {
   cursor: pointer;
 }
+
+.wlsm-psych-criteria-remove,
+.wlsm-psych-criteria-add {
+  cursor: pointer;
+}
+
+.wlsm-psych-scale-remove,
+.wlsm-psych-scale-add {
+  cursor: pointer;
+}
+
 .canvasjs-chart-credit {
   display: none;
 }

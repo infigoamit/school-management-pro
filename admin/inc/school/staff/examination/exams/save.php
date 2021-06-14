@@ -21,6 +21,7 @@ $is_active   = 1;
 $show_rank   = 1;
 $show_remark = 1;
 $show_eremark = 1;
+$psychomotor_analysis=1;
 
 $enable_room_numbers   = 0;
 $results_published     = 0;
@@ -58,8 +59,10 @@ if ( isset( $_GET['id'] ) && ! empty( $_GET['id'] ) ) {
 		$show_rank   = $exam->show_rank;
 		$show_remark = $exam->show_remark;
 		$show_eremark = $exam->show_eremark;
+		$psychomotor_analysis = $exam->psychomotor_analysis;
 
 		$grade_criteria = WLSM_Config::sanitize_grade_criteria( $exam->grade_criteria );
+		$psychomotor = WLSM_Config::sanitize_psychomotor( $exam->psychomotor );
 
 		$exam_classes = WLSM_M_Staff_Examination::fetch_exam_classes( $school_id, $id );
 		$exam_papers  = WLSM_M_Staff_Examination::fetch_exam_papers( $school_id, $id );
@@ -416,6 +419,89 @@ $subject_types = WLSM_Helper::subject_type_list();
 				</div>
 			</div>
 
+			<!-- psych monitor -->
+			<div class="wlsm-form-section">
+				<div class="row">
+					<div class="col-md-6">
+						
+							<div class="col-md-12">
+								<div class="wlsm-form-sub-heading wlsm-font-bold">
+									<?php esc_html_e( 'Psych Monitor', 'school-management' ); ?>
+								</div>
+							</div>				
+						
+							<div class="col-md-12">
+								<div class="table-responsive table-responsive">
+									<table class="table table-sm table-bordered table-striped wlsm-psych-criteria">
+										<thead>
+											<tr class="wlsm-font-bold">
+												<td><?php esc_html_e( 'Psychmotor', 'school-management' ); ?></td>
+												<td><?php esc_html_e( 'Action', 'school-management' ); ?></td>
+											</tr>
+										</thead>
+										<tbody>
+											<?php foreach ($psychomotor['psych'] as $key => $value): ?>
+											<tr>
+												<td><input type="text" name="psych[]" value="<?php echo $value; ?>" placeholder="Example: Attitude"></td>
+												<td><span class="wlsm-psych-criteria-remove text-danger dashicons dashicons-no"></span></td>
+											</tr>
+											<?php endforeach ?>
+											
+										</tbody>
+										<tfoot>
+											<tr>
+												<th class="border-0"></th>
+												<th><span class="wlsm-psych-criteria-add text-primary dashicons dashicons-plus"></span></th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+					</div>
+					<div class="col-md-6">
+						
+							<div class="col-md-12">
+								<div class="wlsm-form-sub-heading wlsm-font-bold">
+									<?php esc_html_e( 'Psych Scale', 'school-management' ); ?>
+								</div>
+							</div>				
+						
+							<div class="col-md-12">
+								<div class="table-responsive table-responsive">
+									<table class="table table-sm table-bordered table-striped wlsm-psych-scale">
+										<thead>
+											<tr class="wlsm-font-bold">
+												<td><?php esc_html_e( 'Scale Number', 'school-management' ); ?></td>
+												<td><?php esc_html_e( 'Defination', 'school-management' ); ?></td>
+												<td><?php esc_html_e( 'Action', 'school-management' ); ?></td>
+											</tr>
+										</thead>
+										<tbody>
+											<?php 
+											$scale = 1;
+											foreach ($psychomotor['def'] as $value): ?> 
+											<tr>
+											<td><input type="number" name="scale[]" value="<?php echo esc_attr( $scale++);?>" placeholder="Example : 1"></td>
+												<td><input type="text" name="def[]" value="<?php echo esc_attr( $value);?>" placeholder="Example : Good"></td>
+												<td><span class="wlsm-psych-scale-remove text-danger dashicons dashicons-no"></span></td>
+											</tr>
+											<?php endforeach ?>
+											
+										</tbody>
+										<tfoot>
+											<tr>
+												<th class="border-0"></th>
+												<th class="border-0"></th>
+												<th><span class="wlsm-psych-scale-add text-primary dashicons dashicons-plus"></span></th>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+
 			<?php if ( $exam ) { ?>
 			<!-- Actions -->
 			<div class="wlsm-form-section">
@@ -696,6 +782,33 @@ $subject_types = WLSM_Helper::subject_type_list();
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input <?php checked(0, $show_eremark, true); ?> class="form-check-input" type="radio" name="show_eremark" id="wlsm_results_unpublished" value="0">
+                                    <label class="ml-1 form-check-label text-secondary font-weight-bold" for="wlsm_results_unpublished">
+										<?php esc_html_e('No', 'school-management'); ?>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+					<div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="wlsm-form-sub-heading wlsm-font-bold">
+									<?php esc_html_e('Psychomotor Analysis', 'school-management'); ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <div class="form-check form-check-inline">
+                                    <input <?php checked(1, $psychomotor_analysis, true); ?> class="form-check-input" type="radio" name="psychomotor_analysis" id="wlsm_psychomotor_analysis" value="1">
+                                    <label class="ml-1 form-check-label text-success font-weight-bold" for="wlsm_psychomotor_analysis">
+										<?php esc_html_e('Yes', 'school-management'); ?>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input <?php checked(0, $psychomotor_analysis, true); ?> class="form-check-input" type="radio" name="psychomotor_analysis" id="wlsm_results_unpublished" value="0">
                                     <label class="ml-1 form-check-label text-secondary font-weight-bold" for="wlsm_results_unpublished">
 										<?php esc_html_e('No', 'school-management'); ?>
                                     </label>
