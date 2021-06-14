@@ -25,6 +25,9 @@ if ($admit_card) {
 	$start_date  = $exam->start_date;
 	$end_date    = $exam->end_date;
 
+
+	$psychomotor = WLSM_Config::sanitize_psychomotor( $exam->psychomotor );
+
 	$exam_papers  = WLSM_M_Staff_Examination::get_exam_papers_by_admit_card($school_id, $admit_card_id);
 	$exam_results = WLSM_M_Staff_Examination::get_exam_results_by_admit_card($school_id, $admit_card_id);
 
@@ -47,6 +50,8 @@ if ($admit_card) {
 	$exam_center = $exam->exam_center;
 	$start_date  = $exam->start_date;
 	$end_date    = $exam->end_date;
+
+	$psychomotor = WLSM_Config::sanitize_psychomotor( $exam->psychomotor );
 
 	$exam_papers = WLSM_M_Staff_Examination::get_exam_papers_by_exam_id($school_id, $exam_id);
 
@@ -252,15 +257,69 @@ if ($admit_card) {
 					<div class="row">
 
 						<div class="col">
-						<label for="wlsm_teacher_remark"><strong>Teacher Remark</strong></label>
+						<label for="wlsm_teacher_remark"><strong><?php esc_html_e('Teacher Remark', 'school-management'); ?>
+						</strong></label>
 							<input type="text" name="teacher_remark"  class="form-control" placeholder="Enter Remark">
 						</div>
 
 						<div class="col">
-						<label for="wlsm_teacher_remark"><strong>School Remark</strong></label>
+						<label for="wlsm_teacher_remark"><strong><?php esc_html_e('School Remark', 'school-management'); ?></strong></label>
 							<input type="text" name="school_remark"  class="form-control" placeholder="Enter Remark">
 						</div>
 
+					</div>
+									<br>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="wlsm-form-sub-heading wlsm-font-bold">
+								<?php esc_html_e('Psychomotor  Anaylysis', 'school-management'); ?>
+							</div>
+						</div>
+						<div class="table-responsive w-100 col-md-6">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th><?php esc_html_e('Psychmotor', 'school-management'); ?></th>
+										<th><?php esc_html_e('Scale', 'school-management'); ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									foreach ($psychomotor['psych'] as $key => $value) { ?>
+										<tr>											
+											<td><?php echo esc_html($value); ?></td>
+											<td>
+												<input type="number" step="any" min="0" name="scale[<?php echo esc_attr($key); ?>]" class="form-control" value="">
+											</td>
+										</tr>
+										<?php 
+										}
+									?>
+										
+								</tbody>
+							</table>
+						</div>
+
+						<div class="table-responsive w-100 col-md-6">
+							<table class="table table-bordered table-striped">
+								<thead>
+									<tr>
+										<th><?php esc_html_e('Scale', 'school-management'); ?></th>
+										<th><?php esc_html_e('Defination', 'school-management'); ?></th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+									$number = 1;
+									foreach ($psychomotor['def'] as $key => $value) { ?>
+										<tr>											
+											<td><?php echo esc_html($number++); ?></td>
+											<td><?php echo esc_html($value); ?> </td>
+										</tr>
+										<?php } ?>
+								</tbody>
+							</table>
+						</div>
 					</div>
 
 						<div class="row mt-2">

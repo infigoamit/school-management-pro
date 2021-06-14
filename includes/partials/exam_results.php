@@ -33,6 +33,7 @@ $student_rank = WLSM_M_Staff_Examination::calculate_exam_ranks( $school_id, $exa
 		$percentage = WLSM_Config::sanitize_percentage( $exam_paper->maximum_marks, WLSM_Config::sanitize_marks( $obtained_marks ) );
 		$teacher_remark = $exam_result->teacher_remark;
 		$school_remark = $exam_result->school_remark;
+		$p_scale = $exam_result->scale;
 
 		$total_maximum_marks  += $exam_paper->maximum_marks;
 		$total_obtained_marks += WLSM_Config::sanitize_marks( $obtained_marks );
@@ -50,7 +51,8 @@ $student_rank = WLSM_M_Staff_Examination::calculate_exam_ranks( $school_id, $exa
 	<?php
 	}
 
-	$total_percentage = WLSM_Config::sanitize_percentage( $total_maximum_marks, $total_obtained_marks )
+	$total_percentage = WLSM_Config::sanitize_percentage( $total_maximum_marks, $total_obtained_marks );
+	$p_scale = unserialize($p_scale);
 	?>
 	<tr>
 		<th colspan="3"><?php esc_html_e( 'Total', 'school-management' ); ?></th>
@@ -86,4 +88,30 @@ $student_rank = WLSM_M_Staff_Examination::calculate_exam_ranks( $school_id, $exa
 		<td colspan="3"><strong><?php esc_html_e( 'School Remark :', 'school-management' ); ?></strong>  <?php  echo $school_remark; ?></td>		
 	</tr>
 	<?php }?>
+
+	<?php if ($psychomotor_enable === '1'): ?>
+	
+	<table class="table table-bordered wlsm-view-exam-results-table">
+		<thead>
+			<tr>
+			<th colspan="10"> <?php esc_html_e( 'Psychomotor Anaylysis', 'school-management' ); ?></th>
+			</tr>
+
+		</thead>
+
+		<tbody>
+		<tr>
+				<?php foreach ($psychomotor['psych'] as $key => $value): ?>
+				<td><?php echo $value; ?></td>
+				<?php endforeach ?> 
+			</tr>
+		<tr>
+			<?php foreach ($p_scale as $value): ?>
+			<td> <?php echo $value; ?> </td>
+			<?php endforeach ?> 
+		</tr>
+		</tbody>
+	</table>
+	
+	<?php endif ?>
 </tbody>

@@ -121,6 +121,25 @@ $marks_grades         = $grade_criteria['marks_grades'];
 					<table class="table table-bordered wlsm-view-exam-results-table">
 						<?php require_once WLSM_PLUGIN_DIR_PATH . 'includes/partials/exam_results.php'; ?>
 					</table>
+
+					<table class="table table-bordered wlsm-view-exam-results-table">
+					<thead>
+						<tr>
+						<th scope="col"><?php esc_html_e( 'Scale', 'school-management' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Defination', 'school-management' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php  $s = 1; ?>
+					<?php foreach ($psychomotor['def'] as $key => $value): ?>
+						<tr>
+							<th scope="row"><?php echo $s++ ; ?></th>
+							<td><?php echo $value; ?></td>
+						</tr>
+					<?php endforeach ?>
+						
+					</tbody>
+					</table>
 				</div>
 			</div>
 		</div>

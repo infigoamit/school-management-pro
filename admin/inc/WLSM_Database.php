@@ -772,6 +772,12 @@ class WLSM_Database
 		if (empty($row)) {
 			$wpdb->query("ALTER TABLE " . WLSM_EXAM_RESULTS . " ADD remark text DEFAULT NULL");
 		}
+		
+		/* Add scale column if not exists to fees table */
+		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAM_RESULTS . "' AND COLUMN_NAME = 'scale'");
+		if (empty($row)) {
+			$wpdb->query("ALTER TABLE " . WLSM_EXAM_RESULTS . " ADD scale text DEFAULT NULL");
+		}
 
 		/* Add teacher_remark, school_remark  column if not exists to fees table */
 		$row = $wpdb->get_results("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '" . DB_NAME . "' AND TABLE_NAME = '" . WLSM_EXAM_RESULTS . "' AND COLUMN_NAME = 'teacher_remark'");

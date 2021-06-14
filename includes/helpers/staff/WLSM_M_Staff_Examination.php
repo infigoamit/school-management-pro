@@ -349,7 +349,7 @@ class WLSM_M_Staff_Examination {
 
 	public static function get_exam_results_by_admit_card( $school_id, $admit_card_id ) {
 		global $wpdb;
-		$exam_results = $wpdb->get_results( $wpdb->prepare( 'SELECT er.exam_paper_id, er.ID, er.obtained_marks, er.remark, er.teacher_remark, er.school_remark  FROM ' . WLSM_EXAM_RESULTS . ' as er 
+		$exam_results = $wpdb->get_results( $wpdb->prepare( 'SELECT er.exam_paper_id, er.ID, er.obtained_marks, er.remark, er.teacher_remark, er.school_remark, er.scale  FROM ' . WLSM_EXAM_RESULTS . ' as er 
 			JOIN ' . WLSM_ADMIT_CARDS . ' as ac ON ac.ID = er.admit_card_id 
 			JOIN ' . WLSM_STUDENT_RECORDS . ' as sr ON sr.ID = ac.student_record_id 
 			JOIN ' . WLSM_SECTIONS . ' as se ON se.ID = sr.section_id 
