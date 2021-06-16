@@ -44,11 +44,22 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 	<tr>
 		<th><?php esc_html_e('Subject', 'school-management'); ?></th>
 		<?php
+		
+		$exam_ids           = array();
+		$psychomotor_enable = array();
+		$psychomotor        = array();
+		
+
+
 		foreach ($exams as $key => $exam) {
-		$show_remark = $exam->show_remark;
-		?>
+			$show_remark = $exam->show_remark;
+			?>
 			<th><?php echo esc_html(stripslashes($exam->exam_title)); ?></th>
-		<?php
+		<?php  
+			array_push($exam_ids, $exam->ID);
+			array_push($psychomotor_enable, $exam->psychomotor_analysis);
+			$psych =  WLSM_Config::sanitize_psychomotor( $exam->psychomotor );
+			array_push($psychomotor, $psych);
 		}
 		?>
 		<th><?php esc_html_e('Total', 'school-management'); ?></th>
@@ -79,6 +90,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 			<?php
 			$total_maximum_marks_subject  = 0;
 			$total_obtained_marks_subject = 0;
+			$psychomotor_scale = array();
 			foreach ($exams as $key => $exam) {
 				// Get exam paper with this subject code.
 				$exam_result = WLSM_M_Staff_Examination::get_exam_result_by_subject_code($school_id, $exam->ID, $student_id, $subject->code);
@@ -93,6 +105,8 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 						$maximum_marks  = $exam_result->maximum_marks;
 						$obtained_marks = $exam_result->obtained_marks;
 						$remark         = $exam_result->remark;
+						$p_scale = $exam_result->scale;
+						array_push($psychomotor_scale, $p_scale);
 
 						$total_maximum_marks_subject  += $exam_result->maximum_marks;
 						$total_obtained_marks_subject += $exam_result->obtained_marks;
@@ -187,7 +201,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 				echo '-';
 			}
 			?>
-		</th>
+		</th><td></td>
 		
 	</tr>
 	<tr>
@@ -214,6 +228,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 			}
 			?>
 		</th>
+		<td></td>
 	
 		
 	</tr>
@@ -236,7 +251,55 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 		}
 		?>
 		<td></td>
+		<td></td>
 	
 	</tr>
 	<?php }?>
 </tbody>
+
+<?php if ($psychomotor_enable[0] === '1'): ?>
+	
+	<table class="table table-bordered wlsm-view-exam-results-table">
+		<thead>
+			<tr>
+			<th colspan="10"> <?php esc_html_e( 'Psychomotor Anaylysis', 'school-management' ); ?></th>
+			</tr>
+
+		</thead>
+
+		<tbody>
+		<tr>
+				<?php foreach ($psychomotor[0]['psych'] as $key => $value): ?>
+				<td><?php echo $value; ?></td>
+				<?php endforeach ?> 
+			</tr>
+		<tr>
+			<?php 
+			$psychomotor_scale = unserialize($psychomotor_scale[0]);
+			foreach ($psychomotor_scale as $value): ?>
+			<td> <?php echo $value; ?> </td>
+			<?php endforeach ?> 
+		</tr>
+		</tbody>
+	</table>
+
+	<table class="table table-bordered wlsm-view-exam-results-table">
+					<thead>
+						<tr>
+						<th scope="col"><?php esc_html_e( 'Scale', 'school-management' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Defination', 'school-management' ); ?></th>
+						</tr>
+					</thead>
+					<tbody>
+					<?php  $s = 1; ?>
+					<?php foreach ($psychomotor[0]['def'] as $key => $value): ?>
+						<tr>
+							<th scope="row"><?php echo $s++ ; ?></th>
+							<td><?php echo $value; ?></td>
+						</tr>
+					<?php endforeach ?>
+						
+					</tbody>
+					</table>
+	
+	<?php endif ?>

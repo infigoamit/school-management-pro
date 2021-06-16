@@ -217,7 +217,7 @@ class WLSM_M_Staff_Examination {
 
 	public static function get_class_school_exams( $school_id, $class_school_id ) {
 		global $wpdb;
-		$exams = $wpdb->get_results( $wpdb->prepare( 'SELECT DISTINCT ex.ID, ex.label as exam_title, ex.show_rank, ex.show_remark, ex.start_date, ex.end_date FROM ' . WLSM_EXAMS . ' as ex 
+		$exams = $wpdb->get_results( $wpdb->prepare( 'SELECT DISTINCT ex.ID, ex.label as exam_title, ex.show_rank, ex.show_remark, ex.psychomotor_analysis, ex.psychomotor, ex.start_date, ex.end_date FROM ' . WLSM_EXAMS . ' as ex 
 		JOIN ' . WLSM_CLASS_SCHOOL_EXAM . ' as csex ON csex.exam_id = ex.ID 
 		JOIN ' . WLSM_SCHOOLS . ' as s ON s.ID = ex.school_id 
 		WHERE ex.school_id = %d AND csex.class_school_id = %d ORDER BY ex.start_date ASC', $school_id, $class_school_id ) );
@@ -253,7 +253,7 @@ class WLSM_M_Staff_Examination {
 
 	public static function get_exam_result_by_subject_code( $school_id, $exam_id, $student_id, $subject_code ) {
 		global $wpdb;
-		$exam_result = $wpdb->get_row( $wpdb->prepare( 'SELECT ep.maximum_marks, er.obtained_marks, er.remark FROM ' . WLSM_EXAM_RESULTS . ' as er 
+		$exam_result = $wpdb->get_row( $wpdb->prepare( 'SELECT ep.maximum_marks, er.obtained_marks, er.remark, er.scale FROM ' . WLSM_EXAM_RESULTS . ' as er 
 			JOIN ' . WLSM_EXAM_PAPERS . ' as ep ON ep.ID = er.exam_paper_id 
 			JOIN ' . WLSM_EXAMS . ' as ex ON ex.ID = ep.exam_id 
 			JOIN ' . WLSM_ADMIT_CARDS . ' as ac ON ac.ID = er.admit_card_id 
