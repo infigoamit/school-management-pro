@@ -15,6 +15,9 @@ $exam_results = WLSM_M_Staff_Examination::get_student_published_exam_results( $s
 		<span>
 		<?php esc_html_e( 'View Exam Results', 'school-management' ); ?>
 		</span>
+		<span class="wlsm-st-details-list-value">
+		<a class="text-primary wlsm-result-subject-wise" data-nonce="<?php echo esc_attr( wp_create_nonce( 'result-subject-wise-' . $student_id ) ); ?>" data-student="<?php echo esc_attr( $student_id ); ?>" href="#" data-message-title="<?php echo esc_attr__( 'Subject-wise Results', 'school-management' ); ?>" data-close="<?php echo esc_attr__( 'Close', 'school-management' ); ?>"><?php esc_html_e( 'Overall', 'school-management' ); ?></a>
+		</span>
 	</div>
 
 	<div class="wlsm-st-exams-results-section">

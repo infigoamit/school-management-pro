@@ -425,6 +425,8 @@ class WLSM_P_Print {
 	}
 
 	public static function student_print_exam_results() {
+		echo '<pre>' . var_dump($_POST) . '</pre>';
+		die();
 		$admit_card_id = isset( $_POST['admit_card_id'] ) ? absint( $_POST['admit_card_id'] ) : 0;
 
 		if ( ! wp_verify_nonce( $_POST[ 'st-print-exam-results-' . $admit_card_id ], 'st-print-exam-results-' . $admit_card_id ) ) {
@@ -480,6 +482,54 @@ class WLSM_P_Print {
 		ob_start();
 		$from_front = true;
 		require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/print/exam_results.php';
+		$html = ob_get_clean();
+
+		wp_send_json_success( array( 'html' => $html ) );
+	}
+	
+	public static function student_exam_result_subjectwise() {
+		$student_id = isset( $_POST['student_id'] ) ? absint( $_POST['student_id'] ) : 0;
+
+		if ( ! wp_verify_nonce( $_POST[ 'result-subject-wise-' . $student_id ], 'result-subject-wise-' . $student_id ) ) {
+			die();
+		}
+			global $wpdb;
+			$user_id = get_current_user_id();
+			$student = WLSM_M_User::user_is_student( $user_id );
+		
+			$student_id = $student->ID;
+			$school_id  = $student->school_id;
+			$session_id = $student->session_id;
+
+		try {
+			ob_start();
+			global $wpdb;
+
+			$student_id = isset( $_POST['student_id'] ) ? absint( $_POST['student_id'] ) : 0;
+
+			// Checks if student exists.
+			$student = WLSM_M_Staff_General::fetch_student( $school_id, $session_id, $student_id );
+
+			if ( ! $student ) {
+				throw new Exception( esc_html__( 'Student not found.', 'school-management' ) );
+			}
+
+			$class_school_id = $student->class_school_id;
+
+			$class_id = $student->class_id;
+
+		} catch ( Exception $exception ) {
+			$buffer = ob_get_clean();
+			if ( ! empty( $buffer ) ) {
+				$response = $buffer;
+			} else {
+				$response = $exception->getMessage();
+			}
+			wp_send_json_error( $response );
+		}
+
+		ob_start();
+		require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/print/result_subject_wise.php';
 		$html = ob_get_clean();
 
 		wp_send_json_success( array( 'html' => $html ) );

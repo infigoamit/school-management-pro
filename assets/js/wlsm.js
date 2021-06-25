@@ -1448,6 +1448,38 @@
 			});
 		});
 
+		// Student: Print exam results.
+		$(document).on('click', '.wlsm-result-subject-wise', function(event) {
+			var element = $(this);
+			var admitCardId = element.data('student');
+			var title = element.data('message-title');
+			var nonce = element.data('nonce');
+
+			var data = {};
+			data['student_id'] = admitCardId;
+			data['result-subject-wise-' + admitCardId] = nonce;
+			data['action'] = 'wlsm-p-result-subject-wise';
+
+			$.dialog({
+				title: title,
+				content: function() {
+					var self = this;
+					return $.ajax({
+						data: data,
+						url: wlsmajaxurl,
+						type: 'POST',
+						success: function(res) {
+							self.setContent(res.data.html);
+						}
+					});
+				},
+				theme: 'bootstrap',
+				useBootstrap: false,
+				columnClass: 'large',
+				backgroundDismiss: true
+			});
+		});
+
 		// Parent: Print exam results.
 		$(document).on('click', '.wlsm-pr-print-exam-results', function(event) {
 			var element = $(this);

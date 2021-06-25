@@ -205,6 +205,8 @@ add_action( 'wp_ajax_wlsm-p-st-print-exam-admit-card', array( 'WLSM_P_Print', 's
 // Student: Print exam results.
 add_action( 'wp_ajax_wlsm-p-st-print-exam-results', array( 'WLSM_P_Print', 'student_print_exam_results' ) );
 
+add_action( 'wp_ajax_wlsm-p-result-subject-wise', array( 'WLSM_P_Print', 'student_exam_result_subjectwise' ) );
+
 // Student: Print results assessment.
 add_action( 'wp_ajax_wlsm-p-st-print-results-assessment', array( 'WLSM_P_Print', 'student_print_results_assessment' ) );
 add_action( 'wp_ajax_wlsm-p-st-print-results-subject-wise', array( 'WLSM_P_Print', 'student_print_results_subject_wise' ) );

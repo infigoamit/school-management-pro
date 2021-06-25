@@ -115,8 +115,8 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 							<?php echo esc_html($obtained_marks); ?>
 						</span>
 					<?php
-						echo ' / ';
-						echo esc_html($maximum_marks);
+						// echo ' / ';
+						// echo esc_html($maximum_marks);
 					} else {
 						echo '-';
 					}
@@ -136,8 +136,8 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 						<?php echo esc_html($total_obtained_marks_subject); ?>
 					</span>
 				<?php
-					echo ' / ';
-					echo esc_html($total_maximum_marks_subject);
+					// echo ' / ';
+					// echo esc_html($total_maximum_marks_subject);
 				} else {
 					echo '-';
 				}
@@ -234,7 +234,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 	</tr>
 	<?php if ($show_rank=== '1'){ ?>
 	<tr>
-		<th><?php esc_html_e('Rank', 'school-management'); ?></th>
+		<th><?php esc_html_e('Posistion/Rank', 'school-management'); ?></th>
 		<?php
 		foreach ($exams as $key => $exam) {
 			$student_rank = '-';

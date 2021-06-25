@@ -151,12 +151,12 @@ $registration_types  = WLSM_Helper::meeting_registration_types();
 									<?php esc_html_e('Zoom Live Class', 'school-management'); ?>
 								</label>
 							</div>
-							<div class="form-check form-check-inline  btn btn-primary">
+							<!-- <div class="form-check form-check-inline  btn btn-primary">
 								<input class="form-check-input" type="radio" name="class_type" id="bbb_class" value="bbb_class">
 								<label class="ml-1 form-check-label wlsm-font-bold" for="bbb_class">
 									<?php esc_html_e('Big Blue Button', 'school-management'); ?>
 								</label>
-							</div>
+							</div> -->
 						</div>
 					</div>
 

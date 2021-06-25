@@ -11,6 +11,9 @@ if ( isset( $from_front ) ) {
 
 $student_id = $student->ID;
 $photo_id   = $student->photo_id;
+
+$exam_groups = WLSM_M_Staff_Examination::get_class_school_exam_groups($school_id, $class_school_id);
+$attendance = WLSM_M_Staff_General::get_student_attendance_stats($student->ID);
 ?>
 
 <!-- Print result subject-wise. -->
@@ -35,7 +38,7 @@ $photo_id   = $student->photo_id;
 		<?php require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/school/print/partials/school_header.php'; ?>
 
 		<div class="wlsm-heading wlsm-results-subject-wise-heading h5 wlsm-text-center">
-			<span><?php esc_html_e( 'SUBJECT-WISE EXAM RESULTS', 'school-management' ); ?></span>
+			<span><?php esc_html_e( 'Academic Report Sheet for ', 'school-management' ); ?><?php echo $exam_groups[0]; ?></span> 
 		</div>
 
 		<div class="row">
@@ -84,7 +87,12 @@ $photo_id   = $student->photo_id;
 							<span class="wlsm-font-bold"><?php esc_html_e( 'Father Phone', 'school-management' ); ?>:</span>
 							<span><?php echo esc_html( WLSM_M_Staff_Class::get_phone_text( $student->father_phone ) ); ?></span>
 						</li>
+						<li>
+							<span class="wlsm-font-bold"><?php esc_html_e( 'Attendance', 'school-management' ); ?>:</span>
+							<span><?php echo esc_html($attendance['percentage_text'] ); ?></span>
+						</li>
 					</ul>
+					
 					<div class="wlsm-print-photo-box wlsm-to-right">
 					<?php if ( ! empty ( $photo_id ) ) { ?>
 						<img src="<?php echo esc_url( wp_get_attachment_url( $photo_id ) ); ?>" class="wlsm-print-photo">

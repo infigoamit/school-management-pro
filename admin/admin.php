@@ -207,6 +207,8 @@ add_action( 'wp_ajax_wlsm-get-results-assessment', array( 'WLSM_Staff_Examinatio
 add_action( 'wp_ajax_wlsm-get-result-assessment', array( 'WLSM_Staff_Examination', 'get_result_assessment' ) );
 add_action( 'wp_ajax_wlsm-get-result-subject-wise', array( 'WLSM_Staff_Examination', 'get_result_subject_wise' ) );
 
+add_action( 'wp_ajax_wlsm-get-result-subject-wise-front', array( 'WLSM_Staff_Examination', 'result_subject_wise' ) );
+
 // Staff: Study Materials.
 add_action( 'wp_ajax_wlsm-fetch-study-materials', array( 'WLSM_Staff_Class', 'fetch_study_materials' ) );
 add_action( 'wp_ajax_wlsm-save-study-material', array( 'WLSM_Staff_Class', 'save_study_material' ) );
