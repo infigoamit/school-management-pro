@@ -1375,7 +1375,7 @@ class WLSM_Staff_Class
 			$link_to    = isset($_POST['link_to']) ? sanitize_text_field($_POST['link_to']) : '';
 			$attachment = (isset($_FILES['attachment']) && is_array($_FILES['attachment'])) ? $_FILES['attachment'] : NULL;
 			$url        = isset($_POST['url']) ? esc_url_raw($_POST['url']) : '';
-			// $classes    = (isset($_POST['classes']) && is_array($_POST['classes'])) ? $_POST['classes'] : array();
+			$classes    = (isset($_POST['classes']) && is_array($_POST['classes'])) ? $_POST['classes'] : array();
 			$students    = (isset($_POST['student']) && is_array($_POST['student'])) ? $_POST['student'] : array();
 			$is_active  = isset($_POST['is_active']) ? (bool) $_POST['is_active'] : 1;
 
@@ -1400,20 +1400,20 @@ class WLSM_Staff_Class
 
 			$class_schools = array();
 
-			// if (count($classes)) {
-			// 	foreach ($classes as $class_id) {
-			// 		$class_school = WLSM_M_Staff_Class::get_class($school_id, $class_id);
-			// 		if (!$class_school) {
-			// 			$errors['classes[]'] = esc_html__('Class not found.', 'school-management');
-			// 			wp_send_json_error($errors);
-			// 		} else {
-			// 			$class_school_id = $class_school->ID;
-			// 			array_push($class_schools, $class_school_id);
-			// 		}
-			// 	}
+			if (count($classes)) {
+				foreach ($classes as $class_id) {
+					$class_school = WLSM_M_Staff_Class::get_class($school_id, $class_id);
+					if (!$class_school) {
+						$errors['classes[]'] = esc_html__('Class not found.', 'school-management');
+						wp_send_json_error($errors);
+					} else {
+						$class_school_id = $class_school->ID;
+						array_push($class_schools, $class_school_id);
+					}
+				}
 
-			// 	$class_schools = array_unique($class_schools);
-			// }
+				$class_schools = array_unique($class_schools);
+			}
 
 
 			if (count($students)) {

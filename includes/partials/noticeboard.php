@@ -5,9 +5,9 @@ global $wpdb;
 
 $notices_per_page = WLSM_M::notices_per_page();
 
-// if ( ! isset( $class_school_id ) ) {
-// 	$class_school_id = '';
-// }
+if ( ! isset( $class_school_id ) ) {
+	$class_school_id = '';
+}
 
 $class_school_id = $student->ID;
 $notices_query = WLSM_M::notices_query();

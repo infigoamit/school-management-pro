@@ -1,7 +1,12 @@
+Version 8.7 [28-06-2021]
+========
+* Added  : Noticeboard now you can select multiple students.
+* Added  : students absent placeholder fixed.
+
 Version 8.6 [24-06-2021]
 ========
 * Added  : student overall result.
-* updated  : student exam result.
+* updated:  student dashboard exam result.
 
 Version 8.5 [16-06-2021]
 ========

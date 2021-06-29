@@ -235,6 +235,19 @@ class WLSM_Email {
 		);
 	}
 
+	public static function absent_student_placeholders() {
+		return array(
+			'[ATTENDANCE_DATE]'   => esc_html__('Attendance Date', 'school-management'),
+			'[STUDENT_NAME]'      => esc_html__('Student Name', 'school-management'),
+			'[CLASS]'             => esc_html__('Class', 'school-management'),
+			'[SECTION]'           => esc_html__('Section', 'school-management'),
+			'[ROLL_NUMBER]'       => esc_html__('Roll Number', 'school-management'),
+			'[ENROLLMENT_NUMBER]' => esc_html__('Enrollment Number', 'school-management'),
+			'[ADMISSION_NUMBER]'  => esc_html__('Admission Number', 'school-management'),
+			'[SCHOOL_NAME]'       => esc_html__('School Name', 'school-management'),
+		);
+	}
+
 	public static function inquiry_received_to_inquisitor_placeholders() {
 		return array(
 			'[NAME]'  => esc_html__( 'Inquisitor Name', 'school-management' ),
