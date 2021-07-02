@@ -234,7 +234,7 @@ if (!$exam_without_group && ($total_exam_groups > 1) && ($total_exam_groups < $t
 	</tr>
 	<?php if ($show_rank=== '1'){ ?>
 	<tr>
-		<th><?php esc_html_e('Posistion/Rank', 'school-management'); ?></th>
+		<th><?php esc_html_e('Position/Rank', 'school-management'); ?></th>
 		<?php
 		foreach ($exams as $key => $exam) {
 			$student_rank = '-';
