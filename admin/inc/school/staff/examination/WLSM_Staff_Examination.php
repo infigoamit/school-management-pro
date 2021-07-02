@@ -2153,7 +2153,6 @@ class WLSM_Staff_Examination {
 	}
 
 	public static function get_result_subject_wise() {
-		echo '<pre>' . var_dump('sdafjasdf') . '</pre>';
 		$current_user = WLSM_M_Role::can( 'manage_exams' );
 
 		if ( ! $current_user ) {
