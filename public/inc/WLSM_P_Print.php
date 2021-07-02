@@ -425,8 +425,6 @@ class WLSM_P_Print {
 	}
 
 	public static function student_print_exam_results() {
-		echo '<pre>' . var_dump($_POST) . '</pre>';
-		die();
 		$admit_card_id = isset( $_POST['admit_card_id'] ) ? absint( $_POST['admit_card_id'] ) : 0;
 
 		if ( ! wp_verify_nonce( $_POST[ 'st-print-exam-results-' . $admit_card_id ], 'st-print-exam-results-' . $admit_card_id ) ) {
