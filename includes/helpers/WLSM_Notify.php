@@ -67,8 +67,9 @@ class WLSM_Notify {
 			if ( $sms_student_admission_enable && $sms_to ) {
 				// Student Admission SMS template.
 				$message = $settings_sms_student_admission['message'];
+				$template_id = $settings_sms_student_admission['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -138,8 +139,9 @@ class WLSM_Notify {
 			if ( $sms_invoice_generated_enable && $sms_to ) {
 				// Invoice Generated SMS template.
 				$message = $settings_sms_invoice_generated['message'];
+				$template_id = $settings_sms_invoice_generated['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -209,8 +211,9 @@ class WLSM_Notify {
 			if ( $sms_online_fee_submission_enable && $sms_to ) {
 				// Online Fee Submission SMS template.
 				$message = $settings_sms_online_fee_submission['message'];
+				$template_id = $settings_sms_online_fee_submission['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message,$template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -280,8 +283,9 @@ class WLSM_Notify {
 			if ( $sms_offline_fee_submission_enable && $sms_to ) {
 				// Offline Fee Submission SMS template.
 				$message = $settings_sms_offline_fee_submission['message'];
+				$template_id = $settings_sms_offline_fee_submission['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -335,8 +339,9 @@ class WLSM_Notify {
 			if ( $sms_student_admission_to_parent_enable && $sms_to ) {
 				// Student Admission To Parent SMS template.
 				$message = $settings_sms_student_admission_to_parent['message'];
+				$template_id = $settings_sms_student_admission_to_parent['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -394,8 +399,9 @@ class WLSM_Notify {
 			if ( $sms_invoice_generated_to_parent_enable && $sms_to ) {
 				// Invoice Generated SMS template.
 				$message = $settings_sms_invoice_generated_to_parent['message'];
+				$template_id = $settings_sms_invoice_generated_to_parent['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -453,8 +459,9 @@ class WLSM_Notify {
 			if ( $sms_online_fee_submission_to_parent_enable && $sms_to ) {
 				// Online Fee Submission To Parent SMS template.
 				$message = $settings_sms_online_fee_submission_to_parent['message'];
+				$template_id = $settings_sms_online_fee_submission_to_parent['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -512,8 +519,9 @@ class WLSM_Notify {
 			if ( $sms_offline_fee_submission_to_parent_enable && $sms_to ) {
 				// Offline Fee Submission To Parent SMS template.
 				$message = $settings_sms_offline_fee_submission_to_parent['message'];
+				$template_id = $settings_sms_offline_fee_submission_to_parent['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -565,8 +573,9 @@ class WLSM_Notify {
 			if ( $sms_absent_student_enable && $sms_to ) {
 				// Absent Student SMS template.
 				$message = $settings_sms_absent_student['message'];
+				$template_id = $settings_sms_absent_student['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -643,8 +652,9 @@ class WLSM_Notify {
 			if ( $sms_invoice_due_date_enable && $sms_to ) {
 				// Invoice due_date SMS template.
 				$message = $settings_sms_invoice_due_date['message'];
+				$template_id = $settings_sms_invoice_due_date['template_id'];
 
-				WLSM_SMS::send_sms( $school_id, $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $school_id, $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 			}
@@ -812,8 +822,9 @@ class WLSM_Notify {
 			if ( $sms_inquiry_received_to_inquisitor_enable && $sms_to ) {
 				// Inquiry Received to Inquisitor SMS template.
 				$message = $settings_sms_inquiry_received_to_inquisitor['message'];
+				$template_id = $settings_sms_inquiry_received_to_inquisitor['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -871,8 +882,9 @@ class WLSM_Notify {
 			if ( $sms_inquiry_received_to_admin_enable && $sms_to ) {
 				// Inquiry Received to Admin SMS template.
 				$message = $settings_sms_inquiry_received_to_admin['message'];
+				$template_id = $settings_sms_inquiry_received_to_admin['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -938,8 +950,9 @@ class WLSM_Notify {
 			if ( $sms_student_registration_to_student_enable && $sms_to ) {
 				// Student Registration to Student SMS template.
 				$message = $settings_sms_student_registration_to_student['message'];
+				$template_id = $settings_sms_student_registration_to_student['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}
@@ -1006,8 +1019,9 @@ class WLSM_Notify {
 			if ( $sms_student_registration_to_admin_enable && $sms_to ) {
 				// Student Registration to Admin SMS template.
 				$message = $settings_sms_student_registration_to_admin['message'];
+				$template_id = $settings_sms_student_registration_to_admin['template_id'];
 
-				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $for, $placeholders );
+				WLSM_SMS::send_sms( $data['school_id'], $sms_to, $message, $template_id, $for, $placeholders );
 			}
 		}
 	}

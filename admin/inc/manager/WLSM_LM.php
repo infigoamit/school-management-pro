@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || die();
 require_once WLSM_PLUGIN_DIR_PATH . 'admin/inc/manager/WLSM_LC.php';
 
 final class WLSM_LM {
-	private $api_url         = 'https://weblizar.com/member/softsale/api';
+	private $api_url         = 'https://weblizar.com/members/softsale/api';
 	private $key             = null;
 	public $error_message    = null;
 	private static $instance = null;

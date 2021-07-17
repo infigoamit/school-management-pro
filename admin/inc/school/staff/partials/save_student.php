@@ -486,6 +486,12 @@ foreach ($routes_vehicles as $route_vehicle) {
 							</div>
 						</div>
 					</div>
+					<!-- <div class="form-group col-md-4">
+						<label for="wlsm_student_group" class="wlsm-font-bold">
+							 <?php esc_html_e('Student Group', 'school-management'); ?>:
+						</label>
+						<input <?php if ($auto_student_group) { echo 'readonly'; } ?> type="text" name="student_group" class="form-control" id="wlsm_student_group" placeholder="<?php esc_attr_e('Enter', 'school-management'); ?>" value="<?php echo esc_attr($student_group); ?>">
+					</div> -->
 				</div>
 			</div>
 
