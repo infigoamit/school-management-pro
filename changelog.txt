@@ -1,3 +1,7 @@
+Version 8.8 [31-07-2021]
+========
+* changed  : Currency can be saved by school-wise
+
 Version 8.7 [28-06-2021]
 ========
 * Added  : Noticeboard now you can select multiple students.
