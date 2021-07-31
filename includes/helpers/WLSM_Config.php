@@ -49,8 +49,13 @@ class WLSM_Config {
 	}
 
 	public static function currency() {
-		$currency = get_option( 'wlsm_currency' );
+		$user_info = WLSM_M_Role::get_user_info();
 
+		if ( $user_info['current_school'] ) {
+			$current_school_id = $user_info['current_school']['id'];
+		}
+		$settings_general       = WLSM_M_Setting::get_settings_general( $current_school_id );
+		$currency = $settings_general['currency'];
 		if ( isset( WLSM_Helper::currency_symbols()[ $currency ] ) ) {
 			return $currency;
 		}
@@ -59,7 +64,7 @@ class WLSM_Config {
 	}
 
 	public static function currency_symbol() {
-		return WLSM_Helper::currency_symbols()[self::currency()];
+		return WLSM_Helper::currency_symbols()[self::currency($school_id)];
 	}
 
 	public static function sanitize_money( $money ) {

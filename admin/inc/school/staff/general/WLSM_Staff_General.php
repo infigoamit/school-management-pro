@@ -7391,15 +7391,22 @@ class WLSM_Staff_General
 			$student_logout_redirect_url = isset($_POST['student_logout_redirect_url']) ? esc_url_raw($_POST['student_logout_redirect_url']) : '';
 			$hide_library           = isset($_POST['student_hide_library']) ? (bool) ($_POST['student_hide_library']) : '';
 			$hide_transport           = isset($_POST['student_hide_transport']) ? (bool) ($_POST['student_hide_transport']) : '';
+			$currency               = isset( $_POST['currency'] ) ? sanitize_text_field( $_POST['currency'] ) : '';
 
 			// Start validation.
 			$errors = array();
+			$currency_symbols = WLSM_Helper::currency_symbols();
 
 			if (!$remove_school_logo && (isset($school_logo['tmp_name']) && !empty($school_logo['tmp_name']))) {
 				if (!WLSM_Helper::is_valid_file($school_logo, 'image')) {
 					$errors['school_logo'] = esc_html__('Please provide school logo in JPG, JPEG or PNG format.', 'school-management');
 				}
 			}
+
+			if ( ! in_array( $currency, array_keys( $currency_symbols ) ) ) {
+				$currency = WLSM_Config::get_default_currency();
+			}
+
 		} catch (Exception $exception) {
 			$buffer = ob_get_clean();
 			if (!empty($buffer)) {
@@ -7448,6 +7455,7 @@ class WLSM_Staff_General
 					'student_logout_redirect_url' => $student_logout_redirect_url,
 					'hide_library'                => $hide_library,
 					'hide_transport'              => $hide_transport,
+					'currency'                    => $currency,
 				);
 
 				if (!$general) {

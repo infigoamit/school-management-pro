@@ -8,6 +8,8 @@ $school_signature                   = $settings_general['school_signature'];
 $school_student_logout_redirect_url = $settings_general['student_logout_redirect_url'];
 $school_hide_transport              = $settings_general['hide_transport'];
 $school_hide_library                = $settings_general['hide_library'];
+$active_currency                    = WLSM_Config::currency();
+$currency_symbols = WLSM_Helper::currency_symbols();
 ?>
 <div class="tab-pane fade show active" id="wlsm-school-general" role="tabpanel" aria-labelledby="wlsm-school-general-tab">
 	<div class="row">
@@ -90,6 +92,23 @@ $school_hide_library                = $settings_general['hide_library'];
 							<p class="description">
 								<?php esc_html_e( 'Enter URL where to redirect the student after logout. Leave blank for same page URL.', 'school-management' ); ?>
 							</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-3">
+						<label for="wlsm_currency" class="wlsm-font-bold">
+							<?php esc_html_e('Set Currency', 'school-management'); ?>:
+						</label>
+					</div>
+					<div class="col-md-9">
+						<div class="form-group">
+							<select name="currency" id="wlsm_currency" class="form-control">
+								<?php foreach ($currency_symbols as $key => $currency_symbol) { ?>
+									<option <?php selected($key, $active_currency, true); ?> value="<?php echo esc_attr($key); ?>"><?php echo esc_attr($key); ?></option>
+								<?php } ?>
+							</select>
 						</div>
 					</div>
 				</div>

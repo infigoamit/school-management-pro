@@ -9,6 +9,7 @@ class WLSM_M_Setting {
 		$student_logout_redirect_url = NULL;
 		$hide_library                = 1;
 		$hide_transport              = 1;
+		$currency                    = '';
 
 
 		$settings = $wpdb->get_row( $wpdb->prepare( 'SELECT ID, setting_value FROM ' . WLSM_SETTINGS . ' WHERE school_id = %d AND setting_key = "general"', $school_id ) );
@@ -19,6 +20,7 @@ class WLSM_M_Setting {
 			$student_logout_redirect_url = isset( $settings['student_logout_redirect_url'] ) ? $settings['student_logout_redirect_url'] : '';
 			$hide_library                = isset( $settings['hide_library'] ) ? $settings['hide_library'] : '';
 			$hide_transport              = isset( $settings['hide_transport'] ) ? $settings['hide_transport'] : '';
+			$currency                    = isset( $settings['currency'] ) ? $settings['currency'] : '';
 
 		}
 
@@ -28,6 +30,7 @@ class WLSM_M_Setting {
 			'student_logout_redirect_url' => $student_logout_redirect_url,
 			'hide_library'                => $hide_library,
 			'hide_transport'              => $hide_transport,
+			'currency'                    => $currency,
 		);
 	}
 

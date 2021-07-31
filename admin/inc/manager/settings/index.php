@@ -6,14 +6,12 @@ require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_M_Session.php';
 require_once WLSM_PLUGIN_DIR_PATH . 'includes/helpers/WLSM_Helper.php';
 
 $default_session_id     = get_option('wlsm_current_session');
-$active_currency        = WLSM_Config::currency();
 $active_date_format     = WLSM_Config::date_format();
 $gdpr_enable            = get_option('wlsm_gdpr_enable');
 $gdpr_text_inquiry      = WLSM_Config::gdpr_text_inquiry();
 $gdpr_text_registration = WLSM_Config::gdpr_text_registration();
 
 $sessions         = WLSM_M_Session::fetch_sessions();
-$currency_symbols = WLSM_Helper::currency_symbols();
 $date_formats     = WLSM_Helper::date_formats();
 
 $delete_on_uninstall = get_option('wlsm_delete_on_uninstall');
@@ -108,23 +106,6 @@ add_filter('user_can_richedit', '__return_false', 50);
 										<select name="date_format" id="wlsm_date_format" class="form-control">
 											<?php foreach ($date_formats as $key => $date_format) { ?>
 												<option <?php selected($key, $active_date_format, true); ?> value="<?php echo esc_attr($key); ?>"><?php echo esc_attr($date_format); ?></option>
-											<?php } ?>
-										</select>
-									</div>
-								</div>
-							</div>
-
-							<div class="row">
-								<div class="col-md-4">
-									<label for="wlsm_currency" class="wlsm-font-bold">
-										<?php esc_html_e('Set Currency', 'school-management'); ?>:
-									</label>
-								</div>
-								<div class="col-md-8">
-									<div class="form-group">
-										<select name="currency" id="wlsm_currency" class="form-control">
-											<?php foreach ($currency_symbols as $key => $currency_symbol) { ?>
-												<option <?php selected($key, $active_currency, true); ?> value="<?php echo esc_attr($key); ?>"><?php echo esc_attr($key); ?></option>
 											<?php } ?>
 										</select>
 									</div>
