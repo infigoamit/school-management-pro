@@ -54,6 +54,13 @@ class WLSM_Config {
 		if ( $user_info['current_school'] ) {
 			$current_school_id = $user_info['current_school']['id'];
 		}
+		if (empty($current_school_id)) {
+			global $wpdb;
+
+			$user_id = get_current_user_id();
+			$student = WLSM_M::get_student( $user_id );
+			$current_school_id = $student->school_id;
+		}
 		$settings_general       = WLSM_M_Setting::get_settings_general( $current_school_id );
 		$currency = $settings_general['currency'];
 		if ( isset( WLSM_Helper::currency_symbols()[ $currency ] ) ) {
